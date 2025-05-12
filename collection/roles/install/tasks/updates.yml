@@ -1,0 +1,97 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Assert conditions for downstream tasks
+
+  ansible.builtin.assert:
+    that:
+
+      - >-  # always in serial mode
+        ansible_play_batch | length == 1
+
+  tags: always
+
+
+
+
+
+
+- name: Perform updates within the ISO contents
+
+  ansible.builtin.replace:
+    path: '{{ _provision_prepare_path }}/{{ item.path }}'
+    regexp: '{{ item.regexp }}'
+    replace: '{{ item.replace }}'
+
+  loop:
+
+    - path: EFI/BOOT/BOOT.conf
+      regexp: '(\n\tlinuxefi [^\n]+)(quiet\n)'
+      replace: '\1 inst.ks=cdrom:/kickstart.cfg \2'
+      family: ["fedora"]
+    - path: EFI/BOOT/BOOT.conf
+      regexp: 'set default=\"?1\"?'
+      replace: 'set default=0'
+      family: ["fedora"]
+    - path: EFI/BOOT/BOOT.conf
+      regexp: 'set timeout=\"?60\"?'
+      replace: 'set timeout=5'
+      family: ["fedora"]
+
+    - path: boot/grub2/grub.cfg
+      regexp: '(\n\tlinux [^\n]+)(quiet\n)'
+      replace: '\1 inst.ks=cdrom:/kickstart.cfg \2'
+      family: ["fedora"]
+    - path: boot/grub2/grub.cfg
+      regexp: 'set default=\"?1\"?'
+      replace: 'set default=0'
+      family: ["fedora"]
+    - path: boot/grub2/grub.cfg
+      regexp: 'set timeout=\"?60\"?'
+      replace: 'set timeout=5'
+      family: ["fedora"]
+
+    - path: EFI/BOOT/grub.cfg
+      regexp: '(\n\tlinuxefi [^\n]+)(quiet\n)'
+      replace: '\1 inst.ks=cdrom:/kickstart.cfg \2'
+      family: ["almalinux", "fedora"]
+    - path: EFI/BOOT/grub.cfg
+      regexp: 'set default=\"?1\"?'
+      replace: 'set default=0'
+      family: ["almalinux", "fedora"]
+    - path: EFI/BOOT/grub.cfg
+      regexp: 'set timeout=\"?60\"?'
+      replace: 'set timeout=5'
+      family: ["almalinux", "fedora"]
+
+    - path: isolinux/isolinux.cfg
+      regexp: 'label check(\n[^\n]+){4}quiet\n'
+      replace: ""
+      family: ["almalinux"]
+    - path: isolinux/isolinux.cfg
+      regexp: '(label linux\n)(([^\n]+\n){2})(\s+append)'
+      replace: '\1\2  menu default\n\4 inst.ks=cdrom:/kickstart.cfg'
+      family: ["almalinux"]
+    - path: isolinux/isolinux.cfg
+      regexp: 'timeout\s\d+'
+      replace: 'timeout 5'
+      family: ["almalinux"]
+
+  loop_control:
+    label: '{{ item.path }}'
+
+  delegate_to: localhost
+
+  when:
+    - provision_install | default
+    - provision_family in item.family
+
+  tags: always

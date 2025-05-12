@@ -1,0 +1,44 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Update the guest within the hypervisor
+
+  community.libvirt.virt:
+    command: define
+    xml: "{{ lookup('template', 'libvirt.j2') }}"
+    uri: '{{ provision_libvirt.prefix }}/system'
+
+  delegate_to: '{{ provision_libvirt.host }}'
+  changed_when: true
+
+  when:
+    - provision_libvirt.host
+    - _provision_libvirt_name in _provision_libvirt_guests
+    - not ansible_check_mode
+
+  tags: always
+
+
+
+- name: Update the guest within the hypervisor
+
+  ansible.builtin.command: /bin/true
+
+  delegate_to: '{{ provision_libvirt.host }}'
+  changed_when: true
+  check_mode: false
+
+  when:
+    - provision_libvirt.host
+    - _provision_libvirt_name in _provision_libvirt_guests
+    - ansible_check_mode
+
+  tags: always

@@ -1,0 +1,24 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Provide information about the operation
+
+  overview:
+    input:
+      libvirt_guests: '{{ _provision_libvirt_guests }}'
+      libvirt_guest: '{{ _provision_libvirt_guest | default }}'
+      libvirt_stores: '{{ _provision_libvirt_stores }}'
+      provision_config: >-
+        {{ lookup('template', 'libvirt.j2') }}
+
+  when: provision_libvirt.host
+
+  tags: always

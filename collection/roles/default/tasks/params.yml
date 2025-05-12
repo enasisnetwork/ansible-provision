@@ -1,0 +1,98 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Declare relevant playbook variables
+  # Important to force parsing with Jinja2
+
+  ansible.builtin.set_fact:
+
+    provision_kind: >-
+      {{ provision_kind | default(omit) }}
+    provision_family: >-
+      {{ provision_family | default(omit) }}
+    provision_staging: >-
+      {{ provision_staging | default(omit) }}
+    provision_install: >-
+      {{ provision_install | default(omit) }}
+    provision_users: >-
+      {{ provision_users | default(omit) }}
+    provision_groups: >-
+      {{ provision_groups | default(omit) }}
+    provision_storage: >-
+      {{ provision_storage | default(omit) }}
+    provision_network: >-
+      {{ provision_network | default(omit) }}
+    provision_libvirt: >-
+      {{ provision_libvirt | default(omit) }}
+
+  tags: always
+
+
+
+
+
+
+- name: Validate role variables using Pydantic
+
+  enasisnetwork.provision.params:
+
+    kind: >-
+      {{ provision_kind | default(omit) }}
+    family: >-
+      {{ provision_family | default(omit) }}
+    staging: >-
+      {{ provision_staging | default(omit) }}
+    install: >-
+      {{ provision_install | default(omit) }}
+    users: >-
+      {{ provision_users | default(omit) }}
+    groups: >-
+      {{ provision_groups | default(omit) }}
+    storage: >-
+      {{ provision_storage | default(omit) }}
+    network: >-
+      {{ provision_network | default(omit) }}
+    libvirt: >-
+      {{ provision_libvirt | default(omit) }}
+
+  register: pbvalidate
+
+  tags: always
+
+
+
+
+
+
+- name: Declare relevant playbook variables
+
+  ansible.builtin.set_fact:
+
+    provision_kind: >-
+      {{ pbvalidate.params.kind }}
+    provision_family: >-
+      {{ pbvalidate.params.family }}
+    provision_staging: >-
+      {{ pbvalidate.params.staging }}
+    provision_install: >-
+      {{ pbvalidate.params.install }}
+    provision_users: >-
+      {{ pbvalidate.params.users }}
+    provision_groups: >-
+      {{ pbvalidate.params.groups }}
+    provision_storage: >-
+      {{ pbvalidate.params.storage }}
+    provision_network: >-
+      {{ pbvalidate.params.network }}
+    provision_libvirt: >-
+      {{ pbvalidate.params.libvirt }}
+
+  tags: always

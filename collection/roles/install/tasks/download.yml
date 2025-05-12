@@ -1,0 +1,25 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Download the ISO from configured source
+
+  ansible.builtin.get_url:
+    url: '{{ _provision_download }}'
+    dest: '{{ _provision_install_base }}'
+    checksum: '{{ _provision_install_hash }}'
+    mode: '0644'
+
+  delegate_to: localhost
+  throttle: 1
+
+  when: _provision_download
+
+  tags: always

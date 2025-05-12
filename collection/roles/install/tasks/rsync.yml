@@ -1,0 +1,91 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Assert conditions for downstream tasks
+
+  ansible.builtin.assert:
+    that:
+
+      - >-  # always in serial mode
+        ansible_play_batch | length == 1
+
+  tags: always
+
+
+
+
+
+
+- name: Construct prepare from the distribute
+  # noqa: command-instead-of-module
+
+  ansible.builtin.command: >-
+    rsync
+    --chmod=Du+rwx,Fu+rw
+    --no-perms
+    --no-owner
+    --no-group
+    --delete
+    --hard-links
+    --itemize-changes
+    --links
+    --recursive
+    --size-only
+    {{ '--dry-run' if ansible_check_mode else '' }}
+    {{ _provision_distrib_path.rstrip('/') }}/
+    {{ _provision_prepare_path.rstrip('/') }}/
+
+  delegate_to: localhost
+  register: _rsync
+  changed_when: _rsync.stdout_lines
+  failed_when: _rsync.stderr
+  check_mode: false
+
+  when: provision_install | default
+
+  tags: always
+
+
+
+
+
+
+- name: Inject the VirtIO drivers into prepare
+  # noqa: command-instead-of-module
+
+  ansible.builtin.command: >-
+    rsync
+    --chmod=Du+rwx,Fu+rw
+    --no-perms
+    --no-owner
+    --no-group
+    --delete
+    --hard-links
+    --itemize-changes
+    --links
+    --recursive
+    --size-only
+    {{ '--dry-run' if ansible_check_mode else '' }}
+    /usr/share/virtio-win/drivers/
+    {{ _provision_prepare_path.rstrip('/') }}/virtio/
+
+  delegate_to: localhost
+  register: _rsync
+  changed_when: _rsync.stdout_lines
+  failed_when: _rsync.stderr
+  check_mode: false
+
+  when:
+    - provision_install | default
+    - provision_libvirt | default
+    - provision_family == 'windows'
+
+  tags: always

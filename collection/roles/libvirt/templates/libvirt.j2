@@ -1,0 +1,128 @@
+
+<domain type="kvm">
+  <name>{{ _provision_libvirt_name }}</name>
+  <uuid>{{ _provision_libvirt_uuid }}</uuid>
+  <vcpu>{{ provision_libvirt.vcpus }}</vcpu>
+  <memory unit="GiB">{{ provision_libvirt.memory }}</memory>
+
+  <metadata>
+    <libosinfo:libosinfo xmlns:libosinfo="http://libosinfo.org/xmlns/libvirt/domain/1.0">
+      <libosinfo:os id="{{ provision_libvirt.osid }}"/>
+    </libosinfo:libosinfo>
+  </metadata>
+
+{% if provision_libvirt.uefi %}
+  <os firmware="efi">
+{% else %}
+  <os>
+{% endif %}
+    <type arch="x86_64" machine="q35">hvm</type>
+    <boot dev="hd"/>
+    <boot dev="cdrom"/>
+  </os>
+
+{% if provision_family == 'windows' %}
+  <cpu mode="host-passthrough" check="none" migratable="on"/>
+  <clock offset="localtime">
+    <timer name="rtc" tickpolicy="catchup"/>
+    <timer name="pit" tickpolicy="delay"/>
+    <timer name="hpet" present="no"/>
+    <timer name="hypervclock" present="yes"/>
+  </clock>
+{% else %}
+  <cpu mode="host-model"/>
+{% endif %}
+
+  <features>
+    <acpi/>
+    <apic/>
+{% if provision_family == 'windows' %}
+    <hyperv mode="custom">
+      <relaxed state="on"/>
+      <vapic state="on"/>
+      <spinlocks state="on" retries="8191"/>
+      <vpindex state="on"/>
+      <runtime state="on"/>
+      <synic state="on"/>
+      <stimer state="on"/>
+      <frequencies state="on"/>
+      <tlbflush state="on"/>
+      <ipi state="on"/>
+      <evmcs state="on"/>
+      <avic state="on"/>
+    </hyperv>
+    <vmport state="off"/>
+    <smm state="on"/>
+{% endif %}
+  </features>
+{% if provision_family == 'windows' %}
+  <pm>
+    <suspend-to-mem enabled="no"/>
+    <suspend-to-disk enabled="no"/>
+  </pm>
+{% endif %}
+  <devices>
+
+{% if provision_storage | default %}
+{%  set stores = _provision_libvirt_stores %}
+{%  set items = provision_storage %}
+{%  for item in items
+     if item.state != 'absent' %}
+    <disk type="file" device="disk">
+{%   set store = item.virtual.store %}
+{%   set path = stores.pools[store].path %}
+{%   set letter = ('abcdefghij'[loop.index - 1]) %}
+{%   set target = 'vd%s' | format(letter) %}
+      <target dev="{{ target }}" bus="virtio"/>
+      <source file="{{ path }}/{{ _provision_libvirt_name }}-{{ item.name }}.img"/>
+    </disk>
+{%  endfor %}
+{% endif %}
+
+    <disk type="file" device="cdrom">
+      <target dev="sda" bus="sata"/>
+      <readonly/>
+{% if _provision_libvirt_iso %}
+{%   set stores = _provision_libvirt_stores %}
+{%   set store = provision_libvirt.isos %}
+{%   set volumes = stores.pools[store].volumes %}
+{%   set name = _provision_libvirt_iso | basename %}
+{%   if name in volumes %}
+      <source file="{{ _provision_libvirt_iso }}"/>
+{%   endif %}
+{% endif %}
+    </disk>
+
+{% if provision_network | default %}
+{%  set items = provision_network %}
+{%  for item in items
+     if item.state == 'present'
+     and item.type == 'ethernet' %}
+{%    set network = item.ipaddr | Network %}
+{%    set address = network.address %}
+{%    set index = address.split('.')[-1] %}
+    <interface type="bridge">
+      <model type="e1000e"/>
+      <target dev="{{ item.virtual.bridge }}_{{ index }}"/>
+      <mac address="{{ item.hwaddr | replace('-', ':') }}"/>
+      <source bridge="{{ item.virtual.bridge }}"/>
+    </interface>
+{%  endfor %}
+{% endif %}
+
+{% if provision_family == 'windows' %}
+    <tpm model="tpm-crb">
+      <backend type="emulator" version="2.0"/>
+    </tpm>
+{% endif %}
+
+    <graphics type="vnc">
+      <listen type="none"/>
+    </graphics>
+
+    <video>
+      <model type="qxl" ram="65536" vram="65536" vgamem="16384" heads="1" primary="yes"/>
+    </video>
+
+  </devices>
+</domain>

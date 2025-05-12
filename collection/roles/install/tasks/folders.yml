@@ -1,0 +1,30 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Create directories for related install
+
+  ansible.builtin.file:
+    path: '{{ item.path }}'
+    mode: '0700'
+    state: directory
+
+  loop:
+    - path: '{{ _provision_distrib_path }}'
+    - path: '{{ _provision_prepare_path }}'
+
+  loop_control:
+    label: '{{ item.path | basename }}'
+
+  delegate_to: localhost
+
+  when: provision_install | default
+
+  tags: always
