@@ -1,0 +1,59 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Assert conditions for downstream tasks
+
+  ansible.builtin.assert:
+    that:
+
+      - >-  # always in serial mode
+        ansible_play_batch | length == 1
+
+  tags: always
+
+
+
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    mount/absent.yml
+
+  tags: always
+
+
+
+
+
+
+- name: Delete files and folders from operation
+
+  ansible.builtin.file:
+    path: '{{ item.path }}'
+    state: absent
+
+  loop:
+    - path: '{{ _provision_distrib_path }}'
+    - path: '{{ _provision_prepare_path }}'
+    - path: '{{ _provision_install_path }}'
+    - path: '{{ _provision_install_unattend }}'
+    - path: '{{ _provision_install_unscript }}'
+
+  loop_control:
+    label: '{{ item.path | basename }}'
+
+  delegate_to: localhost
+
+  when: provision_install | default
+
+  tags: always

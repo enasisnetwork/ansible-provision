@@ -1,0 +1,148 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Assert conditions for downstream tasks
+
+  ansible.builtin.assert:
+    that:
+
+      - >-  # tags are present
+        'all' not in ansible_run_tags
+
+      - >-  # only specific hosts
+        'enasisnetwork_provision' in groups
+
+  tags: always
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_role:
+    name: enasisnetwork.provision.default
+    tasks_from: params
+
+  tags: always
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_role:
+    name: enasisnetwork.provision.default
+    tasks_from: common
+
+  tags: always
+
+
+
+
+
+
+- name: Assert conditions for downstream tasks
+
+  ansible.builtin.assert:
+    that:
+      - _provision_install_base
+
+  when: provision_install | default
+
+  tags: always
+
+
+
+
+
+
+- name: Declare relevant playbook variables
+
+  ansible.builtin.set_fact:
+
+    _provision_install_boot: >-
+      {%- set query = "[?boot]" -%}
+      {%- set bootable = (
+            provision_storage
+            | json_query(query)) -%}
+      {%- if bootable | length -%}
+      {{-   bootable[0] -}}
+      {%- endif -%}
+
+  when:
+    - provision_storage
+    - provision_install
+
+  tags: always
+
+
+
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    download.yml
+
+  tags:
+    - install-download
+    - install-prepare
+    - install-build
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    prepare.yml
+
+  tags:
+    - install-prepare
+    - install-build
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    unattend.yml
+
+  tags:
+    - install-unattend
+    - install-build
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    build.yml
+
+  tags: install-build
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    delete.yml
+
+  tags:
+    - install-delete
+    - install-clean
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    clean.yml
+
+  tags: install-clean

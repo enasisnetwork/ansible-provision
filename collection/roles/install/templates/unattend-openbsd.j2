@@ -1,0 +1,68 @@
+System hostname = {{ orche_system.name }}
+
+
+
+{% if provision_storage | default %}
+{%   set boot = _provision_install_boot %}
+Which disk is the root disk? {{ boot.name }}
+{% endif %}
+
+
+
+{% if provision_network | default %}
+{%   set nics = [] %}
+{%   for nic in provision_network
+      if nic.state == 'present'
+      and nic.type == 'ethernet'
+      and nic.gateway %}
+{%     do nics.append(nic) %}
+{%   endfor %}
+{%   set name = nics[0].name %}
+{%   set network = nics[0].ipaddr | Network %}
+{%   set address = network.address_cidr %}
+{%   set resolve = nics[0].resolve %}
+{%   set gateway = nics[0].gateway %}
+Which network interface = {{ name }}
+IPv4 address for {{ name }} = {{ address }}
+IPv6 address for {{ name }} = none
+{%   if gateway is not none %}
+Default IPv4 route = {{ gateway }}
+{%   endif %}
+{%   if orche_system.domain %}
+DNS domain name = {{ orche_system.domain }}
+{%   endif %}
+{%   if resolve is not none %}
+DNS nameservers = {{ resolve[0] }}
+{%   endif %}
+{% endif %}
+
+
+
+{% if provision_users | default %}
+{%   set roots = [] %}
+{%   set users = [] %}
+{%   for user in provision_users
+      if user.state == 'present' %}
+{%     set name = user.name %}
+{%     set initial = user.initial %}
+{%     if name == 'root' %}
+{%       do roots.append(user) %}
+{%     elif initial is true %}
+{%       do users.append(user) %}
+{%     endif %}
+{%   endfor %}
+{%   if roots | length %}
+Password for root = {{ roots[0].passhash.openbsd }}
+{%   endif %}
+{%   if users | length %}
+Setup a user = {{ users[0].name }}
+Password for user = {{ users[0].passhash.openbsd }}
+{%   endif %}
+{% endif %}
+
+
+
+Do you expect to run the X Window System = no
+What timezone are you in = UTC
+Set name(s)? = -game* -x*
+Directory does not contain SHA256.sig. Continue = yes

@@ -25,6 +25,21 @@ However you can run the linters in a non-blocking mode.
 make -s linters-pass
 ```
 
+## OpenBSD unattended installation
+It's not currently straight forward to inject the `auto_install.conf` into the
+`bsd.rd`, which would require an OpenBSD machine as the controller.
+
+```
+(I)nstall, (U)pgrade, (A)utoinstall or (S)hell? s
+
+# mount /dev/cd0a /mnt
+# cp /mnt/auto_install.conf .
+# umount /mnt
+# exit
+
+(I)nstall, (U)pgrade, (A)utoinstall or (S)hell? a
+```
+
 ## Version management
 > :warning: Ensure that no changes are pending.
 

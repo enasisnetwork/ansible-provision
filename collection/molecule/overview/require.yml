@@ -1,0 +1,9 @@
+---
+
+
+
+collections:
+
+  - name: enasisnetwork.provision
+    src: collection
+    type: file

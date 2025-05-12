@@ -1,0 +1,156 @@
+text
+reboot
+eula --agreed
+lang en_US.UTF-8
+keyboard --vckeymap=us --xlayouts=us
+timezone UTC --utc
+
+
+
+{% if provision_family == "almalinux" %}
+repo --name="almalinux-baseos" --mirrorlist="https://mirrors.almalinux.org/mirrorlist/9/baseos"
+repo --name="almalinux-appstream" --mirrorlist="https://mirrors.almalinux.org/mirrorlist/9/appstream"
+url --url="https://repo.almalinux.org/almalinux/9/BaseOS/x86_64/kickstart/"
+{% elif provision_family == "fedora" %}
+url --mirrorlist="https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-$releasever&arch=$basearch"
+{% endif %}
+
+
+
+{% if provision_storage | default %}
+{%   set boot = _provision_install_boot %}
+{%   set drives = (
+       provision_storage
+       | json_query("[*].name")
+       | join(",")) %}
+bootloader --location=mbr --boot-drive="{{ boot.name }}"
+clearpart --all --initlabel --disklabel=gpt --drives={{ drives }}
+part biosboot --fstype=biosboot --size=1 --ondisk={{ boot.name }}
+part /boot/efi --fstype=efi --size=600 --label=EFI --ondisk={{ boot.name }}
+{%   for disk in provision_storage
+      if disk.state == 'present'
+      and disk.partition %}
+{%     for part in disk.partition %}
+{%       set name = part.name %}
+{%       set fstype = part.fstype %}
+{%       set mount = part.mount %}
+{%       set size = (
+           ' --size=%s' | format(part.size * 1000)
+           if part.size else ' --grow') %}
+part {{ mount }} --fstype={{ fstype }}{{ size }} --ondisk={{ disk.name }}  # {{ name }}
+{%     endfor %}
+{%   endfor %}
+{% endif %}
+
+
+
+{% if provision_users | default %}
+{%   for user in provision_users
+      if user.state == 'present' %}
+{%     set name = user.name %}
+{%     set uid = user.uid %}
+{%     set gid = user.gid %}
+{%     set passhash = user.passhash.linux %}
+{%     set home = user.home %}
+{%     set shell = user.shell %}
+{%     set initial = user.initial %}
+{%     if name == 'root' %}
+rootpw --iscrypted {{ passhash }}
+{%     elif initial is true %}
+{%       if uid is not none %}
+{%         set uid = (
+              ' --uid=%s'
+              | format(uid)) %}
+{%       endif %}
+{%       if gid is not none %}
+{%         set gid = (
+              ' --gid=%s'
+              | format(gid)) %}
+{%       endif %}
+{%       if passhash is not none %}
+{%         set passhash = (
+              ' --password="%s" --iscrypted'
+              | format(passhash)) %}
+{%       endif %}
+{%       if home is not none %}
+{%         set home = (
+              ' --homedir="%s"'
+              | format(home)) %}
+{%       endif %}
+{%       if shell is not none %}
+{%         set shell = (
+              ' --shell="%s"'
+              | format(shell)) %}
+{%       endif %}
+user --name="{{ name }}"{{ uid }}{{ gid }}{{ home }}{{ shell }}{{ passhash }}
+{%     endif %}
+{%   endfor %}
+{% endif %}
+
+
+
+{% if orche_system.domain %}
+network --hostname="{{ orche_system.fqdn }}"
+{% else %}
+network --hostname="{{ orche_system.name }}"
+{% endif %}
+
+{% if provision_network | default %}
+{%   for nic in provision_network
+      if nic.state == 'present'
+      and nic.type == 'ethernet'
+      and nic.gateway %}
+{%     set network = nic.ipaddr | Network %}
+{%     set address = network.address %}
+{%     set mask = network.netmask %}
+{%     set hwaddr = nic.hwaddr %}
+{%     set resolve = nic.resolve %}
+{%     set gateway = nic.gateway %}
+{%     if address is not none %}
+{%       set address = (
+           ' --ip=%s'
+           | format(address)) %}
+{%     endif %}
+{%     if mask is not none %}
+{%       set mask = (
+           ' --netmask=%s'
+           | format(mask)) %}
+{%     endif %}
+{%     if hwaddr is not none %}
+{%       set hwaddr = (
+           hwaddr
+           | replace('-', ':')) %}
+{%       set hwaddr = (
+           ' --device=%s'
+           | format(hwaddr)) %}
+{%     endif %}
+{%     if resolve is not none %}
+{%       set resolve = (
+           resolve
+           | join(',')) %}
+{%       set resolve = (
+           ' --nameserver=%s'
+           | format(resolve)) %}
+{%     endif %}
+{%     if gateway is not none %}
+{%       set gateway = (
+           ' --gateway=%s'
+           | format(gateway)) %}
+{%     endif %}
+network --bootproto="static" {{ address }}{{ mask }}{{ hwaddr }}{{ resolve }}{{ gateway }} --activate
+{%   endfor %}
+{% endif %}
+
+
+
+selinux --enforcing
+firewall --enabled --service=ssh
+services --enabled="chronyd,sshd"
+
+
+
+%packages
+@core --nodefaults
+chrony
+nano
+%end

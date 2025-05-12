@@ -1,0 +1,49 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Template the unattend installation file
+
+  ansible.builtin.template:
+    src: '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '0600'
+
+  loop:
+
+    - src: unattend-redhat.j2
+      dest: '{{ _provision_install_unattend }}'
+      family: fedora
+
+    - src: unattend-redhat.j2
+      dest: '{{ _provision_install_unattend }}'
+      family: almalinux
+
+    - src: unattend-openbsd.j2
+      dest: '{{ _provision_install_unattend }}'
+      family: openbsd
+
+    - src: unattend-windows.j2
+      dest: '{{ _provision_install_unattend }}'
+      family: windows
+    - src: unattend-script.j2
+      dest: '{{ _provision_install_unscript }}'
+      family: windows
+
+  loop_control:
+    label: '{{ item.dest | basename }}'
+
+  delegate_to: localhost
+
+  when:
+    - provision_install | default
+    - provision_family == item.family
+
+  tags: always
