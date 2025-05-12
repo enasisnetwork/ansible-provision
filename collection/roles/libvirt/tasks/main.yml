@@ -47,6 +47,13 @@
 
 
 
+# Remember basic molecule tests when updating
+
+
+
+
+
+
 - name: Declare relevant playbook variables
 
   ansible.builtin.set_fact:
