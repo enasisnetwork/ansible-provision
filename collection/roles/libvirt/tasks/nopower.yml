@@ -1,0 +1,47 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Update status for guest in hypervisor
+
+  community.libvirt.virt:
+    command: destroy
+    name: '{{ _provision_libvirt_name }}'
+
+  delegate_to: '{{ provision_libvirt.host }}'
+  changed_when: true
+
+  when:
+    - provision_libvirt.host
+    - _provision_libvirt_name in _provision_libvirt_guests
+    - not ansible_check_mode
+    - _provision_libvirt_guest | default
+      and _provision_libvirt_guest.state != "shutdown"
+
+  tags: always
+
+
+
+- name: Update status for guest in hypervisor
+
+  ansible.builtin.command: /bin/true
+
+  delegate_to: '{{ provision_libvirt.host }}'
+  changed_when: _provision_libvirt_guest.state != "shutdown"
+  check_mode: false
+
+  when:
+    - provision_libvirt.host
+    - ansible_check_mode
+      or (_provision_libvirt_guest | default
+          and _provision_libvirt_guest.state == "shutdown")
+    - _provision_libvirt_guest | default
+
+  tags: always

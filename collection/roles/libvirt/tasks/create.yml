@@ -1,0 +1,83 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Create the guest within the hypervisor
+
+  community.libvirt.virt:
+    command: define
+    xml: "{{ lookup('template', 'libvirt.j2') }}"
+    uri: '{{ provision_libvirt.prefix }}/system'
+
+  delegate_to: '{{ provision_libvirt.host }}'
+  changed_when: true
+
+  when:
+    - provision_libvirt.host
+    - _provision_libvirt_name not in _provision_libvirt_guests
+    - not ansible_check_mode
+
+  tags: always
+
+
+
+- name: Create the guest within the hypervisor
+
+  ansible.builtin.command: /bin/true
+
+  delegate_to: '{{ provision_libvirt.host }}'
+  changed_when: _provision_libvirt_name not in _provision_libvirt_guests
+  check_mode: false
+
+  when:
+    - provision_libvirt.host
+    - ansible_check_mode
+      or _provision_libvirt_name in _provision_libvirt_guests
+
+  tags: always
+
+
+
+
+
+
+- name: Create the disks for the virtual guest
+
+  ansible.builtin.command: >-
+    {%- if ansible_check_mode -%}
+    /bin/true
+    {%- else -%}
+    qemu-img create {{ image }} {{ size }}G
+    {%- endif -%}
+
+  vars:
+    size: '{{ item.virtual.size }}'
+    image: >-
+      {%- set stores = _provision_libvirt_stores -%}
+      {%- set store = item.virtual.store -%}
+      {%- set path = stores.pools[store].path -%}
+      {{ path }}/{{ _provision_libvirt_name }}-{{ item.name }}.img
+
+  args:
+    creates: '{{ image }}'
+
+  loop: '{{ provision_storage or [] }}'
+
+  loop_control:
+    label: '{{ image }}'
+
+  delegate_to: '{{ provision_libvirt.host }}'
+  check_mode: false
+
+  when:
+    - provision_storage
+    - provision_libvirt.host
+
+  tags: always

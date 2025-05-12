@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- https://learn.microsoft.com/en-us/windows-hardware/customize/desktop/unattend -->
+<unattend xmlns="urn:schemas-microsoft-com:unattend">
+
+
+
+
+
+
+{# ========================================================================== #}
+  <settings pass="windowsPE">
+{# -------------------------------------------------------------------------- #}
+    <component
+      name="Microsoft-Windows-International-Core-WinPE"
+      processorArchitecture="amd64"
+      publicKeyToken="31bf3856ad364e35"
+      language="neutral"
+      versionScope="nonSxS"
+      xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <SetupUILanguage>
+        <UILanguage>en-US</UILanguage>
+      </SetupUILanguage>
+      <InputLocale>0409:00000409</InputLocale>
+      <SystemLocale>en-US</SystemLocale>
+      <UILanguage>en-US</UILanguage>
+      <UserLocale>en-US</UserLocale>
+    </component>
+{# -------------------------------------------------------------------------- #}
+    <component
+      name="Microsoft-Windows-Setup"
+      processorArchitecture="amd64"
+      publicKeyToken="31bf3856ad364e35"
+      language="neutral"
+      versionScope="nonSxS"
+      xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <Diagnostics>
+        <OptIn>false</OptIn>
+      </Diagnostics>
+      <ImageInstall>
+        <OSImage>
+          <InstallFrom>
+            <MetaData wcm:action="add">
+              <Key>/IMAGE/NAME</Key>
+              <Value>Windows 11 Pro</Value>
+            </MetaData>
+          </InstallFrom>
+        </OSImage>
+      </ImageInstall>
+      <UserData>
+        <AcceptEula>true</AcceptEula>
+        <ProductKey>
+          <WillShowUI>OnError</WillShowUI>
+          <Key></Key>
+        </ProductKey>
+      </UserData>
+      <UseConfigurationSet>false</UseConfigurationSet>
+    </component>
+{# -------------------------------------------------------------------------- #}
+{% if provision_libvirt | default %}
+    <component
+      name="Microsoft-Windows-PnpCustomizationsWinPE"
+      processorArchitecture="amd64"
+      publicKeyToken="31bf3856ad364e35"
+      language="neutral"
+      versionScope="nonSxS"
+      xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <DriverPaths>
+        <PathAndCredentials wcm:keyValue="1" wcm:action="add">
+          <Path>D:\virtio\amd64\Win11</Path>
+        </PathAndCredentials>
+      </DriverPaths>
+    </component>
+{% endif %}
+{# -------------------------------------------------------------------------- #}
+  </settings>
+{# ========================================================================== #}
+
+
+
+
+
+
+{# ========================================================================== #}
+  <settings pass="specialize">
+{# -------------------------------------------------------------------------- #}
+    <component
+      name="Microsoft-Windows-Shell-Setup"
+      processorArchitecture="amd64"
+      publicKeyToken="31bf3856ad364e35"
+      language="neutral"
+      versionScope="nonSxS"
+      xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <ComputerName>{{ orche_system.name }}</ComputerName>
+      <TimeZone>UTC</TimeZone>
+    </component>
+{# -------------------------------------------------------------------------- #}
+    <component
+      name="Microsoft-Windows-DNS-Client"
+      processorArchitecture="amd64"
+      publicKeyToken="31bf3856ad364e35"
+      language="neutral"
+      versionScope="nonSxS"
+      xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+{% if orche_system.domain %}
+      <DNSDomain>{{ orche_system.domain }}</DNSDomain>
+      <DNSSuffixSearchOrder>
+        <DomainName wcm:action="add" wcm:keyValue="1">{{ orche_system.domain }}</DomainName>
+      </DNSSuffixSearchOrder>
+{% endif %}
+{% if provision_network | default %}
+      <Interfaces>
+{%   for nic in provision_network
+      if nic.state == 'present'
+      and nic.type == 'ethernet'
+      and nic.gateway %}
+{%     set hwaddr = nic.hwaddr %}
+{%     set resolve = nic.resolve %}
+        <Interface wcm:action="add">
+          <Identifier>{{ hwaddr | upper }}</Identifier>
+          <DNSDomain>{{ orche_system.domain }}</DNSDomain>
+          <DNSServerSearchOrder>
+{%     for server in resolve %}
+            <IpAddress wcm:action="add" wcm:keyValue="{{ loop.index }}">{{ server }}</IpAddress>
+{%     endfor%}
+          </DNSServerSearchOrder>
+        </Interface>
+{%   endfor %}
+      </Interfaces>
+{% endif %}
+    </component>
+{# -------------------------------------------------------------------------- #}
+{% if provision_network | default %}
+    <component
+      name="Microsoft-Windows-TCPIP"
+      processorArchitecture="amd64"
+      publicKeyToken="31bf3856ad364e35"
+      language="neutral"
+      versionScope="nonSxS"
+      xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <Interfaces>
+{%   for nic in provision_network
+      if nic.state == 'present'
+      and nic.type == 'ethernet' %}
+{%     set network = nic.ipaddr | Network %}
+{%     set address = network.address_cidr %}
+{%     set hwaddr = nic.hwaddr %}
+{%     set gateway = nic.gateway %}
+        <Interface wcm:action="add">
+          <Ipv4Settings>
+            <DhcpEnabled>false</DhcpEnabled>
+            <Metric>20</Metric>
+            <RouterDiscoveryEnabled>false</RouterDiscoveryEnabled>
+          </Ipv4Settings>
+          <Ipv6Settings>
+            <DhcpEnabled>false</DhcpEnabled>
+            <Metric>30</Metric>
+            <RouterDiscoveryEnabled>false</RouterDiscoveryEnabled>
+          </Ipv6Settings>
+{%     if hwaddr is not none %}
+          <Identifier>{{ hwaddr | upper }}</Identifier>
+{%     endif %}
+{%     if ipaddr is not none %}
+          <UnicastIpAddresses>
+            <IpAddress wcm:action="add" wcm:keyValue="1">{{ address }}</IpAddress>
+          </UnicastIpAddresses>
+{%     endif %}
+{%     if gateway is not none %}
+          <Routes>
+            <Route wcm:action="add">
+              <Identifier>1</Identifier>
+              <Metric>10</Metric>
+              <NextHopAddress>{{ gateway }}</NextHopAddress>
+              <Prefix>0.0.0.0/0</Prefix>
+            </Route>
+          </Routes>
+{%     endif %}
+        </Interface>
+{%   endfor %}
+      </Interfaces>
+    </component>
+{% endif %}
+{# -------------------------------------------------------------------------- #}
+  </settings>
+{# ========================================================================== #}
+
+
+
+
+
+
+{# ========================================================================== #}
+  <settings pass="oobeSystem">
+{# -------------------------------------------------------------------------- #}
+    <component
+      name="Microsoft-Windows-Shell-Setup"
+      processorArchitecture="amd64"
+      publicKeyToken="31bf3856ad364e35"
+      language="neutral"
+      versionScope="nonSxS"
+      xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+{% if provision_users | default %}
+      <UserAccounts>
+{%   for user in provision_users
+      if user.state == 'present' %}
+{%     set name = user.name %}
+{%     set password = user.password %}
+{%     set gid = user.gid %}
+{%     set display = user.display %}
+{%     set initial = user.initial %}
+{%     if name in ['root', 'administrator'] %}
+        <AdministratorPassword>
+          <Value>{{ password }}</Value>
+          <PlainText>true</PlainText>
+        </AdministratorPassword>
+{%     elif initial is true %}
+        <LocalAccounts>
+          <LocalAccount wcm:action="add">
+            <Name>{{ name }}</Name>
+{%       if display is not none %}
+            <DisplayName>{{ display }}</DisplayName>
+{%       endif %}
+            <Group>{{ gid or 'Users' }}</Group>
+            <Password>
+              <Value>{{ password }}</Value>
+              <PlainText>true</PlainText>
+            </Password>
+          </LocalAccount>
+        </LocalAccounts>
+      </UserAccounts>
+{%     endif %}
+{%   endfor %}
+{% endif %}
+      <OOBE>
+        <HideEULAPage>true</HideEULAPage>
+        <HideOEMRegistrationScreen>true</HideOEMRegistrationScreen>
+        <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+        <HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+        <NetworkLocation>Work</NetworkLocation>
+        <SkipUserOOBE>true</SkipUserOOBE>
+        <SkipMachineOOBE>true</SkipMachineOOBE>
+        <HideLocalAccountScreen>true</HideLocalAccountScreen>
+        <ProtectYourPC>3</ProtectYourPC>
+      </OOBE>
+    </component>
+{# -------------------------------------------------------------------------- #}
+  </settings>
+{# ========================================================================== #}
+
+
+
+
+
+
+</unattend>

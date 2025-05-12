@@ -1,0 +1,149 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Retrieve the current list of guests
+
+  community.libvirt.virt:
+    command: list_vms
+    uri: '{{ provision_libvirt.prefix }}/system'
+
+  register: _provision_libvirt_guests
+
+  delegate_to: '{{ provision_libvirt.host }}'
+  check_mode: false
+  changed_when: false
+
+  when: provision_libvirt.host
+
+  tags: always
+
+
+
+- name: Declare relevant playbook variables
+
+  ansible.builtin.set_fact:
+
+    _provision_libvirt_guests: >-
+      {{ _provision_libvirt_guests.list_vms }}
+
+  when: provision_libvirt.host
+
+  tags: always
+
+
+
+
+
+
+- name: Retrieve the current status for guest
+
+  community.libvirt.virt:
+    command: info
+    uri: '{{ provision_libvirt.prefix }}/system'
+
+  when:
+    - provision_libvirt.host
+    - _provision_libvirt_name in _provision_libvirt_guests
+
+  register: _provision_libvirt_guests
+
+  delegate_to: '{{ provision_libvirt.host }}'
+  check_mode: false
+  changed_when: false
+
+  tags: always
+
+
+
+- name: Declare relevant playbook variables
+
+  ansible.builtin.set_fact:
+
+    _provision_libvirt_guests: '{{ guests }}'
+    _provision_libvirt_guest: >-
+      {{ guests[_provision_libvirt_name] }}
+
+  vars:
+    guests: >-
+      {%- set guests = {} -%}
+      {%- set items = (
+            _provision_libvirt_guests
+            .items()) -%}
+      {%- for key, value in items
+           if value is not boolean -%}
+      {%-   do guests.update({
+              key: value}) -%}
+      {%- endfor -%}
+      {{- guests -}}
+
+  when:
+    - provision_libvirt.host
+    - _provision_libvirt_name in _provision_libvirt_guests
+
+  tags: always
+
+
+
+
+
+
+- name: Retrieve the storage pool information
+
+  community.libvirt.virt_pool:
+    command: info
+    uri: '{{ provision_libvirt.prefix }}/system'
+
+  register: _provision_libvirt_stores
+
+  delegate_to: '{{ provision_libvirt.host }}'
+  check_mode: false
+  changed_when: false
+
+  when: provision_libvirt.host
+
+  tags: always
+
+
+
+- name: Force refresh storage pool information
+
+  community.libvirt.virt_pool:
+    command: refresh
+    name: '{{ item }}'
+    uri: '{{ provision_libvirt.prefix }}/system'
+
+  loop: '{{ _provision_libvirt_stores.pools | list }}'
+
+  delegate_to: '{{ provision_libvirt.host }}'
+  check_mode: false
+  changed_when: false
+
+  when: provision_libvirt.host
+
+  tags: always
+
+
+
+- name: Retrieve the storage pool information
+
+  community.libvirt.virt_pool:
+    command: info
+    uri: '{{ provision_libvirt.prefix }}/system'
+
+  register: _provision_libvirt_stores
+
+  delegate_to: '{{ provision_libvirt.host }}'
+  check_mode: false
+  changed_when: false
+
+  when: provision_libvirt.host
+
+  tags: always

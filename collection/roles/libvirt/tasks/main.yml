@@ -1,0 +1,179 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Assert conditions for downstream tasks
+
+  ansible.builtin.assert:
+    that:
+
+      - >-  # tags are present
+        'all' not in ansible_run_tags
+
+      - >-  # only specific hosts
+        'enasisnetwork_provision' in groups
+
+  tags: always
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_role:
+    name: enasisnetwork.provision.default
+    tasks_from: params
+
+  tags: always
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_role:
+    name: enasisnetwork.provision.default
+    tasks_from: common
+
+  tags: always
+
+
+
+
+
+
+- name: Declare relevant playbook variables
+
+  ansible.builtin.set_fact:
+
+    _provision_libvirt_name: >-
+      {{ inventory_hostname }}
+    _provision_libvirt_uuid: >-
+      {{ inventory_hostname | to_uuid }}
+
+  when: provision_libvirt.host
+
+  tags: always
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    libvirt/facts.yml
+
+  tags: always
+
+
+
+- name: Declare relevant playbook variables
+
+  ansible.builtin.set_fact:
+
+    _provision_libvirt_iso: >-
+      {%- set stores = _provision_libvirt_stores -%}
+      {%- set store = provision_libvirt.isos -%}
+      {%- set path = stores.pools[store].path -%}
+      {{ path }}/{{ _provision_libvirt_name }}.iso
+
+  when:
+    - provision_install
+    - provision_libvirt.host
+
+  tags: always
+
+
+
+- name: Assert conditions for downstream tasks
+
+  ansible.builtin.assert:
+    that:
+
+      - >-  # libvirt module issue
+        _provision_libvirt_name not in [
+          'changed', 'failed']
+
+  tags: always
+
+
+
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    libvirt/create.yml
+
+  tags: libvirt-create
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    libvirt/update.yml
+
+  tags: libvirt-update
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    libvirt/install/upload.yml
+
+  tags: libvirt-install-upload
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    libvirt/install/delete.yml
+
+  tags: libvirt-install-delete
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    libvirt/poweron.yml
+
+  tags: libvirt-poweron
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    libvirt/nopower.yml
+
+  tags: libvirt-nopower
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    libvirt/delete.yml
+
+  tags: libvirt-delete
+
+
+
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    libvirt/overview.yml
+
+  tags: libvirt-overview
