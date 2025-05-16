@@ -491,6 +491,78 @@ class LibvirtParams(BaseModel, extra='ignore'):
 
 
 
+class ProxmoxParams(BaseModel, extra='ignore'):
+    """
+    Process and validate the Orche configuration parameters.
+    """
+
+    host: Annotated[
+        Optional[str],
+        Field(None,
+              description='Inventory host where Proxmox runs',
+              min_length=1)]
+
+    endpoint: Annotated[
+        Optional[str],
+        Field(None,
+              description='API endpoint for the operations',
+              min_length=1)]
+
+    port: Annotated[
+        int,
+        Field(8006,
+              description='Port number to the API service',
+              ge=1, le=65535)]
+
+    username: Annotated[
+        str,
+        Field(...,
+              description='Username for API authentication',
+              min_length=1)]
+
+    password: Annotated[
+        Optional[str],
+        Field(None,
+              description='Password for API authentication',
+              min_length=1)]
+
+    token: Annotated[
+        Optional[str],
+        Field(None,
+              description='Credential for API authentication',
+              min_length=1)]
+
+    secret: Annotated[
+        Optional[str],
+        Field(None,
+              description='Credential for API authentication',
+              min_length=1)]
+
+    cores: Annotated[
+        int,
+        Field(1,
+              description='Amount of virtual CPUs allocated',
+              ge=1)]
+
+    memory: Annotated[
+        int,
+        Field(1,
+              description='Amount of memory allocated in GB',
+              ge=1)]
+
+    uefi: Annotated[
+        bool,
+        Field(True,
+              description='Enable UEFI firmware for the OS')]
+
+    ostype: Annotated[
+        str,
+        Field(...,
+              description='Identifier for operating system',
+              min_length=3)]
+
+
+
 class RoleParams(BaseModel, extra='ignore'):
     """
     Process and validate the Orche configuration parameters.
@@ -512,7 +584,8 @@ class RoleParams(BaseModel, extra='ignore'):
             'almalinux',
             'fedora',
             'openbsd',
-            'windows'],
+            'windows',
+            'proxmox'],
         Field(...,
               description='Family of the operating system')]
 
@@ -555,6 +628,11 @@ class RoleParams(BaseModel, extra='ignore'):
 
     libvirt: Annotated[
         Optional[LibvirtParams],
+        Field(None,
+              description='Parameters for VM provisioning')]
+
+    proxmox: Annotated[
+        Optional[ProxmoxParams],
         Field(None,
               description='Parameters for VM provisioning')]
 

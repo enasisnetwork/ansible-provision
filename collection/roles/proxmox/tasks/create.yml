@@ -1,0 +1,64 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Create the guest within the hypervisor
+
+  community.proxmox.proxmox_kvm:
+    api_host: '{{ provision_proxmox.endpoint }}'
+    api_port: '{{ provision_proxmox.port }}'
+    api_user: '{{ provision_proxmox.username }}'
+    api_token_id: >-
+      {{ provision_proxmox.token or omit }}
+    api_token_secret: >-
+      {{ provision_proxmox.secret or omit }}
+    api_password: >-
+      {{ provision_proxmox.password or omit }}
+    name: '{{ params.name or omit }}'
+    vmid: '{{ params.get("vmid") or omit }}'
+    node: '{{ params.node or omit }}'
+    acpi: '{{ params.acpi or omit }}'
+    bios: '{{ params.bios or omit }}'
+    cores: '{{ params.cores or omit }}'
+    memory: '{{ params.memory or omit }}'
+    efidisk0: '{{ params.efidisk0 or omit }}'
+    virtio: '{{ params.virtio or omit }}'
+    sata: '{{ params.get("sata") or omit }}'
+    net: '{{ params.net or omit }}'
+    ostype: '{{ params.ostype or omit }}'
+
+  vars:
+    params: '{{ _provision_proxmox_params }}'
+
+  delegate_to: localhost
+
+  when:
+    - provision_proxmox.endpoint
+    - not _provision_proxmox_guest
+    - not ansible_check_mode
+
+  tags: always
+
+
+
+- name: Create the guest within the hypervisor
+
+  ansible.builtin.command: /bin/true
+
+  delegate_to: '{{ provision_proxmox.host }}'
+  changed_when: not _provision_proxmox_guest
+  check_mode: false
+
+  when:
+    - provision_proxmox.endpoint
+    - ansible_check_mode
+      or _provision_proxmox_guest
+
+  tags: always

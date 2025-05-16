@@ -1,0 +1,61 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Update the guest within the hypervisor
+
+  community.proxmox.proxmox_kvm:
+    api_host: '{{ provision_proxmox.endpoint }}'
+    api_port: '{{ provision_proxmox.port }}'
+    api_user: '{{ provision_proxmox.username }}'
+    api_token_id: >-
+      {{ provision_proxmox.token or omit }}
+    api_token_secret: >-
+      {{ provision_proxmox.secret or omit }}
+    api_password: >-
+      {{ provision_proxmox.password or omit }}
+    vmid: '{{ params.vmid }}'
+    node: '{{ params.node }}'
+    cores: '{{ params.cores }}'
+    memory: '{{ params.memory }}'
+    #virtio will always create new disk
+    sata: '{{ params.sata or omit }}'
+    net: '{{ params.net or omit }}'
+    update: true
+    update_unsafe: true
+
+  vars:
+    params: '{{ _provision_proxmox_params }}'
+
+  delegate_to: localhost
+
+  when:
+    - provision_proxmox.endpoint
+    - _provision_proxmox_guest
+    - not ansible_check_mode
+
+  tags: always
+
+
+
+- name: Update the guest within the hypervisor
+
+  ansible.builtin.command: /bin/true
+
+  delegate_to: '{{ provision_proxmox.host }}'
+  changed_when: _provision_proxmox_guest
+  check_mode: false
+
+  when:
+    - provision_proxmox.endpoint
+    - ansible_check_mode
+      or not _provision_proxmox_guest
+
+  tags: always

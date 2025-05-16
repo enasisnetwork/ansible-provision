@@ -48,6 +48,9 @@
       dest: autounattend.ps1
       path: '{{ _provision_install_unscript }}'
 
+    - family: proxmox
+      dest: answer.toml
+
   loop_control:
     label: '{{ item.dest }}'
 
@@ -73,6 +76,9 @@
   vars:
     unattend: '{{ _provision_install_unattend }}'
     prepare: '{{ _provision_prepare_path }}'
+    proxmox:
+      - '{{ prepare }}/auto-installer-mode.toml'
+      - '{{ prepare }}/.proxmox-auto-install-iso'
 
   loop:
 
@@ -138,6 +144,17 @@
         -o {{ _provision_install_path }}
         {{ _provision_prepare_path }}
 
+    - family: proxmox
+      command: >-
+        xorriso
+        -indev {{ _provision_install_base }}
+        -outdev {{ _provision_install_path }}
+        -compliance no_emul_toc
+        -map "{{ unattend }}" "answer.toml"
+        -map "{{ proxmox[1] }}" ".proxmox-auto-install-iso"
+        -map "{{ proxmox[0] }}" "auto-installer-mode.toml"
+        -boot_image any replay
+
   loop_control:
     label: '{{ item.family }}'
 
@@ -176,6 +193,9 @@
       path: autounattend.xml
     - family: windows
       path: autounattend.ps1
+
+    - family: proxmox
+      path: answer.toml
 
   loop_control:
     label: '{{ item.path }}'

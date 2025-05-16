@@ -1,0 +1,242 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Declare the initial values for guest
+
+  ansible.builtin.set_fact:
+    _provision_proxmox_name: >-
+      {{ inventory_hostname }}
+
+  when: provision_proxmox.endpoint
+
+  tags: always
+
+
+
+
+
+
+- name: Retrieve the current list of guests
+
+  community.proxmox.proxmox_vm_info:
+    api_host: '{{ provision_proxmox.endpoint }}'
+    api_port: '{{ provision_proxmox.port }}'
+    api_user: '{{ provision_proxmox.username }}'
+    api_token_id: >-
+      {{ provision_proxmox.token or omit }}
+    api_token_secret: >-
+      {{ provision_proxmox.secret or omit }}
+    api_password: >-
+      {{ provision_proxmox.password or omit }}
+
+  register: _provision_proxmox_guests
+
+  delegate_to: localhost
+
+  when: provision_proxmox.endpoint
+
+  tags: always
+
+
+
+- name: Structure the current list of guests
+
+  ansible.builtin.set_fact:
+
+    _provision_proxmox_guests: '{{ guests }}'
+    _provision_proxmox_guest: >-
+      {%- set name = _provision_proxmox_name -%}
+      {%- if name in guests -%}
+      {{-   guests[name] -}}
+      {%- endif -%}
+
+  vars:
+    guests: >-
+      {%- set guests = {} -%}
+      {%- set items = (
+            _provision_proxmox_guests
+            .proxmox_vms) -%}
+      {%- for item in items -%}
+      {%-   set name = item.name -%}
+      {%-   set update = {name: item} -%}
+      {%-   do guests.update(update) -%}
+      {%- endfor -%}
+      {{- guests -}}
+
+  when: provision_proxmox.endpoint
+
+  tags: always
+
+
+
+
+
+
+- name: Retrieve the storage pool information
+
+  community.proxmox.proxmox_storage_info:
+    api_host: '{{ provision_proxmox.endpoint }}'
+    api_port: '{{ provision_proxmox.port }}'
+    api_user: '{{ provision_proxmox.username }}'
+    api_token_id: >-
+      {{ provision_proxmox.token or omit }}
+    api_token_secret: >-
+      {{ provision_proxmox.secret or omit }}
+    api_password: >-
+      {{ provision_proxmox.password or omit }}
+
+  register: _provision_proxmox_stores
+
+  delegate_to: localhost
+
+  when: provision_proxmox.endpoint
+
+  tags: always
+
+
+
+- name: Structure the storage pool information
+
+  ansible.builtin.set_fact:
+
+    _provision_proxmox_stores: >-
+      {%- set stores = {} -%}
+      {%- set items = (
+            _provision_proxmox_stores
+            .proxmox_storages) -%}
+      {%- for item in items -%}
+      {%-   set name = item.storage -%}
+      {%-   set update = {name: item} -%}
+      {%-   do stores.update(update) -%}
+      {%- endfor -%}
+      {{- stores -}}
+
+  when: provision_proxmox.endpoint
+
+  tags: always
+
+
+
+
+
+
+- name: Define the filesystem path to the ISO
+
+  ansible.builtin.set_fact:
+    _provision_proxmox_iso: >-
+      {%- set query = "[?contains(value.content, 'iso')]" -%}
+      {%- set stores = (
+            _provision_proxmox_stores
+            | dict2items
+            | json_query(query)) -%}
+      {{- stores[0].value.path }}/template/iso/
+      {{- _provision_proxmox_name }}.iso
+
+  when:
+    - provision_install
+    - provision_proxmox.endpoint
+
+  tags: always
+
+
+
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    install/present.yml
+
+  tags: always
+
+
+
+
+
+
+- name: Define the parameters for the guest
+
+  ansible.builtin.set_fact:
+    _provision_proxmox_params:
+      name: '{{ _provision_proxmox_name }}'
+      vmid: >-
+        {%- set guest = _provision_proxmox_guest -%}
+        {{- guest.vmid if guest else omit -}}
+      node: >-
+        {%- set host = provision_proxmox.host -%}
+        {%- set guest = _provision_proxmox_guest -%}
+        {{- guest.node if guest else host -}}
+      acpi: true
+      bios: >-
+        {%- if provision_proxmox.uefi -%}
+        ovmf
+        {%- else -%}
+        seabios
+        {%- endif -%}
+      cores: '{{ provision_proxmox.cores }}'
+      memory: '{{ provision_proxmox.memory * 1000 }}'
+      efidisk0: >-
+        {%- if provision_storage | default
+             and provision_proxmox.uefi -%}
+        {%-   set boot = _provision_install_boot -%}
+        {{-   {'efitype': '4m',
+               'storage': boot.virtual.store,
+               'pre_enrolled_keys': true,
+               'format': 'raw'} -}}
+        {%- endif -%}
+      virtio: >-
+        {%- if provision_storage | default -%}
+        {%-   set stores = _provision_proxmox_stores -%}
+        {%-   set storage = {} -%}
+        {%-   set items = provision_storage -%}
+        {%-   for item in items
+               if item.state == 'present' -%}
+        {%-     set store = item.virtual.store -%}
+        {%-     set size = item.virtual.size -%}
+        {%-     set index = loop.index0 -%}
+        {%-     set name = 'virtio%s' | format(index) -%}
+        {%-     do storage.update({name: (
+                  '%s:%s' | format(store, size))}) -%}
+        {%-   endfor -%}
+        {{-   storage -}}
+        {%- endif -%}
+      sata: >-
+        {%- set name = 'none' -%}
+        {%- if _provision_proxmox_iso_present -%}
+        {%-   set file = _provision_proxmox_iso | basename -%}
+        {%-   set name = 'local:iso/%s' | format(file) -%}
+        {%- endif -%}
+        {{- {'sata0': (
+               '%s,media=cdrom'
+               | format(name))} -}}
+      net: >-
+        {%- if provision_network | default -%}
+        {%-   set networks = {} -%}
+        {%-   set items = provision_network -%}
+        {%-   for item in items
+               if item.state == 'present'
+               and item.type == 'ethernet' -%}
+        {%-     set mac = item.hwaddr | replace('-', ':') -%}
+        {%-     set bridge = item.virtual.bridge -%}
+        {%-     set index = loop.index0 -%}
+        {%-     set name = 'net%s' | format(index) -%}
+        {%-     do networks.update({name: (
+                  'virtio=%s,bridge=%s'
+                  | format(mac, bridge))}) -%}
+        {%-   endfor -%}
+        {{-   networks -}}
+        {%- endif -%}
+      ostype: '{{ provision_proxmox.ostype }}'
+
+  when: provision_proxmox.endpoint
+
+  tags: always

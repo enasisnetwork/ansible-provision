@@ -7,6 +7,7 @@ Project for executing the Ansible playbooks for system automation.
 ## Playbooks and roles within project
 - `install` Construct installable images for system boot.
 - `libvirt` Manage the guest within the platform hypervisor.
+- `proxmox` Manage the guest within the platform hypervisor.
 - `bootstrap` Additional tasks for branding and hardening.
 - `accounting` Manage users and groups in operating system.
 

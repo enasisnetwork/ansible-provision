@@ -26,6 +26,36 @@
 
 - name: Perform updates within the ISO contents
 
+  ansible.builtin.copy:
+    dest: '{{ _provision_prepare_path }}/{{ item.dest }}'
+    content: '{{ item.content | default("") }}'
+    mode: '0644'
+
+  loop:
+
+    - dest: auto-installer-mode.toml
+      content: mode = "iso"
+
+    - dest: .proxmox-auto-install-iso
+
+  loop_control:
+    label: '{{ item.dest }}'
+
+  delegate_to: localhost
+
+  when:
+    - provision_install | default
+    - provision_family == 'proxmox'
+
+  tags: always
+
+
+
+
+
+
+- name: Perform updates within the ISO contents
+
   ansible.builtin.replace:
     path: '{{ _provision_prepare_path }}/{{ item.path }}'
     regexp: '{{ item.regexp }}'

@@ -1,0 +1,41 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Check the installation on hypervisor
+
+  ansible.builtin.stat:
+    path: '{{ _provision_proxmox_iso }}'
+
+  register: _provision_proxmox_iso_present
+
+  when:
+    - provision_install
+    - provision_proxmox.endpoint
+
+  delegate_to: '{{ provision_proxmox.host }}'
+  throttle: 1
+
+  tags: always
+
+
+
+- name: Declare relevant playbook variables
+
+  ansible.builtin.set_fact:
+
+    _provision_proxmox_iso_present: >-
+      {{- _provision_proxmox_iso_present.stat.exists -}}
+
+  when:
+    - provision_install
+    - provision_proxmox.endpoint
+
+  tags: always
