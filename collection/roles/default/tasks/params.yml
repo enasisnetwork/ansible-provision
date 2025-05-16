@@ -36,6 +36,8 @@
       {{ provision_network | default(omit) }}
     provision_libvirt: >-
       {{ provision_libvirt | default(omit) }}
+    provision_proxmox: >-
+      {{ provision_proxmox | default(omit) }}
 
   tags: always
 
@@ -70,6 +72,8 @@
       {{ provision_network | default(omit) }}
     libvirt: >-
       {{ provision_libvirt | default(omit) }}
+    proxmox: >-
+      {{ provision_proxmox | default(omit) }}
 
   register: pbvalidate
 
@@ -106,5 +110,7 @@
       {{ pbvalidate.params.network }}
     provision_libvirt: >-
       {{ pbvalidate.params.libvirt }}
+    provision_proxmox: >-
+      {{ pbvalidate.params.proxmox }}
 
   tags: always

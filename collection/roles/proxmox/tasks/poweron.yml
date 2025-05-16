@@ -1,0 +1,36 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Update status for guest in hypervisor
+
+  community.proxmox.proxmox_kvm:
+    api_host: '{{ provision_proxmox.endpoint }}'
+    api_port: '{{ provision_proxmox.port }}'
+    api_user: '{{ provision_proxmox.username }}'
+    api_token_id: >-
+      {{ provision_proxmox.token or omit }}
+    api_token_secret: >-
+      {{ provision_proxmox.secret or omit }}
+    api_password: >-
+      {{ provision_proxmox.password or omit }}
+    vmid: '{{ params.vmid }}'
+    state: started
+
+  vars:
+    params: '{{ _provision_proxmox_params }}'
+
+  delegate_to: localhost
+
+  when:
+    - provision_proxmox.endpoint
+    - _provision_proxmox_guest
+
+  tags: always

@@ -1,2 +1,4 @@
 encommon>=0.22.11
 jmespath
+proxmoxer
+requests

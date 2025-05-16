@@ -1,0 +1,25 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Delete the installation on hypervisor
+
+  ansible.builtin.file:
+    path: '{{ _provision_proxmox_iso }}'
+    state: absent
+
+  when:
+    - provision_install
+    - provision_proxmox.endpoint
+
+  delegate_to: '{{ provision_proxmox.host }}'
+  throttle: 1
+
+  tags: always

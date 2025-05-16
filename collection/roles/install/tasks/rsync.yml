@@ -85,7 +85,7 @@
 
   when:
     - provision_install | default
-    - provision_libvirt | default
+    - provision_kind == 'virtual'
     - provision_family == 'windows'
 
   tags: always

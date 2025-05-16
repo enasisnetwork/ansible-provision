@@ -19,6 +19,7 @@ tags: ['provision']
 dependencies:
   enasisnetwork.utility: '*'
   community.libvirt: '*'
+  community.proxmox: '*'
 
 
 

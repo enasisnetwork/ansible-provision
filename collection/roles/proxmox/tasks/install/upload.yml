@@ -1,0 +1,26 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Upload the installation to hypervisor
+
+  ansible.builtin.copy:
+    src: '{{ _provision_install_path }}'
+    dest: '{{ _provision_proxmox_iso }}'
+    mode: '0644'
+
+  when:
+    - provision_install
+    - provision_proxmox.endpoint
+
+  delegate_to: '{{ provision_proxmox.host }}'
+  throttle: 1
+
+  tags: always

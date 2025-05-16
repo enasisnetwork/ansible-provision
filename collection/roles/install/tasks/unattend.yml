@@ -37,6 +37,10 @@
       dest: '{{ _provision_install_unscript }}'
       family: windows
 
+    - src: unattend-proxmox.j2
+      dest: '{{ _provision_install_unattend }}'
+      family: proxmox
+
   loop_control:
     label: '{{ item.dest | basename }}'
 
