@@ -67,10 +67,10 @@
 {%  set stores = _provision_libvirt_stores %}
 {%  set items = provision_storage %}
 {%  for item in items
-     if item.state != 'absent' %}
+     if item.state == 'present' %}
     <disk type="file" device="disk">
 {%   set store = item.virtual.store %}
-{%   set path = stores.pools[store].path %}
+{%   set path = stores[store].path %}
 {%   set letter = ('abcdefghij'[loop.index - 1]) %}
 {%   set target = 'vd%s' | format(letter) %}
       <target dev="{{ target }}" bus="virtio"/>
@@ -85,7 +85,7 @@
 {% if _provision_libvirt_iso %}
 {%   set stores = _provision_libvirt_stores %}
 {%   set store = provision_libvirt.isos %}
-{%   set volumes = stores.pools[store].volumes %}
+{%   set volumes = stores[store].volumes %}
 {%   set name = _provision_libvirt_iso | basename %}
 {%   if name in volumes %}
       <source file="{{ _provision_libvirt_iso }}"/>

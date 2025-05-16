@@ -89,11 +89,7 @@ user --name="{{ name }}"{{ uid }}{{ gid }}{{ home }}{{ shell }}{{ passhash }}
 
 
 
-{% if orche_system.domain %}
-network --hostname="{{ orche_system.fqdn }}"
-{% else %}
-network --hostname="{{ orche_system.name }}"
-{% endif %}
+network --hostname="{{ provision_name }}.{{ provision_domain }}"
 
 {% if provision_network | default %}
 {%   for nic in provision_network

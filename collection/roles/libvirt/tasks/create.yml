@@ -13,7 +13,7 @@
 
   community.libvirt.virt:
     command: define
-    xml: "{{ lookup('template', 'libvirt.j2') }}"
+    xml: "{{ lookup('template', 'guest.j2') }}"
     uri: '{{ provision_libvirt.prefix }}/system'
 
   delegate_to: '{{ provision_libvirt.host }}'
@@ -21,7 +21,7 @@
 
   when:
     - provision_libvirt.host
-    - _provision_libvirt_name not in _provision_libvirt_guests
+    - not _provision_libvirt_guest
     - not ansible_check_mode
 
   tags: always
@@ -33,13 +33,13 @@
   ansible.builtin.command: /bin/true
 
   delegate_to: '{{ provision_libvirt.host }}'
-  changed_when: _provision_libvirt_name not in _provision_libvirt_guests
+  changed_when: not _provision_libvirt_guest
   check_mode: false
 
   when:
     - provision_libvirt.host
     - ansible_check_mode
-      or _provision_libvirt_name in _provision_libvirt_guests
+      or _provision_libvirt_guest
 
   tags: always
 
@@ -60,10 +60,12 @@
   vars:
     size: '{{ item.virtual.size }}'
     image: >-
+      {%- set name = item.name -%}
+      {%- set base = _provision_libvirt_name -%}
       {%- set stores = _provision_libvirt_stores -%}
       {%- set store = item.virtual.store -%}
-      {%- set path = stores.pools[store].path -%}
-      {{ path }}/{{ _provision_libvirt_name }}-{{ item.name }}.img
+      {%- set path = stores[store].path -%}
+      {{ path }}/{{ base }}-{{ name }}.img
 
   args:
     creates: '{{ image }}'

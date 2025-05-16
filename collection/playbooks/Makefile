@@ -15,7 +15,10 @@ provision-overview: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible-playbook \

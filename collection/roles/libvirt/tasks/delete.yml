@@ -12,7 +12,7 @@
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    libvirt/nopower.yml
+    nopower.yml
 
   tags: always
 
@@ -24,7 +24,7 @@
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    libvirt/install/delete.yml
+    install/delete.yml
 
   tags: always
 
@@ -45,7 +45,7 @@
 
   when:
     - provision_libvirt.host
-    - _provision_libvirt_name in _provision_libvirt_guests
+    - _provision_libvirt_guest
     - not ansible_check_mode
 
   tags: always
@@ -57,13 +57,13 @@
   ansible.builtin.command: /bin/true
 
   delegate_to: '{{ provision_libvirt.host }}'
-  changed_when: _provision_libvirt_name in _provision_libvirt_guests
+  changed_when: _provision_libvirt_guest
   check_mode: false
 
   when:
     - provision_libvirt.host
     - ansible_check_mode
-      or _provision_libvirt_name not in _provision_libvirt_guests
+      or not _provision_libvirt_guest
 
   tags: always
 
@@ -80,10 +80,12 @@
 
   vars:
     image: >-
+      {%- set name = item.name -%}
+      {%- set base = _provision_libvirt_name -%}
       {%- set stores = _provision_libvirt_stores -%}
       {%- set store = item.virtual.store -%}
-      {%- set path = stores.pools[store].path -%}
-      {{ path }}/{{ _provision_libvirt_name }}-{{ item.name }}.img
+      {%- set path = stores[store].path -%}
+      {{ path }}/{{ base }}-{{ name }}.img
 
   loop: '{{ provision_storage or [] }}'
 

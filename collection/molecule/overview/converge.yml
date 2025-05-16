@@ -14,7 +14,7 @@
     - name: Include downstream tasks within roles
       ansible.builtin.include_role:
         name: enasisnetwork.provision.default
-        tasks_from: common
+        tasks_from: facts
 
     - name: Include downstream tasks within roles
       ansible.builtin.include_role:

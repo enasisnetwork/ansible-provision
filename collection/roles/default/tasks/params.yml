@@ -14,10 +14,14 @@
 
   ansible.builtin.set_fact:
 
+    provision_name: >-
+      {{ provision_name | default(omit) }}
     provision_kind: >-
       {{ provision_kind | default(omit) }}
     provision_family: >-
       {{ provision_family | default(omit) }}
+    provision_domain: >-
+      {{ provision_domain | default(omit) }}
     provision_staging: >-
       {{ provision_staging | default(omit) }}
     provision_install: >-
@@ -44,10 +48,14 @@
 
   enasisnetwork.provision.params:
 
+    name: >-
+      {{ provision_name | default(omit) }}
     kind: >-
       {{ provision_kind | default(omit) }}
     family: >-
       {{ provision_family | default(omit) }}
+    domain: >-
+      {{ provision_domain | default(omit) }}
     staging: >-
       {{ provision_staging | default(omit) }}
     install: >-
@@ -76,10 +84,14 @@
 
   ansible.builtin.set_fact:
 
+    provision_name: >-
+      {{ pbvalidate.params.name }}
     provision_kind: >-
       {{ pbvalidate.params.kind }}
     provision_family: >-
       {{ pbvalidate.params.family }}
+    provision_domain: >-
+      {{ pbvalidate.params.domain }}
     provision_staging: >-
       {{ pbvalidate.params.staging }}
     provision_install: >-

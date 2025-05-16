@@ -38,7 +38,7 @@
 
   ansible.builtin.include_role:
     name: enasisnetwork.provision.default
-    tasks_from: common
+    tasks_from: facts
 
   tags: always
 
@@ -61,30 +61,6 @@
       - _provision_install_base
 
   when: provision_install | default
-
-  tags: always
-
-
-
-
-
-
-- name: Declare relevant playbook variables
-
-  ansible.builtin.set_fact:
-
-    _provision_install_boot: >-
-      {%- set query = "[?boot]" -%}
-      {%- set bootable = (
-            provision_storage
-            | json_query(query)) -%}
-      {%- if bootable | length -%}
-      {{-   bootable[0] -}}
-      {%- endif -%}
-
-  when:
-    - provision_storage
-    - provision_install
 
   tags: always
 

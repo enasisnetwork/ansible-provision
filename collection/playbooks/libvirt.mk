@@ -15,7 +15,10 @@ provision-libvirt-overview: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible-playbook \
@@ -37,7 +40,10 @@ provision-libvirt-facts: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible-playbook \
@@ -59,7 +65,10 @@ provision-libvirt-create: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible_serial="yes" \
@@ -82,10 +91,14 @@ provision-libvirt-update: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible_serial="yes" \
+		orche_ensured="yes" \
 		ansible-playbook \
 			$(ansible_args) \
 			--limit="$(limit)" \
@@ -105,7 +118,10 @@ provision-libvirt-install-upload: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible_serial="yes" \
@@ -128,7 +144,10 @@ provision-libvirt-install-delete: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible_serial="yes" \
@@ -151,7 +170,10 @@ provision-libvirt-poweron: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible_serial="yes" \
@@ -174,7 +196,10 @@ provision-libvirt-nopower: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible_serial="yes" \
@@ -197,7 +222,10 @@ provision-libvirt-delete: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible_serial="yes" \

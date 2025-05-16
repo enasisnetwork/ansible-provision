@@ -1,4 +1,4 @@
-System hostname = {{ orche_system.name }}
+System hostname = {{ provision_name }}
 
 
 
@@ -28,9 +28,7 @@ IPv6 address for {{ name }} = none
 {%   if gateway is not none %}
 Default IPv4 route = {{ gateway }}
 {%   endif %}
-{%   if orche_system.domain %}
-DNS domain name = {{ orche_system.domain }}
-{%   endif %}
+DNS domain name = {{ provision_domain }}
 {%   if resolve is not none %}
 DNS nameservers = {{ resolve[0] }}
 {%   endif %}

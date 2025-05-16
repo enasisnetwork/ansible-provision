@@ -58,7 +58,7 @@
       <UseConfigurationSet>false</UseConfigurationSet>
     </component>
 {# -------------------------------------------------------------------------- #}
-{% if provision_libvirt | default %}
+{% if provision_kind == 'virtual' %}
     <component
       name="Microsoft-Windows-PnpCustomizationsWinPE"
       processorArchitecture="amd64"
@@ -94,7 +94,7 @@
       versionScope="nonSxS"
       xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      <ComputerName>{{ orche_system.name }}</ComputerName>
+      <ComputerName>{{ provision_name }}</ComputerName>
       <TimeZone>UTC</TimeZone>
     </component>
 {# -------------------------------------------------------------------------- #}
@@ -106,12 +106,10 @@
       versionScope="nonSxS"
       xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-{% if orche_system.domain %}
-      <DNSDomain>{{ orche_system.domain }}</DNSDomain>
+      <DNSDomain>{{ provision_domain }}</DNSDomain>
       <DNSSuffixSearchOrder>
-        <DomainName wcm:action="add" wcm:keyValue="1">{{ orche_system.domain }}</DomainName>
+        <DomainName wcm:action="add" wcm:keyValue="1">{{ provision_domain }}</DomainName>
       </DNSSuffixSearchOrder>
-{% endif %}
 {% if provision_network | default %}
       <Interfaces>
 {%   for nic in provision_network
@@ -122,7 +120,7 @@
 {%     set resolve = nic.resolve %}
         <Interface wcm:action="add">
           <Identifier>{{ hwaddr | upper }}</Identifier>
-          <DNSDomain>{{ orche_system.domain }}</DNSDomain>
+          <DNSDomain>{{ provision_domain }}</DNSDomain>
           <DNSServerSearchOrder>
 {%     for server in resolve %}
             <IpAddress wcm:action="add" wcm:keyValue="{{ loop.index }}">{{ server }}</IpAddress>
