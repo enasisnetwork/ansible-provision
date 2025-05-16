@@ -24,7 +24,6 @@ from encommon.types import BaseModel
 from encommon.types import DictStrAny
 from encommon.types import sort_dict
 
-
 from pydantic import Field
 from pydantic import field_validator
 from pydantic import model_validator
@@ -450,8 +449,8 @@ class LibvirtParams(BaseModel, extra='ignore'):
     """
 
     host: Annotated[
-        str,
-        Field(...,
+        Optional[str],
+        Field(None,
               description='Inventory host where Libvirt runs',
               min_length=1)]
 
@@ -470,7 +469,7 @@ class LibvirtParams(BaseModel, extra='ignore'):
     memory: Annotated[
         int,
         Field(1,
-              description='Amount of guest memory allocated',
+              description='Amount of memory allocated in GB',
               ge=1)]
 
     uefi: Annotated[
@@ -497,15 +496,31 @@ class RoleParams(BaseModel, extra='ignore'):
     Process and validate the Orche configuration parameters.
     """
 
+    name: Annotated[
+        str,
+        Field(...,
+              description='Hostname in the operating system',
+              min_length=1)]
+
     kind: Annotated[
         Literal['physical', 'virtual'],
         Field(...,
               description='Inventory host deployment kind')]
 
     family: Annotated[
-        Literal['almalinux', 'fedora', 'openbsd', 'windows'],
+        Literal[
+            'almalinux',
+            'fedora',
+            'openbsd',
+            'windows'],
         Field(...,
               description='Family of the operating system')]
+
+    domain: Annotated[
+        str,
+        Field('invalid',
+              description='Hostname in the operating system',
+              min_length=1)]
 
     staging: Annotated[
         str,

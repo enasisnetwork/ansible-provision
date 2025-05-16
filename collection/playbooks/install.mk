@@ -15,7 +15,10 @@ provision-install-download: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible-playbook \
@@ -37,7 +40,10 @@ provision-install-prepare: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible_serial="yes" \
@@ -60,7 +66,10 @@ provision-install-unattend: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible-playbook \
@@ -82,7 +91,10 @@ provision-install-build: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible_serial="yes" \
@@ -105,7 +117,10 @@ provision-install-delete: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible_serial="yes" \
@@ -128,7 +143,10 @@ provision-install-clean: \
 	@#
 	@( \
 		set -e; \
-		[ -f ./orchestro.env ] && set -a && . ./orchestro.env && set +a || true; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
 		. $(VENVP)/bin/activate; \
 		PYTHONPATH=. \
 		ansible_serial="yes" \

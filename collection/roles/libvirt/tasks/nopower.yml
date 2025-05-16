@@ -20,7 +20,7 @@
 
   when:
     - provision_libvirt.host
-    - _provision_libvirt_name in _provision_libvirt_guests
+    - _provision_libvirt_guest
     - not ansible_check_mode
     - _provision_libvirt_guest | default
       and _provision_libvirt_guest.state != "shutdown"

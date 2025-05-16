@@ -36,6 +36,18 @@
     _provision_install_unscript: >-
       {{ staging }}/{{ hostname }}-unscript
 
+    _provision_install_boot: >-
+      {%- if provision_storage | default
+           and provision_install | default -%}
+      {%-   set query = "[?boot]" -%}
+      {%-   set bootable = (
+              provision_storage
+              | json_query(query)) -%}
+      {{-   bootable[0]
+             if bootable
+             else none -}}
+      {%- endif -%}
+
   vars:
     hostname: '{{ inventory_hostname }}'
     family: '{{ provision_family }}'

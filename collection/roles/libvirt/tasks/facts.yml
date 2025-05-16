@@ -9,30 +9,13 @@
 
 
 
-- name: Retrieve the current list of guests
-
-  community.libvirt.virt:
-    command: list_vms
-    uri: '{{ provision_libvirt.prefix }}/system'
-
-  register: _provision_libvirt_guests
-
-  delegate_to: '{{ provision_libvirt.host }}'
-  check_mode: false
-  changed_when: false
-
-  when: provision_libvirt.host
-
-  tags: always
-
-
-
-- name: Declare relevant playbook variables
+- name: Declare the initial values for guest
 
   ansible.builtin.set_fact:
-
-    _provision_libvirt_guests: >-
-      {{ _provision_libvirt_guests.list_vms }}
+    _provision_libvirt_name: >-
+      {{ inventory_hostname }}
+    _provision_libvirt_uuid: >-
+      {{ inventory_hostname | to_uuid }}
 
   when: provision_libvirt.host
 
@@ -43,33 +26,34 @@
 
 
 
-- name: Retrieve the current status for guest
+- name: Retrieve the current list of guests
 
   community.libvirt.virt:
     command: info
     uri: '{{ provision_libvirt.prefix }}/system'
 
-  when:
-    - provision_libvirt.host
-    - _provision_libvirt_name in _provision_libvirt_guests
-
   register: _provision_libvirt_guests
 
   delegate_to: '{{ provision_libvirt.host }}'
   check_mode: false
   changed_when: false
 
+  when: provision_libvirt.host
+
   tags: always
 
 
 
-- name: Declare relevant playbook variables
+- name: Structure the current list of guests
 
   ansible.builtin.set_fact:
 
     _provision_libvirt_guests: '{{ guests }}'
     _provision_libvirt_guest: >-
-      {{ guests[_provision_libvirt_name] }}
+      {%- set name = _provision_libvirt_name -%}
+      {%- if name in guests -%}
+      {{-   guests[name] -}}
+      {%- endif -%}
 
   vars:
     guests: >-
@@ -77,16 +61,15 @@
       {%- set items = (
             _provision_libvirt_guests
             .items()) -%}
-      {%- for key, value in items
-           if value is not boolean -%}
-      {%-   do guests.update({
-              key: value}) -%}
+      {%- for name, item in items
+           if item is not boolean -%}
+      {%-   set update = {name: item} -%}
+      {%-   do guests.update(update) -%}
       {%- endfor -%}
       {{- guests -}}
 
   when:
     - provision_libvirt.host
-    - _provision_libvirt_name in _provision_libvirt_guests
 
   tags: always
 
@@ -145,5 +128,63 @@
   changed_when: false
 
   when: provision_libvirt.host
+
+  tags: always
+
+
+
+- name: Structure the storage pool information
+
+  ansible.builtin.set_fact:
+
+    _provision_libvirt_stores: >-
+      {{ _provision_libvirt_stores.pools }}
+
+  when: provision_libvirt.host
+
+  tags: always
+
+
+
+
+
+
+- name: Define the filesystem path to the ISO
+
+  ansible.builtin.set_fact:
+    _provision_libvirt_iso: >-
+      {%- set stores = _provision_libvirt_stores -%}
+      {%- set store = provision_libvirt.isos -%}
+      {%- set path = stores[store].path -%}
+      {{ path }}/{{ _provision_libvirt_name }}.iso
+
+  when:
+    - provision_install
+    - provision_libvirt.host
+
+  tags: always
+
+
+
+- name: Assert conditions for downstream tasks
+
+  ansible.builtin.assert:
+    that:
+
+      - >-  # libvirt module issue
+        _provision_libvirt_name not in [
+          'changed', 'failed']
+
+  tags: always
+
+
+
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    install/present.yml
 
   tags: always

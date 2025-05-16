@@ -38,7 +38,7 @@
 
   ansible.builtin.include_role:
     name: enasisnetwork.provision.default
-    tasks_from: common
+    tasks_from: facts
 
   tags: always
 
@@ -54,68 +54,30 @@
 
 
 
-- name: Declare relevant playbook variables
-
-  ansible.builtin.set_fact:
-
-    _provision_libvirt_name: >-
-      {{ inventory_hostname }}
-    _provision_libvirt_uuid: >-
-      {{ inventory_hostname | to_uuid }}
-
-  when: provision_libvirt.host
-
-  tags: always
-
-
-
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    libvirt/facts.yml
-
-  tags: always
-
-
-
-- name: Declare relevant playbook variables
-
-  ansible.builtin.set_fact:
-
-    _provision_libvirt_iso: >-
-      {%- set stores = _provision_libvirt_stores -%}
-      {%- set store = provision_libvirt.isos -%}
-      {%- set path = stores.pools[store].path -%}
-      {{ path }}/{{ _provision_libvirt_name }}.iso
+    facts.yml
 
   when:
-    - provision_install
+    - provision_libvirt | default
     - provision_libvirt.host
 
   tags: always
 
 
 
-- name: Assert conditions for downstream tasks
-
-  ansible.builtin.assert:
-    that:
-
-      - >-  # libvirt module issue
-        _provision_libvirt_name not in [
-          'changed', 'failed']
-
-  tags: always
-
-
-
 
 
 
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    libvirt/create.yml
+    create.yml
+
+  when:
+    - provision_libvirt | default
+    - provision_libvirt.host
 
   tags: libvirt-create
 
@@ -124,7 +86,11 @@
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    libvirt/update.yml
+    update.yml
+
+  when:
+    - provision_libvirt | default
+    - provision_libvirt.host
 
   tags: libvirt-update
 
@@ -133,7 +99,11 @@
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    libvirt/install/upload.yml
+    install/upload.yml
+
+  when:
+    - provision_libvirt | default
+    - provision_libvirt.host
 
   tags: libvirt-install-upload
 
@@ -142,7 +112,11 @@
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    libvirt/install/delete.yml
+    install/delete.yml
+
+  when:
+    - provision_libvirt | default
+    - provision_libvirt.host
 
   tags: libvirt-install-delete
 
@@ -151,7 +125,11 @@
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    libvirt/poweron.yml
+    poweron.yml
+
+  when:
+    - provision_libvirt | default
+    - provision_libvirt.host
 
   tags: libvirt-poweron
 
@@ -160,7 +138,11 @@
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    libvirt/nopower.yml
+    nopower.yml
+
+  when:
+    - provision_libvirt | default
+    - provision_libvirt.host
 
   tags: libvirt-nopower
 
@@ -169,7 +151,11 @@
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    libvirt/delete.yml
+    delete.yml
+
+  when:
+    - provision_libvirt | default
+    - provision_libvirt.host
 
   tags: libvirt-delete
 
@@ -181,6 +167,10 @@
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    libvirt/overview.yml
+    overview.yml
+
+  when:
+    - provision_libvirt | default
+    - provision_libvirt.host
 
   tags: libvirt-overview
