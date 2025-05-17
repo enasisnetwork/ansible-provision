@@ -30,7 +30,7 @@ from pydantic import model_validator
 
 
 
-class InstallParams(BaseModel, extra='ignore'):
+class InstallParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
@@ -91,7 +91,7 @@ class InstallParams(BaseModel, extra='ignore'):
 
 
 
-class AccountPasshashParams(BaseModel, extra='ignore'):
+class AccountPasshashParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
@@ -110,7 +110,7 @@ class AccountPasshashParams(BaseModel, extra='ignore'):
 
 
 
-class AccountParams(BaseModel, extra='ignore'):
+class AccountParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
@@ -204,7 +204,7 @@ class AccountParams(BaseModel, extra='ignore'):
 
 
 
-class GroupParams(BaseModel, extra='ignore'):
+class GroupParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
@@ -233,7 +233,7 @@ class GroupParams(BaseModel, extra='ignore'):
 
 
 
-class StorageHostParams(BaseModel, extra='ignore'):
+class StorageHostParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
@@ -252,7 +252,7 @@ class StorageHostParams(BaseModel, extra='ignore'):
 
 
 
-class StoragePartParams(BaseModel, extra='ignore'):
+class StoragePartParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
@@ -283,7 +283,7 @@ class StoragePartParams(BaseModel, extra='ignore'):
 
 
 
-class StorageParams(BaseModel, extra='ignore'):
+class StorageParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
@@ -358,7 +358,7 @@ class StorageParams(BaseModel, extra='ignore'):
 
 
 
-class NetworkHostParams(BaseModel, extra='ignore'):
+class NetworkHostParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
@@ -371,7 +371,7 @@ class NetworkHostParams(BaseModel, extra='ignore'):
 
 
 
-class NetworkParams(BaseModel, extra='ignore'):
+class NetworkParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
@@ -443,7 +443,7 @@ class NetworkParams(BaseModel, extra='ignore'):
 
 
 
-class LibvirtParams(BaseModel, extra='ignore'):
+class LibvirtParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
@@ -489,9 +489,15 @@ class LibvirtParams(BaseModel, extra='ignore'):
               description='Indicate where to upload the ISO',
               min_length=1)]
 
+    install: Annotated[
+        Optional[str],
+        Field(None,
+              description='Optional path to installation ISO',
+              min_length=1)]
 
 
-class ProxmoxParams(BaseModel, extra='ignore'):
+
+class ProxmoxParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
@@ -561,9 +567,15 @@ class ProxmoxParams(BaseModel, extra='ignore'):
               description='Identifier for operating system',
               min_length=3)]
 
+    install: Annotated[
+        Optional[str],
+        Field(None,
+              description='Optional path to installation ISO',
+              min_length=1)]
 
 
-class RoleParams(BaseModel, extra='ignore'):
+
+class RoleParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
@@ -830,7 +842,19 @@ class ActionModule(ActionBase):  # type: ignore
             'params': None,
             'changed': False}
 
-        source = self._task.args
+        args = self._task.args
+
+        assert task_vars is not None
+
+        prefix = args['prefix']
+        source = task_vars
+
+
+        source = {
+            k[len(prefix):]: v
+            for k, v in source.items()
+            if k.startswith(prefix)
+            and v not in [None, '']}
 
 
         try:

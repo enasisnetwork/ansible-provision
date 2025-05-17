@@ -12,8 +12,20 @@
 - name: Declare the initial values for guest
 
   ansible.builtin.set_fact:
+
     _provision_proxmox_name: >-
       {{ inventory_hostname }}
+
+    _provision_install_path: >-
+      {%- if not provision_proxmox.install -%}
+      {{-   staging }}/{{ hostname }}-install.iso
+      {%- else -%}
+      {{-   provision_proxmox.install -}}
+      {%- endif -%}
+
+  vars:
+    hostname: '{{ inventory_hostname }}'
+    staging: '{{ provision_staging }}'
 
   when: provision_proxmox.endpoint
 
@@ -187,9 +199,7 @@
       efidisk0: >-
         {%- if provision_storage | default
              and provision_proxmox.uefi -%}
-        {%-   set boot = _provision_install_boot -%}
         {{-   {'efitype': '4m',
-               'storage': boot.virtual.store,
                'pre_enrolled_keys': true,
                'format': 'raw'} -}}
         {%- endif -%}
