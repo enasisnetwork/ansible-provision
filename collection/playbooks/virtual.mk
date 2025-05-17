@@ -119,7 +119,7 @@ provision-virtual-update: \
 .PHONY: provision-virtual-install-upload
 provision-virtual-install-upload: \
 	.check-stage .check-limit
-	@## Upload the installation ISO for guest
+	@## Upload installation ISO for guest
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-virtual-install-upload<c0>)
@@ -147,7 +147,7 @@ provision-virtual-install-upload: \
 .PHONY: provision-virtual-install-delete
 provision-virtual-install-delete: \
 	.check-stage .check-limit
-	@## Delete the installation ISO for guest
+	@## Delete installation ISO for guest
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-virtual-install-delete<c0>)
