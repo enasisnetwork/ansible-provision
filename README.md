@@ -9,7 +9,7 @@ Project for executing the Ansible playbooks for system automation.
 - `libvirt` Manage the guest within the platform hypervisor.
 - `proxmox` Manage the guest within the platform hypervisor.
 - `bootstrap` Additional tasks for branding and hardening.
-- `accounting` Manage users and groups in operating system.
+- `accounts` Manage users and groups in operating system.
 
 ## Quick start for local development
 Start by cloning the repository to your local machine.

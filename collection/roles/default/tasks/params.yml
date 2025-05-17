@@ -49,31 +49,7 @@
 - name: Validate role variables using Pydantic
 
   enasisnetwork.provision.params:
-
-    name: >-
-      {{ provision_name | default(omit) }}
-    kind: >-
-      {{ provision_kind | default(omit) }}
-    family: >-
-      {{ provision_family | default(omit) }}
-    domain: >-
-      {{ provision_domain | default(omit) }}
-    staging: >-
-      {{ provision_staging | default(omit) }}
-    install: >-
-      {{ provision_install | default(omit) }}
-    users: >-
-      {{ provision_users | default(omit) }}
-    groups: >-
-      {{ provision_groups | default(omit) }}
-    storage: >-
-      {{ provision_storage | default(omit) }}
-    network: >-
-      {{ provision_network | default(omit) }}
-    libvirt: >-
-      {{ provision_libvirt | default(omit) }}
-    proxmox: >-
-      {{ provision_proxmox | default(omit) }}
+    prefix: provision_
 
   register: pbvalidate
 
@@ -85,6 +61,7 @@
 
 
 - name: Declare relevant playbook variables
+  # Required to maintain child null values
 
   ansible.builtin.set_fact:
 

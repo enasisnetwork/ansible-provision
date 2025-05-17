@@ -36,9 +36,12 @@
 
 - name: Include downstream tasks within roles
 
-  ansible.builtin.include_role:
-    name: enasisnetwork.provision.default
-    tasks_from: facts
+  ansible.builtin.include_tasks: >-
+    facts.yml
+
+  when:
+    - provision_libvirt | default
+    - provision_libvirt.host
 
   tags: always
 
@@ -48,22 +51,6 @@
 
 
 # Remember basic molecule tests when updating
-
-
-
-
-
-
-- name: Include downstream tasks within roles
-
-  ansible.builtin.include_tasks: >-
-    facts.yml
-
-  when:
-    - provision_libvirt | default
-    - provision_libvirt.host
-
-  tags: always
 
 
 
