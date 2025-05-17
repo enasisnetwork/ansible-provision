@@ -111,7 +111,7 @@ provision-proxmox-update: \
 .PHONY: provision-proxmox-install-upload
 provision-proxmox-install-upload: \
 	.check-stage .check-limit
-	@## Upload the installation ISO for guest
+	@## Upload installation ISO for guest
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-proxmox-install-upload<c0>)
@@ -137,7 +137,7 @@ provision-proxmox-install-upload: \
 .PHONY: provision-proxmox-install-delete
 provision-proxmox-install-delete: \
 	.check-stage .check-limit
-	@## Delete the installation ISO for guest
+	@## Delete installation ISO for guest
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-proxmox-install-delete<c0>)

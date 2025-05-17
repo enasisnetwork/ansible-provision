@@ -111,7 +111,7 @@ provision-libvirt-update: \
 .PHONY: provision-libvirt-install-upload
 provision-libvirt-install-upload: \
 	.check-stage .check-limit
-	@## Upload the installation ISO for guest
+	@## Upload installation ISO for guest
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-libvirt-install-upload<c0>)
@@ -137,7 +137,7 @@ provision-libvirt-install-upload: \
 .PHONY: provision-libvirt-install-delete
 provision-libvirt-install-delete: \
 	.check-stage .check-limit
-	@## Delete the installation ISO for guest
+	@## Delete installation ISO for guest
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-libvirt-install-delete<c0>)
