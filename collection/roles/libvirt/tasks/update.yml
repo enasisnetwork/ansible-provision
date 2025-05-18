@@ -13,7 +13,7 @@
 
   community.libvirt.virt:
     command: define
-    xml: "{{ lookup('template', 'guest.j2') }}"
+    xml: "{{ _prvlibvirt_params }}"
     uri: '{{ provision_libvirt.prefix }}/system'
 
   delegate_to: '{{ provision_libvirt.host }}'
