@@ -33,6 +33,7 @@
     sata: '{{ params.get("sata") or omit }}'
     net: '{{ params.net or omit }}'
     ostype: '{{ params.ostype or omit }}'
+    onboot: '{{ params.onboot }}'
 
   vars:
     params: '{{ _prvproxmox_params }}'

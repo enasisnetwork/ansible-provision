@@ -28,6 +28,7 @@
     #virtio will always create new disk
     sata: '{{ params.sata or omit }}'
     net: '{{ params.net or omit }}'
+    onboot: '{{ params.onboot }}'
     update: true
     update_unsafe: true
 

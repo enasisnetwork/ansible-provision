@@ -71,3 +71,8 @@ class LibvirtParams(BaseModel, extra='forbid'):
         Field(None,
               description='Optional path to installation ISO',
               min_length=1)]
+
+    autostart: Annotated[
+        bool,
+        Field(False,
+              description='Automatic startup with hypervisor')]

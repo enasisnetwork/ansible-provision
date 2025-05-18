@@ -262,6 +262,7 @@
         {{-   networks -}}
         {%- endif -%}
       ostype: '{{ provision_proxmox.ostype }}'
+      onboot: '{{ provision_proxmox.autostart }}'
 
   when: provision_proxmox.endpoint
 
