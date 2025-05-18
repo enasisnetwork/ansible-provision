@@ -42,14 +42,14 @@ dns = "{{ resolve[0] }}"
 {%   set hwaddr = (
        hwaddr
        | replace('-', '')
-       | replace('-', '')) %}
+       | replace(':', '')) %}
 filter.ID_NET_NAME_MAC = "*{{ hwaddr }}"
 {% endif %}
 
 
 
 {% if provision_storage | default %}
-{%   set boot = _prvinstall_bootable %}
+{%   set boot = _provision_bootable %}
 [disk-setup]
 filesystem = "xfs"
 disk-list = ["{{ boot.name }}"]

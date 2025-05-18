@@ -200,9 +200,12 @@
       efidisk0: >-
         {%- if provision_storage | default
              and provision_proxmox.uefi -%}
+        {%-   set boot = _provision_bootable -%}
+        {%-   set virtual = boot.virtual -%}
         {{-   {'efitype': '4m',
                'pre_enrolled_keys': true,
-               'format': 'raw'} -}}
+               'format': 'raw',
+               'storage': virtual.store} -}}
         {%- endif -%}
       virtio: >-
         {%- if provision_storage | default -%}

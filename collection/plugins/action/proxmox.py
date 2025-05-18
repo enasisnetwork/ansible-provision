@@ -44,8 +44,8 @@ class ProxmoxParams(BaseModel, extra='forbid'):
               ge=1, le=65535)]
 
     username: Annotated[
-        str,
-        Field(...,
+        Optional[str],
+        Field(None,
               description='Username for API authentication',
               min_length=1)]
 
@@ -85,8 +85,8 @@ class ProxmoxParams(BaseModel, extra='forbid'):
               description='Enable UEFI firmware for the OS')]
 
     ostype: Annotated[
-        str,
-        Field(...,
+        Optional[str],
+        Field(None,
               description='Identifier for operating system',
               min_length=3)]
 

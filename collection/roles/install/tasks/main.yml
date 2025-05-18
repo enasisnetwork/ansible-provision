@@ -34,6 +34,27 @@
 
 
 
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_role:
+    name: enasisnetwork.provision.default
+    tasks_from: facts
+
+  tags: always
+
+
+
+- name: Include downstream tasks within roles
+
+  ansible.builtin.include_tasks: >-
+    facts.yml
+
+  when: provision_install | default
+
+  tags: always
+
+
+
 
 
 

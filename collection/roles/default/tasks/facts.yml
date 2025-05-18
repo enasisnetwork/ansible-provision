@@ -1,0 +1,24 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+
+
+
+- name: Declare relevant playbook variables
+
+  ansible.builtin.set_fact:
+
+    _provision_bootable: >-
+      {%- if provision_storage | default -%}
+      {%-   set bootable = (
+              provision_storage
+              | json_query('[?boot]')) -%}
+      {{-   bootable[0] if bootable else none -}}
+      {%- endif -%}
+
+  tags: always

@@ -37,18 +37,6 @@
     _prvinstall_output: >-
       {{ stage }}/{{ hostname }}-install.iso
 
-    _prvinstall_bootable: >-
-      {%- if provision_storage | default
-           and provision_install | default -%}
-      {%-   set query = "[?boot]" -%}
-      {%-   set bootable = (
-              provision_storage
-              | json_query(query)) -%}
-      {{-   bootable[0]
-            if bootable
-            else none -}}
-      {%- endif -%}
-
   vars:
     hostname: '{{ inventory_hostname }}'
     family: '{{ provision_family }}'
