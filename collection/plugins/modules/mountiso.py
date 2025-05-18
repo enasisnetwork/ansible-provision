@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 """
 Functions and routines associated with Enasis Network Orchestrations.
 
@@ -18,9 +20,41 @@ from encommon.types import sort_dict
 
 
 
-STATES = ['absent', 'present']
+DOCUMENTATION = """
+    module: mountiso
+    short_description: Mount or unmount ISO images
+    version_added: '0.2.0'
+    description:
+      - Mounts or unmounts ISO images with proper permissions.
+      - Uses mountpoint/mount/umount commands under the hood.
+    options:
+      dest:
+        description:
+          - Path where the ISO should be mounted
+        type: str
+        required: true
+      src:
+        description:
+          - Path to the ISO file to mount
+          - Required when I(state=present)
+        type: str
+        required: false
+      state:
+        description:
+          - Whether the ISO should be mounted or unmounted
+        type: str
+        required: true
+        choices: ['absent', 'present']
+    author:
+      - Robert Harris
+      - Enasis Network
+  """  # noqa: LIT003
 
-PARAMETERS: DictStrAny = {
+
+
+_STATES = ['absent', 'present']
+
+_PARAMETERS: DictStrAny = {
     'dest': {
         'type': 'str',
         'required': True},
@@ -30,7 +64,7 @@ PARAMETERS: DictStrAny = {
     'state': {
         'type': 'str',
         'required': True,
-        'choices': STATES}}
+        'choices': _STATES}}
 
 
 
@@ -246,7 +280,7 @@ def execution() -> None:  # NOCVR
 
     module = AnsibleModule(
         supports_check_mode=True,
-        argument_spec=PARAMETERS)
+        argument_spec=_PARAMETERS)
 
 
     params = parameters(module)
