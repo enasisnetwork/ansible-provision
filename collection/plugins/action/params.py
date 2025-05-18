@@ -8,6 +8,7 @@ is permitted, for more information consult the project license file.
 
 
 # NOTE Do not forget about params.yml
+# NOTE Remember to update README file
 
 
 
@@ -107,6 +108,47 @@ class RoleParams(BaseModel, extra='forbid'):
         Optional[ProxmoxParams],
         Field(None,
               description='Parameters for VM provisioning')]
+
+
+    def __init__(
+        # NOCVR
+        self,
+        /,
+        **data: Any,
+    ) -> None:
+        """
+        Initialize instance for class using provided parameters.
+        """
+
+
+        fields = (
+            'install',
+            'libvirt',
+            'proxmox')
+
+        for key in list(data):
+
+            if '_' not in key:
+                continue
+
+            base, name = (
+                key.split('_', 1))
+
+            if base not in fields:
+                continue
+
+            if base not in data:
+                data[base] = {}
+
+            _data = data[base]
+            value = data[key]
+
+            _data[name] = value
+
+            del data[key]
+
+
+        super().__init__(**data)
 
 
     @field_validator(
