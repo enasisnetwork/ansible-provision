@@ -51,7 +51,7 @@
 
   when:
     - provision_libvirt | default
-    - provision_libvirt.host
+    - provision_libvirt.enable
 
   tags: always
 
@@ -74,7 +74,7 @@
 
   when:
     - provision_libvirt | default
-    - provision_libvirt.host
+    - provision_libvirt.enable
 
   tags: libvirt-create
 
@@ -87,7 +87,7 @@
 
   when:
     - provision_libvirt | default
-    - provision_libvirt.host
+    - provision_libvirt.enable
 
   tags: libvirt-update
 
@@ -100,7 +100,7 @@
 
   when:
     - provision_libvirt | default
-    - provision_libvirt.host
+    - provision_libvirt.enable
 
   tags: libvirt-install-upload
 
@@ -113,7 +113,7 @@
 
   when:
     - provision_libvirt | default
-    - provision_libvirt.host
+    - provision_libvirt.enable
 
   tags: libvirt-install-delete
 
@@ -126,7 +126,7 @@
 
   when:
     - provision_libvirt | default
-    - provision_libvirt.host
+    - provision_libvirt.enable
 
   tags: libvirt-poweron
 
@@ -139,7 +139,7 @@
 
   when:
     - provision_libvirt | default
-    - provision_libvirt.host
+    - provision_libvirt.enable
 
   tags: libvirt-nopower
 
@@ -152,7 +152,7 @@
 
   when:
     - provision_libvirt | default
-    - provision_libvirt.host
+    - provision_libvirt.enable
 
   tags: libvirt-delete
 
@@ -168,6 +168,6 @@
 
   when:
     - provision_libvirt | default
-    - provision_libvirt.host
+    - provision_libvirt.enable
 
   tags: libvirt-overview

@@ -25,6 +25,11 @@ class LibvirtParams(BaseModel, extra='forbid'):
     Process and validate the Orche configuration parameters.
     """
 
+    enable: Annotated[
+        bool,
+        Field(False,
+              description='Whether or provision the guest')]
+
     host: Annotated[
         Optional[str],
         Field(None,

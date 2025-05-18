@@ -27,7 +27,7 @@
     hostname: '{{ inventory_hostname }}'
     stage: '{{ provision_stage }}'
 
-  when: provision_proxmox.endpoint
+  when: provision_proxmox.enable
 
   tags: always
 
@@ -53,7 +53,7 @@
 
   delegate_to: localhost
 
-  when: provision_proxmox.endpoint
+  when: provision_proxmox.enable
 
   tags: always
 
@@ -83,7 +83,7 @@
       {%- endfor -%}
       {{- guests -}}
 
-  when: provision_proxmox.endpoint
+  when: provision_proxmox.enable
 
   tags: always
 
@@ -109,7 +109,7 @@
 
   delegate_to: localhost
 
-  when: provision_proxmox.endpoint
+  when: provision_proxmox.enable
 
   tags: always
 
@@ -131,7 +131,7 @@
       {%- endfor -%}
       {{- stores -}}
 
-  when: provision_proxmox.endpoint
+  when: provision_proxmox.enable
 
   tags: always
 
@@ -154,7 +154,7 @@
 
   when:
     - provision_install
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: always
 
@@ -267,6 +267,6 @@
       ostype: '{{ provision_proxmox.ostype }}'
       onboot: '{{ provision_proxmox.autostart }}'
 
-  when: provision_proxmox.endpoint
+  when: provision_proxmox.enable
 
   tags: always

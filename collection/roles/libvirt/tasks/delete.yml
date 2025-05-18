@@ -44,7 +44,7 @@
   changed_when: true
 
   when:
-    - provision_libvirt.host
+    - provision_libvirt.enable
     - _prvlibvirt_guest
     - not ansible_check_mode
 
@@ -61,7 +61,7 @@
   check_mode: false
 
   when:
-    - provision_libvirt.host
+    - provision_libvirt.enable
     - ansible_check_mode
       or not _prvlibvirt_guest
 
@@ -97,6 +97,6 @@
 
   when:
     - provision_storage
-    - provision_libvirt.host
+    - provision_libvirt.enable
 
   tags: always

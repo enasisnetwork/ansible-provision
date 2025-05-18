@@ -18,7 +18,7 @@
 
   when:
     - provision_install
-    - provision_libvirt.host
+    - provision_libvirt.enable
 
   delegate_to: '{{ provision_libvirt.host }}'
   throttle: 1

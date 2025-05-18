@@ -55,7 +55,7 @@
   changed_when: true
 
   when:
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
     - _prvproxmox_guest
     - not ansible_check_mode
 
@@ -72,7 +72,7 @@
   check_mode: false
 
   when:
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
     - ansible_check_mode
       or not _prvproxmox_guest
 

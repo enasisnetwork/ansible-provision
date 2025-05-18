@@ -51,7 +51,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: always
 
@@ -74,7 +74,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-create
 
@@ -87,7 +87,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-update
 
@@ -100,7 +100,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-install-upload
 
@@ -113,7 +113,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-install-delete
 
@@ -126,7 +126,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-poweron
 
@@ -139,7 +139,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-nopower
 
@@ -152,7 +152,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-delete
 
@@ -168,6 +168,6 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-overview

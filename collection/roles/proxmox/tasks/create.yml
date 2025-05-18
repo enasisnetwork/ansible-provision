@@ -41,7 +41,7 @@
   delegate_to: localhost
 
   when:
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
     - not _prvproxmox_guest
     - not ansible_check_mode
 
@@ -58,7 +58,7 @@
   check_mode: false
 
   when:
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
     - ansible_check_mode
       or _prvproxmox_guest
 

@@ -30,7 +30,7 @@
   delegate_to: localhost
 
   when:
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
     - _prvproxmox_guest
 
   tags: always
