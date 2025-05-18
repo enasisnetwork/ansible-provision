@@ -17,7 +17,7 @@
 
   when:
     - provision_install
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   delegate_to: '{{ provision_proxmox.host }}'
   throttle: 1

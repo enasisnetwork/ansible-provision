@@ -28,6 +28,7 @@
     #virtio will always create new disk
     sata: '{{ params.sata or omit }}'
     net: '{{ params.net or omit }}'
+    onboot: '{{ params.onboot }}'
     update: true
     update_unsafe: true
 
@@ -37,7 +38,7 @@
   delegate_to: localhost
 
   when:
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
     - _prvproxmox_guest
     - not ansible_check_mode
 
@@ -54,7 +55,7 @@
   check_mode: false
 
   when:
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
     - ansible_check_mode
       or not _prvproxmox_guest
 

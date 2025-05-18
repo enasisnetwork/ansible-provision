@@ -8,6 +8,7 @@ is permitted, for more information consult the project license file.
 
 
 # NOTE Do not forget about params.yml
+# NOTE Remember to update README file
 
 
 
@@ -24,6 +25,16 @@ class ProxmoxParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
+
+    enable: Annotated[
+        bool,
+        Field(False,
+              description='Whether or provision the guest')]
+
+    autostart: Annotated[
+        bool,
+        Field(False,
+              description='Automatic startup with hypervisor')]
 
     host: Annotated[
         Optional[str],
@@ -44,8 +55,8 @@ class ProxmoxParams(BaseModel, extra='forbid'):
               ge=1, le=65535)]
 
     username: Annotated[
-        str,
-        Field(...,
+        Optional[str],
+        Field(None,
               description='Username for API authentication',
               min_length=1)]
 
@@ -85,8 +96,8 @@ class ProxmoxParams(BaseModel, extra='forbid'):
               description='Enable UEFI firmware for the OS')]
 
     ostype: Annotated[
-        str,
-        Field(...,
+        Optional[str],
+        Field(None,
               description='Identifier for operating system',
               min_length=3)]
 

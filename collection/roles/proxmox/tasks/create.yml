@@ -33,6 +33,7 @@
     sata: '{{ params.get("sata") or omit }}'
     net: '{{ params.net or omit }}'
     ostype: '{{ params.ostype or omit }}'
+    onboot: '{{ params.onboot }}'
 
   vars:
     params: '{{ _prvproxmox_params }}'
@@ -40,7 +41,7 @@
   delegate_to: localhost
 
   when:
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
     - not _prvproxmox_guest
     - not ansible_check_mode
 
@@ -57,7 +58,7 @@
   check_mode: false
 
   when:
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
     - ansible_check_mode
       or _prvproxmox_guest
 

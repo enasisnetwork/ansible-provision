@@ -19,7 +19,7 @@
   changed_when: true
 
   when:
-    - provision_libvirt.host
+    - provision_libvirt.enable
     - _prvlibvirt_guest
     - not ansible_check_mode
     - _prvlibvirt_guest
@@ -38,7 +38,7 @@
   check_mode: false
 
   when:
-    - provision_libvirt.host
+    - provision_libvirt.enable
     - ansible_check_mode
       or (_prvlibvirt_guest
           and _prvlibvirt_guest.state == "running")

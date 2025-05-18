@@ -29,7 +29,7 @@
     hostname: '{{ inventory_hostname }}'
     stage: '{{ provision_stage }}'
 
-  when: provision_libvirt.host
+  when: provision_libvirt.enable
 
   tags: always
 
@@ -50,7 +50,7 @@
   check_mode: false
   changed_when: false
 
-  when: provision_libvirt.host
+  when: provision_libvirt.enable
 
   tags: always
 
@@ -80,8 +80,7 @@
       {%- endfor -%}
       {{- guests -}}
 
-  when:
-    - provision_libvirt.host
+  when: provision_libvirt.enable
 
   tags: always
 
@@ -102,7 +101,7 @@
   check_mode: false
   changed_when: false
 
-  when: provision_libvirt.host
+  when: provision_libvirt.enable
 
   tags: always
 
@@ -121,7 +120,7 @@
   check_mode: false
   changed_when: false
 
-  when: provision_libvirt.host
+  when: provision_libvirt.enable
 
   tags: always
 
@@ -139,7 +138,7 @@
   check_mode: false
   changed_when: false
 
-  when: provision_libvirt.host
+  when: provision_libvirt.enable
 
   tags: always
 
@@ -152,7 +151,7 @@
     _prvlibvirt_stores: >-
       {{ _prvlibvirt_stores.pools }}
 
-  when: provision_libvirt.host
+  when: provision_libvirt.enable
 
   tags: always
 
@@ -172,7 +171,7 @@
 
   when:
     - provision_install
-    - provision_libvirt.host
+    - provision_libvirt.enable
 
   tags: always
 
@@ -198,5 +197,21 @@
 
   ansible.builtin.include_tasks: >-
     install/present.yml
+
+  tags: always
+
+
+
+
+
+
+- name: Define the parameters for the guest
+
+  ansible.builtin.set_fact:
+
+    _prvlibvirt_params: >-
+      {{ lookup('template', 'guest.j2') }}
+
+  when: provision_libvirt.enable
 
   tags: always

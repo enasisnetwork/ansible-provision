@@ -13,14 +13,14 @@
 
   community.libvirt.virt:
     command: define
-    xml: "{{ lookup('template', 'guest.j2') }}"
+    xml: "{{ _prvlibvirt_params }}"
     uri: '{{ provision_libvirt.prefix }}/system'
 
   delegate_to: '{{ provision_libvirt.host }}'
   changed_when: true
 
   when:
-    - provision_libvirt.host
+    - provision_libvirt.enable
     - not _prvlibvirt_guest
     - not ansible_check_mode
 
@@ -37,7 +37,7 @@
   check_mode: false
 
   when:
-    - provision_libvirt.host
+    - provision_libvirt.enable
     - ansible_check_mode
       or _prvlibvirt_guest
 
@@ -81,6 +81,6 @@
 
   when:
     - provision_storage
-    - provision_libvirt.host
+    - provision_libvirt.enable
 
   tags: always

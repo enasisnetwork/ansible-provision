@@ -8,6 +8,7 @@ is permitted, for more information consult the project license file.
 
 
 # NOTE Do not forget about params.yml
+# NOTE Remember to update README file
 
 
 
@@ -24,6 +25,16 @@ class LibvirtParams(BaseModel, extra='forbid'):
     """
     Process and validate the Orche configuration parameters.
     """
+
+    enable: Annotated[
+        bool,
+        Field(False,
+              description='Whether or provision the guest')]
+
+    autostart: Annotated[
+        bool,
+        Field(False,
+              description='Automatic startup with hypervisor')]
 
     host: Annotated[
         Optional[str],
@@ -55,8 +66,8 @@ class LibvirtParams(BaseModel, extra='forbid'):
               description='Enable UEFI firmware for the OS')]
 
     osid: Annotated[
-        str,
-        Field(...,
+        Optional[str],
+        Field(None,
               description='Identifier for operating system',
               min_length=5)]
 

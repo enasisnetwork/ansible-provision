@@ -11,6 +11,66 @@ Project for executing the Ansible playbooks for system automation.
 - `bootstrap` Additional tasks for branding and hardening.
 - `accounts` Manage users and groups in operating system.
 
+## Variables for Ansible inventory
+
+### Default parameters
+Validation using [this model](collection/plugins/action/params.py)
+after [Ansible Jinja2 parsing](collection/roles/default/tasks/params.yml).
+- `provision_name`
+- `provision_kind`
+- `provision_family`
+- `provision_domain`
+- `provision_stage`
+- `provision_users`
+- `provision_groups`
+- `provision_storage`
+- `provision_network`
+
+## Constructing installations
+Validation using [this model](collection/plugins/action/install.py)
+after [Ansible Jinja2 parsing](collection/roles/default/tasks/params.yml).
+- `provision_install`
+  - You may specify values here, or in explicit below.
+- `provision_install_source`
+- `provision_install_checksum`
+- `provision_install_cached`
+
+## Operate Libvirt hypervisor
+Validation using [this model](collection/plugins/action/libvirt.py)
+after [Ansible Jinja2 parsing](collection/roles/default/tasks/params.yml).
+- `provision_libvirt`
+  - You may specify values here, or in explicit below.
+- `provision_libvirt_enable`
+- `provision_libvirt_autostart`
+- `provision_libvirt_host`
+- `provision_libvirt_prefix`
+- `provision_libvirt_vcpus`
+- `provision_libvirt_memory`
+- `provision_libvirt_uefi`
+- `provision_libvirt_osid`
+- `provision_libvirt_isos`
+- `provision_libvirt_install`
+
+## Operate Proxmox hypervisor
+Validation using [this model](collection/plugins/action/proxmox.py)
+after [Ansible Jinja2 parsing](collection/roles/default/tasks/params.yml).
+- `provision_proxmox`
+  - You may specify values here, or in explicit below.
+- `provision_proxmox_enable`
+- `provision_proxmox_autostart`
+- `provision_proxmox_host`
+- `provision_proxmox_endpoint`
+- `provision_proxmox_port`
+- `provision_proxmox_username`
+- `provision_proxmox_password`
+- `provision_proxmox_token`
+- `provision_proxmox_secret`
+- `provision_proxmox_cores`
+- `provision_proxmox_memory`
+- `provision_proxmox_uefi`
+- `provision_proxmox_ostype`
+- `provision_proxmox_install`
+
 ## Quick start for local development
 Start by cloning the repository to your local machine.
 ```

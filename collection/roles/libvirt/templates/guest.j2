@@ -4,6 +4,7 @@
   <uuid>{{ _prvlibvirt_uuid }}</uuid>
   <vcpu>{{ provision_libvirt.vcpus }}</vcpu>
   <memory unit="GiB">{{ provision_libvirt.memory }}</memory>
+  <autostart>{{ provision_libvirt.autostart | int }}</autostart>
 
   <metadata>
     <libosinfo:libosinfo xmlns:libosinfo="http://libosinfo.org/xmlns/libvirt/domain/1.0">

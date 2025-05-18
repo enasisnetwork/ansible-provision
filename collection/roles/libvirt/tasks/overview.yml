@@ -9,17 +9,6 @@
 
 
 
-- name: Declare relevant playbook variables
-
-  ansible.builtin.set_fact:
-
-    _prvlibvirt_params: >-
-      {{ lookup('template', 'guest.j2') }}
-
-  tags: always
-
-
-
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_role:

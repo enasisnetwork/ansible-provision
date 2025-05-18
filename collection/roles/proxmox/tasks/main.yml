@@ -36,12 +36,22 @@
 
 - name: Include downstream tasks within roles
 
+  ansible.builtin.include_role:
+    name: enasisnetwork.provision.default
+    tasks_from: facts
+
+  tags: always
+
+
+
+- name: Include downstream tasks within roles
+
   ansible.builtin.include_tasks: >-
     facts.yml
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: always
 
@@ -64,7 +74,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-create
 
@@ -77,7 +87,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-update
 
@@ -90,7 +100,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-install-upload
 
@@ -103,7 +113,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-install-delete
 
@@ -116,7 +126,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-poweron
 
@@ -129,7 +139,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-nopower
 
@@ -142,7 +152,7 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-delete
 
@@ -158,6 +168,6 @@
 
   when:
     - provision_proxmox | default
-    - provision_proxmox.endpoint
+    - provision_proxmox.enable
 
   tags: proxmox-overview
