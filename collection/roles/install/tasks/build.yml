@@ -27,8 +27,8 @@
 - name: Insert kickstart into prepare directory
 
   ansible.builtin.copy:
-    src: '{{ item.path | default(_provision_install_unattend) }}'
-    dest: '{{ _provision_prepare_path }}/{{ item.dest }}'
+    src: '{{ item.path | default(_prvinstall_unattend) }}'
+    dest: '{{ _prvinstall_prepare }}/{{ item.dest }}'
     mode: '0644'
 
   loop:
@@ -46,7 +46,7 @@
       dest: autounattend.xml
     - family: windows
       dest: autounattend.ps1
-      path: '{{ _provision_install_unscript }}'
+      path: '{{ _prvinstall_unscript }}'
 
     - family: proxmox
       dest: answer.toml
@@ -74,8 +74,8 @@
       {{ item.command }}
 
   vars:
-    unattend: '{{ _provision_install_unattend }}'
-    prepare: '{{ _provision_prepare_path }}'
+    unattend: '{{ _prvinstall_unattend }}'
+    prepare: '{{ _prvinstall_prepare }}'
     proxmox:
       - '{{ prepare }}/auto-installer-mode.toml'
       - '{{ prepare }}/.proxmox-auto-install-iso'
@@ -85,8 +85,8 @@
     - family: almalinux
       command: >-
         xorriso
-        -indev {{ _provision_install_base }}
-        -outdev {{ _provision_install_path }}
+        -indev {{ _prvinstall_source }}
+        -outdev {{ _prvinstall_output }}
         -compliance no_emul_toc
         -map "{{ unattend }}" "/kickstart.cfg"
         -map "{{ prepare }}/isolinux/isolinux.cfg" "/isolinux/isolinux.cfg"
@@ -96,8 +96,8 @@
     - family: fedora
       command: >-
         xorriso
-        -indev {{ _provision_install_base }}
-        -outdev {{ _provision_install_path }}
+        -indev {{ _prvinstall_source }}
+        -outdev {{ _prvinstall_output }}
         -compliance no_emul_toc
         -map "{{ unattend }}" "/kickstart.cfg"
         -map "{{ prepare }}/boot/grub2/grub.cfg" "/boot/grub2/grub.cfg"
@@ -108,7 +108,7 @@
     - family: openbsd
       command: >-
         VOLID=`isoinfo -d -i
-        {{ _provision_install_base }}
+        {{ _prvinstall_source }}
         | grep '^Volume\sid\:'
         | sed 's/Volume\sid: //'`;
         VERSION=`echo $VOLID
@@ -119,8 +119,8 @@
         -no-emul-boot
         -b $VERSION/amd64/cdbr
         -c $VERSION/amd64/boot.catalog
-        -o {{ _provision_install_path }}
-        {{ _provision_prepare_path }}
+        -o {{ _prvinstall_output }}
+        {{ _prvinstall_prepare }}
 
     - family: windows
       command: >-
@@ -141,14 +141,14 @@
         -eltorito-alt-boot
         -e efi/microsoft/boot/efisys.bin
         -no-emul-boot
-        -o {{ _provision_install_path }}
-        {{ _provision_prepare_path }}
+        -o {{ _prvinstall_output }}
+        {{ _prvinstall_prepare }}
 
     - family: proxmox
       command: >-
         xorriso
-        -indev {{ _provision_install_base }}
-        -outdev {{ _provision_install_path }}
+        -indev {{ _prvinstall_source }}
+        -outdev {{ _prvinstall_output }}
         -compliance no_emul_toc
         -map "{{ unattend }}" "answer.toml"
         -map "{{ proxmox[1] }}" ".proxmox-auto-install-iso"
@@ -175,7 +175,7 @@
 - name: Remove kickstart from prepare directory
 
   ansible.builtin.file:
-    path: '{{ _provision_prepare_path }}/{{ item.path }}'
+    path: '{{ _prvinstall_prepare }}/{{ item.path }}'
     state: absent
 
   loop:

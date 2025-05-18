@@ -22,8 +22,8 @@
       {{ provision_family | default(omit) }}
     provision_domain: >-
       {{ provision_domain | default(omit) }}
-    provision_staging: >-
-      {{ provision_staging | default(omit) }}
+    provision_stage: >-
+      {{ provision_stage | default(omit) }}
     provision_install: >-
       {{ provision_install | default(omit) }}
     provision_users: >-
@@ -73,8 +73,8 @@
       {{ pbvalidate.params.family }}
     provision_domain: >-
       {{ pbvalidate.params.domain }}
-    provision_staging: >-
-      {{ pbvalidate.params.staging }}
+    provision_stage: >-
+      {{ pbvalidate.params.stage }}
     provision_install: >-
       {{ pbvalidate.params.install }}
     provision_users: >-

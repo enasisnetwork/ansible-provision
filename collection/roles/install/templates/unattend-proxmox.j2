@@ -49,7 +49,7 @@ filter.ID_NET_NAME_MAC = "*{{ hwaddr }}"
 
 
 {% if provision_storage | default %}
-{%   set boot = _provision_install_boot %}
+{%   set boot = _prvinstall_bootable %}
 [disk-setup]
 filesystem = "xfs"
 disk-list = ["{{ boot.name }}"]

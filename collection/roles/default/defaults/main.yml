@@ -6,16 +6,5 @@
 
 
 
-
-
-
-- name: Information about the inventory hosts
-
-  enasisnetwork.utility.overview:
-    prefix:
-      - provision_
-      - _prvinstall_
-      - _prvlibvirt_
-      - _prvproxmox_
-
-  tags: always
+provision_name: '{{ inventory_hostname }}'
+provision_domain: invalid

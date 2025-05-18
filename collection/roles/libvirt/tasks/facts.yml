@@ -13,21 +13,21 @@
 
   ansible.builtin.set_fact:
 
-    _provision_libvirt_name: >-
+    _prvlibvirt_name: >-
       {{ inventory_hostname }}
-    _provision_libvirt_uuid: >-
+    _prvlibvirt_uuid: >-
       {{ inventory_hostname | to_uuid }}
 
-    _provision_install_path: >-
+    _prvinstall_output: >-
       {%- if not provision_libvirt.install -%}
-      {{-   staging }}/{{ hostname }}-install.iso
+      {{-   stage }}/{{ hostname }}-install.iso
       {%- else -%}
       {{-   provision_libvirt.install -}}
       {%- endif -%}
 
   vars:
     hostname: '{{ inventory_hostname }}'
-    staging: '{{ provision_staging }}'
+    stage: '{{ provision_stage }}'
 
   when: provision_libvirt.host
 
@@ -44,7 +44,7 @@
     command: info
     uri: '{{ provision_libvirt.prefix }}/system'
 
-  register: _provision_libvirt_guests
+  register: _prvlibvirt_guests
 
   delegate_to: '{{ provision_libvirt.host }}'
   check_mode: false
@@ -60,9 +60,9 @@
 
   ansible.builtin.set_fact:
 
-    _provision_libvirt_guests: '{{ guests }}'
-    _provision_libvirt_guest: >-
-      {%- set name = _provision_libvirt_name -%}
+    _prvlibvirt_guests: '{{ guests }}'
+    _prvlibvirt_guest: >-
+      {%- set name = _prvlibvirt_name -%}
       {%- if name in guests -%}
       {{-   guests[name] -}}
       {%- endif -%}
@@ -71,7 +71,7 @@
     guests: >-
       {%- set guests = {} -%}
       {%- set items = (
-            _provision_libvirt_guests
+            _prvlibvirt_guests
             .items()) -%}
       {%- for name, item in items
            if item is not boolean -%}
@@ -96,7 +96,7 @@
     command: info
     uri: '{{ provision_libvirt.prefix }}/system'
 
-  register: _provision_libvirt_stores
+  register: _prvlibvirt_stores
 
   delegate_to: '{{ provision_libvirt.host }}'
   check_mode: false
@@ -115,7 +115,7 @@
     name: '{{ item }}'
     uri: '{{ provision_libvirt.prefix }}/system'
 
-  loop: '{{ _provision_libvirt_stores.pools | list }}'
+  loop: '{{ _prvlibvirt_stores.pools | list }}'
 
   delegate_to: '{{ provision_libvirt.host }}'
   check_mode: false
@@ -133,7 +133,7 @@
     command: info
     uri: '{{ provision_libvirt.prefix }}/system'
 
-  register: _provision_libvirt_stores
+  register: _prvlibvirt_stores
 
   delegate_to: '{{ provision_libvirt.host }}'
   check_mode: false
@@ -149,8 +149,8 @@
 
   ansible.builtin.set_fact:
 
-    _provision_libvirt_stores: >-
-      {{ _provision_libvirt_stores.pools }}
+    _prvlibvirt_stores: >-
+      {{ _prvlibvirt_stores.pools }}
 
   when: provision_libvirt.host
 
@@ -164,11 +164,11 @@
 - name: Define the filesystem path to the ISO
 
   ansible.builtin.set_fact:
-    _provision_libvirt_iso: >-
-      {%- set stores = _provision_libvirt_stores -%}
+    _prvlibvirt_install: >-
+      {%- set stores = _prvlibvirt_stores -%}
       {%- set store = provision_libvirt.isos -%}
       {%- set path = stores[store].path -%}
-      {{ path }}/{{ _provision_libvirt_name }}.iso
+      {{ path }}/{{ _prvlibvirt_name }}.iso
 
   when:
     - provision_install
@@ -184,7 +184,7 @@
     that:
 
       - >-  # libvirt module issue
-        _provision_libvirt_name not in [
+        _prvlibvirt_name not in [
           'changed', 'failed']
 
   tags: always

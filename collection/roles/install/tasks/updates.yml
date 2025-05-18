@@ -27,7 +27,7 @@
 - name: Perform updates within the ISO contents
 
   ansible.builtin.copy:
-    dest: '{{ _provision_prepare_path }}/{{ item.dest }}'
+    dest: '{{ _prvinstall_prepare }}/{{ item.dest }}'
     content: '{{ item.content | default("") }}'
     mode: '0644'
 
@@ -57,7 +57,7 @@
 - name: Perform updates within the ISO contents
 
   ansible.builtin.replace:
-    path: '{{ _provision_prepare_path }}/{{ item.path }}'
+    path: '{{ _prvinstall_prepare }}/{{ item.path }}'
     regexp: '{{ item.regexp }}'
     replace: '{{ item.replace }}'
 

@@ -48,7 +48,7 @@
 
   ansible.builtin.assert:
     that:
-      - _provision_install_base
+      - _prvinstall_source
 
   when: provision_install | default
 

@@ -89,6 +89,25 @@ class NetworkParams(BaseModel, extra='forbid'):
 
 
     @field_validator(
+        'hwaddr',
+        mode='before')
+    @classmethod
+    def parse_hwaddr(
+        # NOCVR
+        cls,
+        value: Any,  # noqa: ANN401
+    ) -> Any:  # noqa: ANN401
+        """
+        Perform advanced validation on the parameters provided.
+        """
+
+        if isinstance(value, str):
+            return value.replace('-', ':')
+
+        return value
+
+
+    @field_validator(
         'resolve',
         mode='before')
     @classmethod

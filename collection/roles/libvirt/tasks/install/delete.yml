@@ -12,7 +12,7 @@
 - name: Delete the installation on hypervisor
 
   ansible.builtin.file:
-    path: '{{ _provision_libvirt_iso }}'
+    path: '{{ _prvlibvirt_install }}'
     state: absent
 
   when:

@@ -12,9 +12,9 @@
 - name: Check the installation on hypervisor
 
   ansible.builtin.stat:
-    path: '{{ _provision_proxmox_iso }}'
+    path: '{{ _prvproxmox_install }}'
 
-  register: _provision_proxmox_iso_present
+  register: _prvproxmox_install_present
 
   when:
     - provision_install
@@ -31,8 +31,8 @@
 
   ansible.builtin.set_fact:
 
-    _provision_proxmox_iso_present: >-
-      {{- _provision_proxmox_iso_present.stat.exists -}}
+    _prvproxmox_install_present: >-
+      {{- _prvproxmox_install_present.stat.exists -}}
 
   when:
     - provision_install

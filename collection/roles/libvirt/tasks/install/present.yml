@@ -12,9 +12,9 @@
 - name: Check the installation on hypervisor
 
   ansible.builtin.stat:
-    path: '{{ _provision_libvirt_iso }}'
+    path: '{{ _prvlibvirt_install }}'
 
-  register: _provision_libvirt_iso_present
+  register: _prvlibvirt_install_present
 
   when:
     - provision_install
@@ -31,8 +31,8 @@
 
   ansible.builtin.set_fact:
 
-    _provision_libvirt_iso_present: >-
-      {{- _provision_libvirt_iso_present.stat.exists -}}
+    _prvlibvirt_install_present: >-
+      {{- _prvlibvirt_install_present.stat.exists -}}
 
   when:
     - provision_install

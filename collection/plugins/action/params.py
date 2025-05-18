@@ -63,11 +63,11 @@ class RoleParams(BaseModel, extra='forbid'):
 
     domain: Annotated[
         str,
-        Field('invalid',
+        Field(...,
               description='Hostname in the operating system',
               min_length=1)]
 
-    staging: Annotated[
+    stage: Annotated[
         str,
         Field(...,
               description='Where the files will be staged',

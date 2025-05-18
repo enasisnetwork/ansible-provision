@@ -13,17 +13,17 @@
 
   community.libvirt.virt:
     command: destroy
-    name: '{{ _provision_libvirt_name }}'
+    name: '{{ _prvlibvirt_name }}'
 
   delegate_to: '{{ provision_libvirt.host }}'
   changed_when: true
 
   when:
     - provision_libvirt.host
-    - _provision_libvirt_guest
+    - _prvlibvirt_guest
     - not ansible_check_mode
-    - _provision_libvirt_guest | default
-      and _provision_libvirt_guest.state != "shutdown"
+    - _prvlibvirt_guest | default
+      and _prvlibvirt_guest.state != "shutdown"
 
   tags: always
 
@@ -34,14 +34,14 @@
   ansible.builtin.command: /bin/true
 
   delegate_to: '{{ provision_libvirt.host }}'
-  changed_when: _provision_libvirt_guest.state != "shutdown"
+  changed_when: _prvlibvirt_guest.state != "shutdown"
   check_mode: false
 
   when:
     - provision_libvirt.host
     - ansible_check_mode
-      or (_provision_libvirt_guest | default
-          and _provision_libvirt_guest.state == "shutdown")
-    - _provision_libvirt_guest | default
+      or (_prvlibvirt_guest | default
+          and _prvlibvirt_guest.state == "shutdown")
+    - _prvlibvirt_guest | default
 
   tags: always

@@ -18,7 +18,7 @@ url --mirrorlist="https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-$rele
 
 
 {% if provision_storage | default %}
-{%   set boot = _provision_install_boot %}
+{%   set boot = _prvinstall_bootable %}
 {%   set drives = (
        provision_storage
        | json_query("[*].name")
@@ -113,9 +113,6 @@ network --hostname="{{ provision_name }}.{{ provision_domain }}"
            | format(mask)) %}
 {%     endif %}
 {%     if hwaddr is not none %}
-{%       set hwaddr = (
-           hwaddr
-           | replace('-', ':')) %}
 {%       set hwaddr = (
            ' --device=%s'
            | format(hwaddr)) %}
