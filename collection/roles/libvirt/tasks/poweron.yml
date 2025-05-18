@@ -13,17 +13,17 @@
 
   community.libvirt.virt:
     command: start
-    name: '{{ _provision_libvirt_name }}'
+    name: '{{ _prvlibvirt_name }}'
 
   delegate_to: '{{ provision_libvirt.host }}'
   changed_when: true
 
   when:
     - provision_libvirt.host
-    - _provision_libvirt_guest
+    - _prvlibvirt_guest
     - not ansible_check_mode
-    - _provision_libvirt_guest
-      and _provision_libvirt_guest.state != "running"
+    - _prvlibvirt_guest
+      and _prvlibvirt_guest.state != "running"
 
   tags: always
 
@@ -34,14 +34,14 @@
   ansible.builtin.command: /bin/true
 
   delegate_to: '{{ provision_libvirt.host }}'
-  changed_when: _provision_libvirt_guest.state != "running"
+  changed_when: _prvlibvirt_guest.state != "running"
   check_mode: false
 
   when:
     - provision_libvirt.host
     - ansible_check_mode
-      or (_provision_libvirt_guest
-          and _provision_libvirt_guest.state == "running")
-    - _provision_libvirt_guest | default
+      or (_prvlibvirt_guest
+          and _prvlibvirt_guest.state == "running")
+    - _prvlibvirt_guest | default
 
   tags: always

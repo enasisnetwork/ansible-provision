@@ -10,11 +10,10 @@
       ansible.builtin.include_role:
         name: enasisnetwork.provision.default
         tasks_from: params
-
-    - name: Include downstream tasks within roles
-      ansible.builtin.include_role:
-        name: enasisnetwork.provision.default
-        tasks_from: facts
+      vars:
+        provision_kind: virtual
+        provision_family: almalinux
+        provision_stage: /dev/null
 
     - name: Include downstream tasks within roles
       ansible.builtin.include_role:

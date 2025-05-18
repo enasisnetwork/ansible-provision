@@ -35,13 +35,13 @@
     ostype: '{{ params.ostype or omit }}'
 
   vars:
-    params: '{{ _provision_proxmox_params }}'
+    params: '{{ _prvproxmox_params }}'
 
   delegate_to: localhost
 
   when:
     - provision_proxmox.endpoint
-    - not _provision_proxmox_guest
+    - not _prvproxmox_guest
     - not ansible_check_mode
 
   tags: always
@@ -53,12 +53,12 @@
   ansible.builtin.command: /bin/true
 
   delegate_to: '{{ provision_proxmox.host }}'
-  changed_when: not _provision_proxmox_guest
+  changed_when: not _prvproxmox_guest
   check_mode: false
 
   when:
     - provision_proxmox.endpoint
     - ansible_check_mode
-      or _provision_proxmox_guest
+      or _prvproxmox_guest
 
   tags: always

@@ -12,14 +12,14 @@
 - name: Download the ISO from configured source
 
   ansible.builtin.get_url:
-    url: '{{ _provision_download }}'
-    dest: '{{ _provision_install_base }}'
-    checksum: '{{ _provision_install_hash }}'
+    url: '{{ _prvinstall_download }}'
+    dest: '{{ _prvinstall_source }}'
+    checksum: '{{ _prvinstall_srchash }}'
     mode: '0644'
 
   delegate_to: localhost
   throttle: 1
 
-  when: _provision_download
+  when: _prvinstall_download
 
   tags: always

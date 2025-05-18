@@ -19,26 +19,26 @@
   loop:
 
     - src: unattend-redhat.j2
-      dest: '{{ _provision_install_unattend }}'
+      dest: '{{ _prvinstall_unattend }}'
       family: fedora
 
     - src: unattend-redhat.j2
-      dest: '{{ _provision_install_unattend }}'
+      dest: '{{ _prvinstall_unattend }}'
       family: almalinux
 
     - src: unattend-openbsd.j2
-      dest: '{{ _provision_install_unattend }}'
+      dest: '{{ _prvinstall_unattend }}'
       family: openbsd
 
     - src: unattend-windows.j2
-      dest: '{{ _provision_install_unattend }}'
+      dest: '{{ _prvinstall_unattend }}'
       family: windows
     - src: unattend-script.j2
-      dest: '{{ _provision_install_unscript }}'
+      dest: '{{ _prvinstall_unscript }}'
       family: windows
 
     - src: unattend-proxmox.j2
-      dest: '{{ _provision_install_unattend }}'
+      dest: '{{ _prvinstall_unattend }}'
       family: proxmox
 
   loop_control:

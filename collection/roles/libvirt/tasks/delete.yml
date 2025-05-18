@@ -37,7 +37,7 @@
 
   community.libvirt.virt:
     command: undefine
-    name: '{{ _provision_libvirt_name }}'
+    name: '{{ _prvlibvirt_name }}'
     flags: nvram
 
   delegate_to: '{{ provision_libvirt.host }}'
@@ -45,7 +45,7 @@
 
   when:
     - provision_libvirt.host
-    - _provision_libvirt_guest
+    - _prvlibvirt_guest
     - not ansible_check_mode
 
   tags: always
@@ -57,13 +57,13 @@
   ansible.builtin.command: /bin/true
 
   delegate_to: '{{ provision_libvirt.host }}'
-  changed_when: _provision_libvirt_guest
+  changed_when: _prvlibvirt_guest
   check_mode: false
 
   when:
     - provision_libvirt.host
     - ansible_check_mode
-      or not _provision_libvirt_guest
+      or not _prvlibvirt_guest
 
   tags: always
 
@@ -81,9 +81,10 @@
   vars:
     image: >-
       {%- set name = item.name -%}
-      {%- set base = _provision_libvirt_name -%}
-      {%- set stores = _provision_libvirt_stores -%}
-      {%- set store = item.virtual.store -%}
+      {%- set virtual = item.virtual -%}
+      {%- set base = _prvlibvirt_name -%}
+      {%- set stores = _prvlibvirt_stores -%}
+      {%- set store = virtual.store -%}
       {%- set path = stores[store].path -%}
       {{ path }}/{{ base }}-{{ name }}.img
 

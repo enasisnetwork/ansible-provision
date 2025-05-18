@@ -25,12 +25,12 @@
     state: stopped
 
   vars:
-    params: '{{ _provision_proxmox_params }}'
+    params: '{{ _prvproxmox_params }}'
 
   delegate_to: localhost
 
   when:
     - provision_proxmox.endpoint
-    - _provision_proxmox_guest
+    - _prvproxmox_guest
 
   tags: always

@@ -1,7 +1,7 @@
 
 <domain type="kvm">
-  <name>{{ _provision_libvirt_name }}</name>
-  <uuid>{{ _provision_libvirt_uuid }}</uuid>
+  <name>{{ _prvlibvirt_name }}</name>
+  <uuid>{{ _prvlibvirt_uuid }}</uuid>
   <vcpu>{{ provision_libvirt.vcpus }}</vcpu>
   <memory unit="GiB">{{ provision_libvirt.memory }}</memory>
 
@@ -64,17 +64,18 @@
   <devices>
 
 {% if provision_storage | default %}
-{%  set stores = _provision_libvirt_stores %}
+{%  set stores = _prvlibvirt_stores %}
 {%  set items = provision_storage %}
 {%  for item in items
      if item.state == 'present' %}
     <disk type="file" device="disk">
-{%   set store = item.virtual.store %}
+{%   set virtual = item.virtual %}
+{%   set store = virtual.store %}
 {%   set path = stores[store].path %}
 {%   set letter = ('abcdefghij'[loop.index - 1]) %}
 {%   set target = 'vd%s' | format(letter) %}
       <target dev="{{ target }}" bus="virtio"/>
-      <source file="{{ path }}/{{ _provision_libvirt_name }}-{{ item.name }}.img"/>
+      <source file="{{ path }}/{{ _prvlibvirt_name }}-{{ item.name }}.img"/>
     </disk>
 {%  endfor %}
 {% endif %}
@@ -82,13 +83,13 @@
     <disk type="file" device="cdrom">
       <target dev="sda" bus="sata"/>
       <readonly/>
-{% if _provision_libvirt_iso %}
-{%   set stores = _provision_libvirt_stores %}
+{% if _prvlibvirt_install %}
+{%   set stores = _prvlibvirt_stores %}
 {%   set store = provision_libvirt.isos %}
 {%   set volumes = stores[store].volumes %}
-{%   set name = _provision_libvirt_iso | basename %}
+{%   set name = _prvlibvirt_install | basename %}
 {%   if name in volumes %}
-      <source file="{{ _provision_libvirt_iso }}"/>
+      <source file="{{ _prvlibvirt_install }}"/>
 {%   endif %}
 {% endif %}
     </disk>
@@ -100,12 +101,13 @@
      and item.type == 'ethernet' %}
 {%    set network = item.ipaddr | Network %}
 {%    set address = network.address %}
+{%    set virtual = item.virtual %}
 {%    set index = address.split('.')[-1] %}
     <interface type="bridge">
       <model type="e1000e"/>
-      <target dev="{{ item.virtual.bridge }}_{{ index }}"/>
-      <mac address="{{ item.hwaddr | replace('-', ':') }}"/>
-      <source bridge="{{ item.virtual.bridge }}"/>
+      <target dev="{{ virtual.bridge }}_{{ index }}"/>
+      <mac address="{{ item.hwaddr }}"/>
+      <source bridge="{{ virtual.bridge }}"/>
     </interface>
 {%  endfor %}
 {% endif %}

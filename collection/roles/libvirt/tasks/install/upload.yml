@@ -12,8 +12,8 @@
 - name: Upload the installation to hypervisor
 
   ansible.builtin.copy:
-    src: '{{ _provision_install_path }}'
-    dest: '{{ _provision_libvirt_iso }}'
+    src: '{{ _prvinstall_output }}'
+    dest: '{{ _prvlibvirt_install }}'
     mode: '0644'
 
   when:

@@ -27,7 +27,7 @@
 - name: Unmount the source installation image
 
   mountiso:
-    dest: '{{ _provision_distrib_path }}'
+    dest: '{{ _prvinstall_distrib }}'
     state: absent
 
   delegate_to: localhost

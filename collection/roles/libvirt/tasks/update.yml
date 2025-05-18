@@ -21,7 +21,7 @@
 
   when:
     - provision_libvirt.host
-    - _provision_libvirt_guest
+    - _prvlibvirt_guest
     - not ansible_check_mode
 
   tags: always
@@ -33,12 +33,12 @@
   ansible.builtin.command: /bin/true
 
   delegate_to: '{{ provision_libvirt.host }}'
-  changed_when: _provision_libvirt_guest
+  changed_when: _prvlibvirt_guest
   check_mode: false
 
   when:
     - provision_libvirt.host
     - ansible_check_mode
-      or not _provision_libvirt_guest
+      or not _prvlibvirt_guest
 
   tags: always

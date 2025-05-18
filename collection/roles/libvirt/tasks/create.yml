@@ -21,7 +21,7 @@
 
   when:
     - provision_libvirt.host
-    - not _provision_libvirt_guest
+    - not _prvlibvirt_guest
     - not ansible_check_mode
 
   tags: always
@@ -33,13 +33,13 @@
   ansible.builtin.command: /bin/true
 
   delegate_to: '{{ provision_libvirt.host }}'
-  changed_when: not _provision_libvirt_guest
+  changed_when: not _prvlibvirt_guest
   check_mode: false
 
   when:
     - provision_libvirt.host
     - ansible_check_mode
-      or _provision_libvirt_guest
+      or _prvlibvirt_guest
 
   tags: always
 
@@ -61,9 +61,10 @@
     size: '{{ item.virtual.size }}'
     image: >-
       {%- set name = item.name -%}
-      {%- set base = _provision_libvirt_name -%}
-      {%- set stores = _provision_libvirt_stores -%}
-      {%- set store = item.virtual.store -%}
+      {%- set virtual = item.virtual -%}
+      {%- set base = _prvlibvirt_name -%}
+      {%- set stores = _prvlibvirt_stores -%}
+      {%- set store = virtual.store -%}
       {%- set path = stores[store].path -%}
       {{ path }}/{{ base }}-{{ name }}.img
 

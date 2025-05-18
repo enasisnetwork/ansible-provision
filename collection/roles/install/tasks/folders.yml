@@ -17,8 +17,8 @@
     state: directory
 
   loop:
-    - path: '{{ _provision_distrib_path }}'
-    - path: '{{ _provision_prepare_path }}'
+    - path: '{{ _prvinstall_distrib }}'
+    - path: '{{ _prvinstall_prepare }}'
 
   loop_control:
     label: '{{ item.path | basename }}'

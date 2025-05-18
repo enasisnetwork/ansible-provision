@@ -27,8 +27,8 @@
 - name: Mount the source installation image
 
   mountiso:
-    src: '{{ _provision_install_base }}'
-    dest: '{{ _provision_distrib_path }}'
+    src: '{{ _prvinstall_source }}'
+    dest: '{{ _prvinstall_distrib }}'
     state: present
 
   delegate_to: localhost

@@ -33,15 +33,6 @@
 
 
 
-- name: Include downstream tasks within roles
-
-  ansible.builtin.include_tasks: >-
-    facts.yml
-
-  tags: always
-
-
-
 
 
 

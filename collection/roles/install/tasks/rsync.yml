@@ -40,8 +40,8 @@
     --recursive
     --size-only
     {{ '--dry-run' if ansible_check_mode else '' }}
-    {{ _provision_distrib_path.rstrip('/') }}/
-    {{ _provision_prepare_path.rstrip('/') }}/
+    {{ _prvinstall_distrib.rstrip('/') }}/
+    {{ _prvinstall_prepare.rstrip('/') }}/
 
   delegate_to: localhost
   register: _rsync
@@ -75,7 +75,7 @@
     --size-only
     {{ '--dry-run' if ansible_check_mode else '' }}
     /usr/share/virtio-win/drivers/
-    {{ _provision_prepare_path.rstrip('/') }}/virtio/
+    {{ _prvinstall_prepare.rstrip('/') }}/virtio/
 
   delegate_to: localhost
   register: _rsync

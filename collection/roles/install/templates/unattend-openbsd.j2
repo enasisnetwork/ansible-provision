@@ -3,7 +3,7 @@ System hostname = {{ provision_name }}
 
 
 {% if provision_storage | default %}
-{%   set boot = _provision_install_boot %}
+{%   set boot = _prvinstall_bootable %}
 Which disk is the root disk? {{ boot.name }}
 {% endif %}
 

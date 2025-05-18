@@ -12,7 +12,8 @@
 - name: Declare relevant playbook variables
 
   ansible.builtin.set_fact:
-    _provision_params: >-
+
+    _prvlibvirt_params: >-
       {{ lookup('template', 'guest.j2') }}
 
   tags: always

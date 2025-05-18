@@ -43,11 +43,11 @@
     state: absent
 
   loop:
-    - path: '{{ _provision_distrib_path }}'
-    - path: '{{ _provision_prepare_path }}'
-    - path: '{{ _provision_install_path }}'
-    - path: '{{ _provision_install_unattend }}'
-    - path: '{{ _provision_install_unscript }}'
+    - path: '{{ _prvinstall_distrib }}'
+    - path: '{{ _prvinstall_prepare }}'
+    - path: '{{ _prvinstall_output }}'
+    - path: '{{ _prvinstall_unattend }}'
+    - path: '{{ _prvinstall_unscript }}'
 
   loop_control:
     label: '{{ item.path | basename }}'

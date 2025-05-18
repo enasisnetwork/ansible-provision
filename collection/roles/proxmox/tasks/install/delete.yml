@@ -12,7 +12,7 @@
 - name: Delete the installation on hypervisor
 
   ansible.builtin.file:
-    path: '{{ _provision_proxmox_iso }}'
+    path: '{{ _prvproxmox_install }}'
     state: absent
 
   when:

@@ -13,19 +13,19 @@
 
   ansible.builtin.set_fact:
 
-    _provision_proxmox_name: >-
+    _prvproxmox_name: >-
       {{ inventory_hostname }}
 
-    _provision_install_path: >-
+    _prvinstall_output: >-
       {%- if not provision_proxmox.install -%}
-      {{-   staging }}/{{ hostname }}-install.iso
+      {{-   stage }}/{{ hostname }}-install.iso
       {%- else -%}
       {{-   provision_proxmox.install -}}
       {%- endif -%}
 
   vars:
     hostname: '{{ inventory_hostname }}'
-    staging: '{{ provision_staging }}'
+    stage: '{{ provision_stage }}'
 
   when: provision_proxmox.endpoint
 
@@ -49,7 +49,7 @@
     api_password: >-
       {{ provision_proxmox.password or omit }}
 
-  register: _provision_proxmox_guests
+  register: _prvproxmox_guests
 
   delegate_to: localhost
 
@@ -63,9 +63,9 @@
 
   ansible.builtin.set_fact:
 
-    _provision_proxmox_guests: '{{ guests }}'
-    _provision_proxmox_guest: >-
-      {%- set name = _provision_proxmox_name -%}
+    _prvproxmox_guests: '{{ guests }}'
+    _prvproxmox_guest: >-
+      {%- set name = _prvproxmox_name -%}
       {%- if name in guests -%}
       {{-   guests[name] -}}
       {%- endif -%}
@@ -74,7 +74,7 @@
     guests: >-
       {%- set guests = {} -%}
       {%- set items = (
-            _provision_proxmox_guests
+            _prvproxmox_guests
             .proxmox_vms) -%}
       {%- for item in items -%}
       {%-   set name = item.name -%}
@@ -105,7 +105,7 @@
     api_password: >-
       {{ provision_proxmox.password or omit }}
 
-  register: _provision_proxmox_stores
+  register: _prvproxmox_stores
 
   delegate_to: localhost
 
@@ -119,10 +119,10 @@
 
   ansible.builtin.set_fact:
 
-    _provision_proxmox_stores: >-
+    _prvproxmox_stores: >-
       {%- set stores = {} -%}
       {%- set items = (
-            _provision_proxmox_stores
+            _prvproxmox_stores
             .proxmox_storages) -%}
       {%- for item in items -%}
       {%-   set name = item.storage -%}
@@ -143,14 +143,14 @@
 - name: Define the filesystem path to the ISO
 
   ansible.builtin.set_fact:
-    _provision_proxmox_iso: >-
+    _prvproxmox_install: >-
       {%- set query = "[?contains(value.content, 'iso')]" -%}
       {%- set stores = (
-            _provision_proxmox_stores
+            _prvproxmox_stores
             | dict2items
             | json_query(query)) -%}
       {{- stores[0].value.path }}/template/iso/
-      {{- _provision_proxmox_name }}.iso
+      {{- _prvproxmox_name }}.iso
 
   when:
     - provision_install
@@ -178,14 +178,15 @@
 - name: Define the parameters for the guest
 
   ansible.builtin.set_fact:
-    _provision_proxmox_params:
-      name: '{{ _provision_proxmox_name }}'
+
+    _prvproxmox_params:
+      name: '{{ _prvproxmox_name }}'
       vmid: >-
-        {%- set guest = _provision_proxmox_guest -%}
+        {%- set guest = _prvproxmox_guest -%}
         {{- guest.vmid if guest else omit -}}
       node: >-
         {%- set host = provision_proxmox.host -%}
-        {%- set guest = _provision_proxmox_guest -%}
+        {%- set guest = _prvproxmox_guest -%}
         {{- guest.node if guest else host -}}
       acpi: true
       bios: >-
@@ -205,25 +206,35 @@
         {%- endif -%}
       virtio: >-
         {%- if provision_storage | default -%}
-        {%-   set stores = _provision_proxmox_stores -%}
+        {%-   set stores = _prvproxmox_stores -%}
         {%-   set storage = {} -%}
         {%-   set items = provision_storage -%}
         {%-   for item in items
                if item.state == 'present' -%}
-        {%-     set store = item.virtual.store -%}
-        {%-     set size = item.virtual.size -%}
+        {%-     set virtual = item.virtual -%}
+        {%-     set store = virtual.store -%}
+        {%-     set size = virtual.size -%}
         {%-     set index = loop.index0 -%}
-        {%-     set name = 'virtio%s' | format(index) -%}
-        {%-     do storage.update({name: (
-                  '%s:%s' | format(store, size))}) -%}
+        {%-     set name = (
+                  'virtio%s'
+                  | format(index)) -%}
+        {%-     set value = (
+                  '%s:%s'
+                  | format(store, size)) -%}
+        {%-     set update = {name: value} -%}
+        {%-     do storage.update(update) -%}
         {%-   endfor -%}
         {{-   storage -}}
         {%- endif -%}
       sata: >-
         {%- set name = 'none' -%}
-        {%- if _provision_proxmox_iso_present -%}
-        {%-   set file = _provision_proxmox_iso | basename -%}
-        {%-   set name = 'local:iso/%s' | format(file) -%}
+        {%- if _prvproxmox_install_present -%}
+        {%-   set file = (
+                _prvproxmox_install
+                | basename) -%}
+        {%-   set name = (
+                'local:iso/%s'
+                | format(file)) -%}
         {%- endif -%}
         {{- {'sata0': (
                '%s,media=cdrom'
@@ -235,13 +246,18 @@
         {%-   for item in items
                if item.state == 'present'
                and item.type == 'ethernet' -%}
-        {%-     set mac = item.hwaddr | replace('-', ':') -%}
-        {%-     set bridge = item.virtual.bridge -%}
+        {%-     set hwaddr = item.hwaddr -%}
+        {%-     set virtual = item.virtual -%}
+        {%-     set bridge = virtual.bridge -%}
         {%-     set index = loop.index0 -%}
-        {%-     set name = 'net%s' | format(index) -%}
-        {%-     do networks.update({name: (
+        {%-     set name = (
+                  'net%s'
+                  | format(index)) -%}
+        {%-     set value = (
                   'virtio=%s,bridge=%s'
-                  | format(mac, bridge))}) -%}
+                  | format(hwaddr, bridge)) -%}
+        {%-     set update = {name: value} -%}
+        {%-     do networks.update(update) -%}
         {%-   endfor -%}
         {{-   networks -}}
         {%- endif -%}

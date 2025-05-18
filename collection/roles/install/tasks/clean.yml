@@ -27,11 +27,11 @@
 - name: Delete files and folders from operation
 
   ansible.builtin.file:
-    path: '{{ _provision_install_base }}'
+    path: '{{ _prvinstall_source }}'
     state: absent
 
   delegate_to: localhost
 
-  when: _provision_download | default
+  when: _prvinstall_download | default
 
   tags: always
