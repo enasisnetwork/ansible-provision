@@ -8,7 +8,7 @@
 .PHONY: provision-proxmox-overview
 provision-proxmox-overview: \
 	.check-stage .check-limit
-	@## Dump information related to operation
+	@## Information about the role operations
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-proxmox-overview<c0>)
@@ -25,31 +25,6 @@ provision-proxmox-overview: \
 			$(ansible_args) \
 			--limit="$(limit)" \
 			--tags=proxmox-overview \
-			enasisnetwork.provision.proxmox; \
-		deactivate)
-
-
-
-.PHONY: provision-proxmox-facts
-provision-proxmox-facts: \
-	.check-stage .check-limit
-	@## Collect and dump hypervisor information
-	@#
-	$(call MAKE_PR2NT,\
-		<cD>make <cL>provision-proxmox-facts<c0>)
-	@#
-	@( \
-		set -e; \
-		[ -f ./orchestro.env ] \
-			&& set -a \
-			&& . ./orchestro.env \
-			&& set +a || true; \
-		. $(VENVP)/bin/activate; \
-		PYTHONPATH=. \
-		ansible-playbook \
-			$(ansible_args) \
-			--limit="$(limit)" \
-			--tags=proxmox-facts \
 			enasisnetwork.provision.proxmox; \
 		deactivate)
 
@@ -111,7 +86,7 @@ provision-proxmox-update: \
 .PHONY: provision-proxmox-install-upload
 provision-proxmox-install-upload: \
 	.check-stage .check-limit
-	@## Upload installation ISO for guest
+	@## Upload the installation to hypervisor
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-proxmox-install-upload<c0>)
@@ -137,7 +112,7 @@ provision-proxmox-install-upload: \
 .PHONY: provision-proxmox-install-delete
 provision-proxmox-install-delete: \
 	.check-stage .check-limit
-	@## Delete installation ISO for guest
+	@## Delete the installation on hypervisor
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-proxmox-install-delete<c0>)
@@ -160,13 +135,13 @@ provision-proxmox-install-delete: \
 
 
 
-.PHONY: provision-proxmox-poweron
-provision-proxmox-poweron: \
+.PHONY: provision-proxmox-state-poweron
+provision-proxmox-state-poweron: \
 	.check-stage .check-limit
-	@## Manage status of guest in hypervisor
+	@## Update status for guest in hypervisor
 	@#
 	$(call MAKE_PR2NT,\
-		<cD>make <cL>provision-proxmox-poweron<c0>)
+		<cD>make <cL>provision-proxmox-state-poweron<c0>)
 	@#
 	@( \
 		set -e; \
@@ -180,19 +155,19 @@ provision-proxmox-poweron: \
 		ansible-playbook \
 			$(ansible_args) \
 			--limit="$(limit)" \
-			--tags=proxmox-poweron \
+			--tags=proxmox-state-poweron \
 			enasisnetwork.provision.proxmox; \
 		deactivate)
 
 
 
-.PHONY: provision-proxmox-nopower
-provision-proxmox-nopower: \
+.PHONY: provision-proxmox-state-nopower
+provision-proxmox-state-nopower: \
 	.check-stage .check-limit
-	@## Manage status of guest in hypervisor
+	@## Update status for guest in hypervisor
 	@#
 	$(call MAKE_PR2NT,\
-		<cD>make <cL>provision-proxmox-nopower<c0>)
+		<cD>make <cL>provision-proxmox-state-nopower<c0>)
 	@#
 	@( \
 		set -e; \
@@ -206,7 +181,7 @@ provision-proxmox-nopower: \
 		ansible-playbook \
 			$(ansible_args) \
 			--limit="$(limit)" \
-			--tags=proxmox-nopower \
+			--tags=proxmox-state-nopower \
 			enasisnetwork.provision.proxmox; \
 		deactivate)
 

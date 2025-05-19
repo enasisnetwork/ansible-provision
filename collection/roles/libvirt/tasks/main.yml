@@ -122,26 +122,26 @@
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    poweron.yml
+    state/poweron.yml
 
   when:
     - provision_libvirt | default
     - provision_libvirt.enable
 
-  tags: libvirt-poweron
+  tags: libvirt-state-poweron
 
 
 
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    nopower.yml
+    state/nopower.yml
 
   when:
     - provision_libvirt | default
     - provision_libvirt.enable
 
-  tags: libvirt-nopower
+  tags: libvirt-state-nopower
 
 
 
