@@ -122,26 +122,26 @@
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    poweron.yml
+    state/poweron.yml
 
   when:
     - provision_proxmox | default
     - provision_proxmox.enable
 
-  tags: proxmox-poweron
+  tags: proxmox-state-poweron
 
 
 
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    nopower.yml
+    state/nopower.yml
 
   when:
     - provision_proxmox | default
     - provision_proxmox.enable
 
-  tags: proxmox-nopower
+  tags: proxmox-state-nopower
 
 
 

@@ -12,7 +12,7 @@
 - name: Include downstream tasks within roles
 
   ansible.builtin.include_tasks: >-
-    nopower.yml
+    state/nopower.yml
 
   tags: always
 

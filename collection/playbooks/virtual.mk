@@ -8,7 +8,7 @@
 .PHONY: provision-virtual-overview
 provision-virtual-overview: \
 	.check-stage .check-limit
-	@## Dump information related to operation
+	@## Information about the role operations
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-virtual-overview<c0>)
@@ -27,33 +27,6 @@ provision-virtual-overview: \
 			--tags="\
 				libvirt-overview,\
 				proxmox-overview" \
-			enasisnetwork.provision.virtual; \
-		deactivate)
-
-
-
-.PHONY: provision-virtual-facts
-provision-virtual-facts: \
-	.check-stage .check-limit
-	@## Collect and dump hypervisor information
-	@#
-	$(call MAKE_PR2NT,\
-		<cD>make <cL>provision-virtual-facts<c0>)
-	@#
-	@( \
-		set -e; \
-		[ -f ./orchestro.env ] \
-			&& set -a \
-			&& . ./orchestro.env \
-			&& set +a || true; \
-		. $(VENVP)/bin/activate; \
-		PYTHONPATH=. \
-		ansible-playbook \
-			$(ansible_args) \
-			--limit="$(limit)" \
-			--tags="\
-				libvirt-facts,\
-				proxmox-facts" \
 			enasisnetwork.provision.virtual; \
 		deactivate)
 
@@ -119,7 +92,7 @@ provision-virtual-update: \
 .PHONY: provision-virtual-install-upload
 provision-virtual-install-upload: \
 	.check-stage .check-limit
-	@## Upload installation ISO for guest
+	@## Upload the installation to hypervisor
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-virtual-install-upload<c0>)
@@ -147,7 +120,7 @@ provision-virtual-install-upload: \
 .PHONY: provision-virtual-install-delete
 provision-virtual-install-delete: \
 	.check-stage .check-limit
-	@## Delete installation ISO for guest
+	@## Delete the installation on hypervisor
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-virtual-install-delete<c0>)
@@ -172,13 +145,13 @@ provision-virtual-install-delete: \
 
 
 
-.PHONY: provision-virtual-poweron
-provision-virtual-poweron: \
+.PHONY: provision-virtual-state-poweron
+provision-virtual-state-poweron: \
 	.check-stage .check-limit
-	@## Manage status of guest in hypervisor
+	@## Update status for guest in hypervisor
 	@#
 	$(call MAKE_PR2NT,\
-		<cD>make <cL>provision-virtual-poweron<c0>)
+		<cD>make <cL>provision-virtual-state-poweron<c0>)
 	@#
 	@( \
 		set -e; \
@@ -193,20 +166,20 @@ provision-virtual-poweron: \
 			$(ansible_args) \
 			--limit="$(limit)" \
 			--tags="\
-				libvirt-poweron,\
-				proxmox-poweron" \
+				libvirt-state-poweron,\
+				proxmox-state-poweron" \
 			enasisnetwork.provision.virtual; \
 		deactivate)
 
 
 
-.PHONY: provision-virtual-nopower
-provision-virtual-nopower: \
+.PHONY: provision-virtual-state-nopower
+provision-virtual-state-nopower: \
 	.check-stage .check-limit
-	@## Manage status of guest in hypervisor
+	@## Update status for guest in hypervisor
 	@#
 	$(call MAKE_PR2NT,\
-		<cD>make <cL>provision-virtual-nopower<c0>)
+		<cD>make <cL>provision-virtual-state-nopower<c0>)
 	@#
 	@( \
 		set -e; \
@@ -221,8 +194,8 @@ provision-virtual-nopower: \
 			$(ansible_args) \
 			--limit="$(limit)" \
 			--tags="\
-				libvirt-nopower,\
-				proxmox-nopower" \
+				libvirt-state-nopower,\
+				proxmox-state-nopower" \
 			enasisnetwork.provision.virtual; \
 		deactivate)
 

@@ -8,7 +8,7 @@
 .PHONY: provision-libvirt-overview
 provision-libvirt-overview: \
 	.check-stage .check-limit
-	@## Dump information related to operation
+	@## Information about the role operations
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-libvirt-overview<c0>)
@@ -25,31 +25,6 @@ provision-libvirt-overview: \
 			$(ansible_args) \
 			--limit="$(limit)" \
 			--tags=libvirt-overview \
-			enasisnetwork.provision.libvirt; \
-		deactivate)
-
-
-
-.PHONY: provision-libvirt-facts
-provision-libvirt-facts: \
-	.check-stage .check-limit
-	@## Collect and dump hypervisor information
-	@#
-	$(call MAKE_PR2NT,\
-		<cD>make <cL>provision-libvirt-facts<c0>)
-	@#
-	@( \
-		set -e; \
-		[ -f ./orchestro.env ] \
-			&& set -a \
-			&& . ./orchestro.env \
-			&& set +a || true; \
-		. $(VENVP)/bin/activate; \
-		PYTHONPATH=. \
-		ansible-playbook \
-			$(ansible_args) \
-			--limit="$(limit)" \
-			--tags=libvirt-facts \
 			enasisnetwork.provision.libvirt; \
 		deactivate)
 
@@ -111,7 +86,7 @@ provision-libvirt-update: \
 .PHONY: provision-libvirt-install-upload
 provision-libvirt-install-upload: \
 	.check-stage .check-limit
-	@## Upload installation ISO for guest
+	@## Upload the installation to hypervisor
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-libvirt-install-upload<c0>)
@@ -137,7 +112,7 @@ provision-libvirt-install-upload: \
 .PHONY: provision-libvirt-install-delete
 provision-libvirt-install-delete: \
 	.check-stage .check-limit
-	@## Delete installation ISO for guest
+	@## Delete the installation on hypervisor
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-libvirt-install-delete<c0>)
@@ -160,13 +135,13 @@ provision-libvirt-install-delete: \
 
 
 
-.PHONY: provision-libvirt-poweron
-provision-libvirt-poweron: \
+.PHONY: provision-libvirt-state-poweron
+provision-libvirt-state-poweron: \
 	.check-stage .check-limit
-	@## Manage status of guest in hypervisor
+	@## Update status for guest in hypervisor
 	@#
 	$(call MAKE_PR2NT,\
-		<cD>make <cL>provision-libvirt-poweron<c0>)
+		<cD>make <cL>provision-libvirt-state-poweron<c0>)
 	@#
 	@( \
 		set -e; \
@@ -180,19 +155,19 @@ provision-libvirt-poweron: \
 		ansible-playbook \
 			$(ansible_args) \
 			--limit="$(limit)" \
-			--tags=libvirt-poweron \
+			--tags=libvirt-state-poweron \
 			enasisnetwork.provision.libvirt; \
 		deactivate)
 
 
 
-.PHONY: provision-libvirt-nopower
-provision-libvirt-nopower: \
+.PHONY: provision-libvirt-state-nopower
+provision-libvirt-state-nopower: \
 	.check-stage .check-limit
-	@## Manage status of guest in hypervisor
+	@## Update status for guest in hypervisor
 	@#
 	$(call MAKE_PR2NT,\
-		<cD>make <cL>provision-libvirt-nopower<c0>)
+		<cD>make <cL>provision-libvirt-state-nopower<c0>)
 	@#
 	@( \
 		set -e; \
@@ -206,7 +181,7 @@ provision-libvirt-nopower: \
 		ansible-playbook \
 			$(ansible_args) \
 			--limit="$(limit)" \
-			--tags=libvirt-nopower \
+			--tags=libvirt-state-nopower \
 			enasisnetwork.provision.libvirt; \
 		deactivate)
 

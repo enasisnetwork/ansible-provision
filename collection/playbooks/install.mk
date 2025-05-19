@@ -5,10 +5,35 @@
 
 
 
+.PHONY: provision-install-overview
+provision-install-overview: \
+	.check-stage .check-limit
+	@## Information about the role operations
+	@#
+	$(call MAKE_PR2NT,\
+		<cD>make <cL>provision-install-overview<c0>)
+	@#
+	@( \
+		set -e; \
+		[ -f ./orchestro.env ] \
+			&& set -a \
+			&& . ./orchestro.env \
+			&& set +a || true; \
+		. $(VENVP)/bin/activate; \
+		PYTHONPATH=. \
+		ansible-playbook \
+			$(ansible_args) \
+			--limit="$(limit)" \
+			--tags=install-overview \
+			enasisnetwork.provision.install; \
+		deactivate)
+
+
+
 .PHONY: provision-install-download
 provision-install-download: \
 	.check-stage .check-limit
-	@## Download the ISO from defined source
+	@## Download the ISO from configured source
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-install-download<c0>)
@@ -33,7 +58,7 @@ provision-install-download: \
 .PHONY: provision-install-prepare
 provision-install-prepare: \
 	.check-stage .check-limit
-	@## Prepare for bootable installation image
+	@## Construct prepare from the distribute
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-install-prepare<c0>)
@@ -59,7 +84,7 @@ provision-install-prepare: \
 .PHONY: provision-install-unattend
 provision-install-unattend: \
 	.check-stage .check-limit
-	@## Template the kickstart related files
+	@## Template the unattend installation file
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-install-unattend<c0>)
@@ -84,7 +109,7 @@ provision-install-unattend: \
 .PHONY: provision-install-build
 provision-install-build: \
 	.check-stage .check-limit
-	@## Build the bootable installation image
+	@## Create new ISO from prepare directory
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-install-build<c0>)
@@ -110,7 +135,7 @@ provision-install-build: \
 .PHONY: provision-install-delete
 provision-install-delete: \
 	.check-stage .check-limit
-	@## Delete files related to inventory hosts
+	@## Delete files and folders from operation
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-install-delete<c0>)
@@ -136,7 +161,7 @@ provision-install-delete: \
 .PHONY: provision-install-clean
 provision-install-clean: \
 	.check-stage .check-limit
-	@## Delete files related to image building
+	@## Delete files and folders from operation
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-install-clean<c0>)

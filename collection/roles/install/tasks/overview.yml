@@ -9,13 +9,10 @@
 
 
 
-- name: Information about the role operations
+- name: Include downstream tasks within roles
 
-  enasisnetwork.utility.overview:
-    prefix:
-      - provision_
-      - _prvinstall_
-      - _prvlibvirt_
-      - _prvproxmox_
+  ansible.builtin.include_role:
+    name: enasisnetwork.provision.default
+    tasks_from: overview
 
   tags: always

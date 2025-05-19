@@ -8,7 +8,7 @@
 .PHONY: provision-overview
 provision-overview: \
 	.check-stage .check-limit
-	@## Dump information related to operation
+	@## Information about the role operations
 	@#
 	$(call MAKE_PR2NT,\
 		<cD>make <cL>provision-overview<c0>)
