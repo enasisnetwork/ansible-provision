@@ -2,14 +2,14 @@
 enasprv1
   provision_name: 'enasprv1'
   provision_domain: 'invalid'
-  provision_kind: 'virtual'
   provision_family: 'almalinux'
+  provision_kind: 'virtual'
   provision_stage: '/dev/null'
-  provision_install: ''
-  provision_users: ''
-  provision_groups: ''
-  provision_storage: ''
-  provision_network: ''
-  provision_libvirt: ''
-  provision_proxmox: ''
+  provision_groups: None
+  provision_install: None
+  provision_libvirt: None
+  provision_network: None
+  provision_proxmox: None
+  provision_storage: None
+  provision_users: None
 ────────────────────────────────────────────────────────────
