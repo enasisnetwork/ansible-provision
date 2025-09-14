@@ -26,6 +26,7 @@
     node: '{{ params.node or omit }}'
     acpi: '{{ params.acpi or omit }}'
     bios: '{{ params.bios or omit }}'
+    cpu: '{{ params.cpu or omit }}'
     cores: '{{ params.cores or omit }}'
     memory: '{{ params.memory or omit }}'
     efidisk0: '{{ params.efidisk0 or omit }}'

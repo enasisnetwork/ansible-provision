@@ -87,6 +87,8 @@
       {{ provision_proxmox_token | default(omit) }}
     provision_proxmox_secret: >-
       {{ provision_proxmox_secret | default(omit) }}
+    provision_proxmox_cpu: >-
+      {{ provision_proxmox_cpu | default(omit) }}
     provision_proxmox_cores: >-
       {{ provision_proxmox_cores | default(omit) }}
     provision_proxmox_memory: >-
