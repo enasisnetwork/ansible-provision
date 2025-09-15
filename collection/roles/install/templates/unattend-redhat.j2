@@ -8,9 +8,9 @@ timezone UTC --utc
 
 
 {% if provision_family == "almalinux" %}
-repo --name="almalinux-baseos" --mirrorlist="https://mirrors.almalinux.org/mirrorlist/9/baseos"
-repo --name="almalinux-appstream" --mirrorlist="https://mirrors.almalinux.org/mirrorlist/9/appstream"
-url --url="https://repo.almalinux.org/almalinux/9/BaseOS/x86_64/kickstart/"
+repo --name="almalinux-baseos" --mirrorlist="https://mirrors.almalinux.org/mirrorlist/$releasever/baseos"
+repo --name="almalinux-appstream" --mirrorlist="https://mirrors.almalinux.org/mirrorlist/$releasever/appstream"
+url --url="https://repo.almalinux.org/almalinux/$releasever/BaseOS/x86_64/kickstart/"
 {% elif provision_family == "fedora" %}
 url --mirrorlist="https://mirrors.fedoraproject.org/mirrorlist?repo=fedora-$releasever&arch=$basearch"
 {% endif %}

@@ -58,6 +58,7 @@ ansible-playbook \
     - `password` Password for API authentication
     - `token` Credential for API authentication
     - `secret` Credential for API authentication
+    - `cpu` What type of CPU emulation is used
     - `cores` Amount of virtual CPUs allocated
     - `memory` Amount of memory allocated in GB
     - `uefi` Enable UEFI firmware for the OS
@@ -72,6 +73,7 @@ ansible-playbook \
 - `provision_proxmox_password` Password for API authentication
 - `provision_proxmox_token` Credential for API authentication
 - `provision_proxmox_secret` Credential for API authentication
+- `provision_proxmox_cpu` What type of CPU emulation is used
 - `provision_proxmox_cores` Amount of virtual CPUs allocated
 - `provision_proxmox_memory` Amount of memory allocated in GB
 - `provision_proxmox_uefi` Enable UEFI firmware for the OS

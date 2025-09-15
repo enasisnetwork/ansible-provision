@@ -195,6 +195,7 @@
         {%- else -%}
         seabios
         {%- endif -%}
+      cpu: '{{ provision_proxmox.cpu }}'
       cores: '{{ provision_proxmox.cores }}'
       memory: '{{ provision_proxmox.memory * 1000 }}'
       efidisk0: >-

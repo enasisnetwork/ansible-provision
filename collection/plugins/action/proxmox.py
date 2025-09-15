@@ -78,6 +78,12 @@ class ProxmoxParams(BaseModel, extra='forbid'):
               description='Credential for API authentication',
               min_length=1)]
 
+    cpu: Annotated[
+        Optional[str],
+        Field(None,
+              description='What type of CPU for the guest',
+              min_length=1)]
+
     cores: Annotated[
         int,
         Field(1,

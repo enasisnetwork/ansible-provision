@@ -23,6 +23,7 @@
       {{ provision_proxmox.password or omit }}
     vmid: '{{ params.vmid }}'
     node: '{{ params.node }}'
+    cpu: '{{ params.cpu }}'
     cores: '{{ params.cores }}'
     memory: '{{ params.memory }}'
     #virtio will always create new disk

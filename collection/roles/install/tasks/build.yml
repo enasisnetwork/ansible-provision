@@ -24,6 +24,23 @@
 
 
 
+- name: Delete install file when already present
+
+  ansible.builtin.file:
+    path: '{{ _prvinstall_output }}'
+    state: absent
+
+  delegate_to: localhost
+
+  when: _prvinstall_output | default
+
+  tags: always
+
+
+
+
+
+
 - name: Insert kickstart into prepare directory
 
   ansible.builtin.copy:

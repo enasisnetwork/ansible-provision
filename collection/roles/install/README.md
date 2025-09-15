@@ -58,3 +58,16 @@ the `bsd.rd`, which would require an OpenBSD machine as the controller.
 
 (I)nstall, (U)pgrade, (A)utoinstall or (S)hell? a
 ```
+### Install the Python package
+After installation you will need to install Python to continue.
+```
+pkg_add python
+```
+### Update the OpenBSD `doas.conf`
+```
+echo "permit nopass keepenv :wheel" > /etc/doas.conf
+```
+
+### Additional information
+In my research I found information about Ansible and the BSD variants.
+  - https://docs.ansible.com/ansible/latest/os_guide/intro_bsd.html
