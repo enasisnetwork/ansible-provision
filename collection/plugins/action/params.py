@@ -12,6 +12,7 @@ is permitted, for more information consult the project license file.
 
 
 
+from pathlib import Path
 from typing import Annotated
 from typing import Any
 from typing import Literal
@@ -98,6 +99,12 @@ class RoleParams(BaseModel, extra='forbid'):
         Optional[list[NetworkParams]],
         Field(None,
               description='Network configuration parameters')]
+
+    drivers: Annotated[
+        Optional[str],
+        Field(None,
+              description='Additional drivers to include',
+              min_length=1)]
 
     libvirt: Annotated[
         Optional[LibvirtParams],
@@ -317,6 +324,34 @@ class RoleParams(BaseModel, extra='forbid'):
 
 
         return returned
+
+
+    @field_validator(
+        'drivers',
+        mode='after')
+    @classmethod
+    def parse_paths(
+        # NOCVR
+        cls,
+        value: Any,  # noqa: ANN401
+    ) -> Optional[str]:
+        """
+        Perform advanced validation on the parameters provided.
+        """
+
+        if value is None:
+            return None
+
+        exists = (
+            Path(value)
+            .exists())
+
+        if exists is True:
+            return str(value)
+
+        raise ValueError(
+            'path does not exist'
+            ' on the filesystem')
 
 
 

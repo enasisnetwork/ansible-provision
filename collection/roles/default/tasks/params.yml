@@ -34,6 +34,8 @@
       {{ provision_install_checksum | default(omit) }}
     provision_install_cached: >-
       {{ provision_install_cached | default(omit) }}
+    provision_install_certificate: >-
+      {{ provision_install_certificate | default(omit) }}
 
     provision_users: >-
       {{ provision_users | default(omit) }}
@@ -43,6 +45,8 @@
       {{ provision_storage | default(omit) }}
     provision_network: >-
       {{ provision_network | default(omit) }}
+    provision_drivers: >-
+      {{ provision_drivers | default(omit) }}
 
     provision_libvirt: >-
       {{ provision_libvirt | default(omit) }}
@@ -146,6 +150,8 @@
       {{ pbvalidate.params.storage }}
     provision_network: >-
       {{ pbvalidate.params.network }}
+    provision_drivers: >-
+      {{ pbvalidate.params.drivers }}
     provision_libvirt: >-
       {{ pbvalidate.params.libvirt }}
     provision_proxmox: >-

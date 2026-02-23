@@ -10,13 +10,13 @@ Which disk is the root disk? {{ boot.name }}
 
 
 {% if provision_network | default %}
-{%   set nics = [] %}
-{%   for nic in provision_network
-      if nic.state == 'present'
-      and nic.type == 'ethernet'
-      and nic.gateway %}
-{%     do nics.append(nic) %}
-{%   endfor %}
+{%   set nics =
+       provision_network
+       | selectattr('state', 'equalto', 'present')
+       | selectattr('type', 'equalto', 'ethernet')
+       | selectattr('gateway')
+       | select('enasisnetwork.utility.present')
+       | list %}
 {%   set name = nics[0].name %}
 {%   set network = nics[0].ipaddr | Network %}
 {%   set address = network.address_cidr %}
@@ -37,18 +37,17 @@ DNS nameservers = {{ resolve[0] }}
 
 
 {% if provision_users | default %}
-{%   set roots = [] %}
-{%   set users = [] %}
-{%   for user in provision_users
-      if user.state == 'present' %}
-{%     set name = user.name %}
-{%     set initial = user.initial %}
-{%     if name == 'root' %}
-{%       do roots.append(user) %}
-{%     elif initial is true %}
-{%       do users.append(user) %}
-{%     endif %}
-{%   endfor %}
+{%   set roots =
+       provision_users
+       | selectattr('state', 'equalto', 'present')
+       | selectattr('name', 'equalto', 'root')
+       | list %}
+{%   set users =
+       provision_users
+       | selectattr('state', 'equalto', 'present')
+       | rejectattr('name', 'equalto', 'root')
+       | selectattr('initial', 'equalto', true)
+       | list %}
 {%   if roots | length %}
 Password for root = {{ roots[0].passhash.openbsd }}
 {%   endif %}

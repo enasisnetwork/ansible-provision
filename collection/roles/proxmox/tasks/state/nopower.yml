@@ -31,6 +31,6 @@
 
   when:
     - provision_proxmox.enable
-    - _prvproxmox_guest
+    - _prvproxmox_guest | enasisnetwork.utility.present
 
   tags: always

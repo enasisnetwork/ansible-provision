@@ -32,6 +32,6 @@
 
   delegate_to: localhost
 
-  when: _prvinstall_download | default
+  when: _prvinstall_download | enasisnetwork.utility.present
 
   tags: always

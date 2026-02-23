@@ -45,11 +45,11 @@
 
   delegate_to: localhost
   register: _rsync
-  changed_when: _rsync.stdout_lines
-  failed_when: _rsync.stderr
+  changed_when: _rsync.stdout_lines | enasisnetwork.utility.present
+  failed_when: _rsync.stderr | enasisnetwork.utility.present
   check_mode: false
 
-  when: provision_install | default
+  when: provision_install | enasisnetwork.utility.present
 
   tags: always
 
@@ -79,13 +79,49 @@
 
   delegate_to: localhost
   register: _rsync
-  changed_when: _rsync.stdout_lines
-  failed_when: _rsync.stderr
+  changed_when: _rsync.stdout_lines | enasisnetwork.utility.present
+  failed_when: _rsync.stderr | enasisnetwork.utility.present
   check_mode: false
 
   when:
-    - provision_install | default
+    - provision_install | enasisnetwork.utility.present
     - provision_kind == 'virtual'
     - provision_family == 'windows'
+
+  tags: always
+
+
+
+
+
+
+- name: Inject the related drivers into prepare
+  # noqa: command-instead-of-module
+
+  ansible.builtin.command: >-
+    rsync
+    --chmod=Du+rwx,Fu+rw
+    --no-perms
+    --no-owner
+    --no-group
+    --delete
+    --hard-links
+    --itemize-changes
+    --links
+    --recursive
+    --size-only
+    {{ '--dry-run' if ansible_check_mode else '' }}
+    {{ provision_drivers.rstrip('/') }}/
+    {{ _prvinstall_prepare.rstrip('/') }}/orchestro_drivers/
+
+  delegate_to: localhost
+  register: _rsync
+  changed_when: _rsync.stdout_lines | enasisnetwork.utility.present
+  failed_when: _rsync.stderr | enasisnetwork.utility.present
+  check_mode: false
+
+  when:
+    - provision_install | enasisnetwork.utility.present
+    - provision_drivers | enasisnetwork.utility.present
 
   tags: always

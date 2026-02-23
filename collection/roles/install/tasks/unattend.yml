@@ -47,7 +47,7 @@
   delegate_to: localhost
 
   when:
-    - provision_install | default
+    - provision_install | enasisnetwork.utility.present
     - provision_family == item.family
 
   tags: always

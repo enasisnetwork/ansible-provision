@@ -91,8 +91,8 @@ class StorageParams(BaseModel, extra='forbid'):
               description='Indicate that disk is bootable')]
 
     virtual: Annotated[
-        StorageHostParams,
-        Field(...,
+        Optional[StorageHostParams],
+        Field(None,
               description='Define additional host settings')]
 
     state: Annotated[

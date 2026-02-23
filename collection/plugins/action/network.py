@@ -55,8 +55,8 @@ class NetworkParams(BaseModel, extra='forbid'):
               min_length=1)]
 
     virtual: Annotated[
-        NetworkHostParams,
-        Field(...,
+        Optional[NetworkHostParams],
+        Field(None,
               description='Define additional host settings')]
 
     state: Annotated[

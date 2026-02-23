@@ -1,0 +1,104 @@
+Start-Transcript -Path C:\Windows\Temp\orchestro-script.log -Append
+
+try {
+
+
+
+{% if _prvinstall_certthbpnt | enasisnetwork.utility.present %}
+{%   set thumbprint = (
+      lookup('file', _prvinstall_certthbpnt).strip()
+      | upper | replace(' ', '')) %}
+
+  Import-PfxCertificate `
+    -FilePath $PSScriptRoot\certificate.p12 `
+    -CertStoreLocation Cert:\LocalMachine\My
+
+  Start-Sleep -Seconds 2
+
+  if (-not (Get-ChildItem Cert:\LocalMachine\My | Where-Object { $_.Thumbprint -eq "{{ thumbprint }}" })) {
+    throw "Thumbprint {{ thumbprint }} not found after import"
+  }
+
+{% endif %}
+
+
+
+{% if provision_network | enasisnetwork.utility.present %}
+{%   for nic in provision_network
+        if nic.state == 'present'
+        and nic.type == 'ethernet' %}
+Get-NetAdapter |
+  Where-Object MacAddress -eq "{{ nic.hwaddr | upper | replace(':', '-') }}" |
+  ForEach-Object {
+    Get-NetConnectionProfile -InterfaceIndex $_.InterfaceIndex |
+    Set-NetConnectionProfile -NetworkCategory Private
+  }
+{%   endfor %}
+{% endif %}
+
+
+
+{% if _prvinstall_certthbpnt | enasisnetwork.utility.present %}
+
+  Set-Service -Name "WinRM" -StartupType Automatic
+  Start-Service -Name "WinRM"
+  Enable-PSRemoting -Force
+
+  $winrmset = @{
+    Hostname="{{ provision_name }}.{{ provision_domain }}";
+    CertificateThumbprint="{{ thumbprint }}";
+  }
+
+  Get-ChildItem WSMan:\Localhost\Listener |
+    Where-Object { $_.Keys -match 'Transport=HTTPS' } |
+    Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+
+  New-WSManInstance `
+    -ResourceURI "winrm/config/Listener" `
+    -SelectorSet @{ Transport="HTTPS"; Address="*"; } `
+    -ValueSet $winrmset
+
+  Restart-Service WinRM
+
+  Set-ItemProperty `
+    -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" `
+    -Name "fDenyTSConnections" `
+    -Value 0
+
+  New-NetFirewallRule `
+    -Name "Ansible-Provision-Temporary-WinRM" `
+    -DisplayName "Ansible-Provision-Temporary-WinRM" `
+    -Direction Inbound `
+    -Action Allow `
+    -Enabled True `
+    -Profile Any `
+    -Protocol TCP `
+    -LocalPort 5986
+
+  New-NetFirewallRule `
+    -Name "Ansible-Provision-Temporary-RDP" `
+    -DisplayName "Ansible-Provision-Temporary-RDP" `
+    -Direction Inbound `
+    -Action Allow `
+    -Enabled True `
+    -Profile Any `
+    -Protocol TCP `
+    -LocalPort 3389
+
+{% endif %}
+
+
+
+  Restart-Computer -Force
+
+}
+
+
+
+finally {
+
+  Stop-Transcript
+
+  Start-Sleep -Seconds 2
+
+}

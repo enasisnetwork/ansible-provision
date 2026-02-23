@@ -21,7 +21,7 @@
 
   when:
     - provision_libvirt.enable
-    - _prvlibvirt_guest
+    - _prvlibvirt_guest | enasisnetwork.utility.present
     - not ansible_check_mode
 
   tags: always
@@ -33,12 +33,12 @@
   ansible.builtin.command: /bin/true
 
   delegate_to: '{{ provision_libvirt.host }}'
-  changed_when: _prvlibvirt_guest
+  changed_when: _prvlibvirt_guest | enasisnetwork.utility.present
   check_mode: false
 
   when:
     - provision_libvirt.enable
     - ansible_check_mode
-      or not _prvlibvirt_guest
+      or not _prvlibvirt_guest | enasisnetwork.utility.present
 
   tags: always

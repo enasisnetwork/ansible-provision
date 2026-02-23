@@ -43,7 +43,7 @@
 
   when:
     - provision_proxmox.enable
-    - not _prvproxmox_guest
+    - not _prvproxmox_guest | enasisnetwork.utility.present
     - not ansible_check_mode
 
   tags: always
@@ -55,12 +55,12 @@
   ansible.builtin.command: /bin/true
 
   delegate_to: '{{ provision_proxmox.host }}'
-  changed_when: not _prvproxmox_guest
+  changed_when: not _prvproxmox_guest | enasisnetwork.utility.present
   check_mode: false
 
   when:
     - provision_proxmox.enable
     - ansible_check_mode
-      or _prvproxmox_guest
+      or _prvproxmox_guest | enasisnetwork.utility.present
 
   tags: always

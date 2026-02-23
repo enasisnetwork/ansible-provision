@@ -79,6 +79,7 @@ ansible-playbook \
     - `gateway` Default gateway for the interface
 - `provision_install` Parameters for the install ISO
     - See `install` role documentation for parameters.
+- `provision_drivers` Additional drivers to include
 - `provision_libvirt` Parameters for VM provisioning
     - See `libvirt` role documentation for parameters.
 - `provision_proxmox` Parameters for VM provisioning

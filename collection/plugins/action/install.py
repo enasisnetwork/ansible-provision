@@ -15,12 +15,74 @@ is permitted, for more information consult the project license file.
 from pathlib import Path
 from re import match as re_match
 from typing import Annotated
+from typing import Any
 from typing import Optional
 
 from encommon.types import BaseModel
 
 from pydantic import Field
+from pydantic import field_validator
 from pydantic import model_validator
+
+
+
+class InstallWindowsCertificateParams(BaseModel, extra='forbid'):
+    """
+    Process and validate the Orche configuration parameters.
+    """
+
+    certificate: Annotated[
+        Optional[str],
+        Field(None,
+              description='Path to the P12 certificate file',
+              min_length=1)]
+
+    thumbprint: Annotated[
+        Optional[str],
+        Field(None,
+              description='Path to the certificate thumbprint',
+              min_length=1)]
+
+
+    @field_validator(
+        'certificate',
+        'thumbprint',
+        mode='after')
+    @classmethod
+    def parse_paths(
+        # NOCVR
+        cls,
+        value: Any,  # noqa: ANN401
+    ) -> Optional[str]:
+        """
+        Perform advanced validation on the parameters provided.
+        """
+
+        if value is None:
+            return None
+
+        exists = (
+            Path(value)
+            .exists())
+
+        if exists is True:
+            return str(value)
+
+        raise ValueError(
+            'path does not exist'
+            ' on the filesystem')
+
+
+
+class InstallCertificateParams(BaseModel, extra='forbid'):
+    """
+    Process and validate the Orche configuration parameters.
+    """
+
+    windows: Annotated[
+        Optional[InstallWindowsCertificateParams],
+        Field(None,
+              description='Paths to various certificate files')]
 
 
 
@@ -46,6 +108,11 @@ class InstallParams(BaseModel, extra='forbid'):
         Field(None,
               description='File name when downloading file',
               min_length=1)]
+
+    certificate: Annotated[
+        Optional[InstallCertificateParams],
+        Field(None,
+              description='Optional certificate for install')]
 
 
     @model_validator(mode='after')

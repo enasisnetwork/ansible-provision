@@ -38,7 +38,7 @@
   ansible.builtin.include_tasks: >-
     facts.yml
 
-  when: provision_install | default
+  when: provision_install | enasisnetwork.utility.present
 
   tags: always
 
