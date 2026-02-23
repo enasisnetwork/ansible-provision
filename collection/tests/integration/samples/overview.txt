@@ -5,6 +5,7 @@ enasprv1
   provision_family: 'almalinux'
   provision_kind: 'virtual'
   provision_stage: '/dev/null'
+  provision_drivers: None
   provision_groups: None
   provision_install: None
   provision_libvirt: None

@@ -49,7 +49,7 @@
   ansible.builtin.include_tasks: >-
     facts.yml
 
-  when: provision_install | default
+  when: provision_install | enasisnetwork.utility.present
 
   tags: always
 
@@ -69,9 +69,9 @@
 
   ansible.builtin.assert:
     that:
-      - _prvinstall_source
+      - _prvinstall_source | enasisnetwork.utility.present
 
-  when: provision_install | default
+  when: provision_install | enasisnetwork.utility.present
 
   tags: always
 
@@ -151,6 +151,6 @@
   ansible.builtin.include_tasks: >-
     overview.yml
 
-  when: provision_install | default
+  when: provision_install | enasisnetwork.utility.present
 
   tags: install-overview

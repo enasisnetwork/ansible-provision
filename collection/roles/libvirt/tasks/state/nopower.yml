@@ -20,9 +20,9 @@
 
   when:
     - provision_libvirt.enable
-    - _prvlibvirt_guest
+    - _prvlibvirt_guest | enasisnetwork.utility.present
     - not ansible_check_mode
-    - _prvlibvirt_guest | default
+    - _prvlibvirt_guest | enasisnetwork.utility.present
       and _prvlibvirt_guest.state != "shutdown"
 
   tags: always
@@ -40,8 +40,8 @@
   when:
     - provision_libvirt.enable
     - ansible_check_mode
-      or (_prvlibvirt_guest | default
+      or (_prvlibvirt_guest | enasisnetwork.utility.present
           and _prvlibvirt_guest.state == "shutdown")
-    - _prvlibvirt_guest | default
+    - _prvlibvirt_guest | enasisnetwork.utility.present
 
   tags: always

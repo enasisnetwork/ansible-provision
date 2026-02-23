@@ -69,7 +69,7 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
       <DriverPaths>
         <PathAndCredentials wcm:keyValue="1" wcm:action="add">
-          <Path>D:\virtio\amd64\Win11</Path>
+          <Path>D:\virtio\by-driver\viostor\w11\amd64</Path>
         </PathAndCredentials>
       </DriverPaths>
     </component>
@@ -116,10 +116,10 @@
       if nic.state == 'present'
       and nic.type == 'ethernet'
       and nic.gateway %}
-{%     set hwaddr = nic.hwaddr %}
+{%     set hwaddr = nic.hwaddr | upper | replace(':', '-') %}
 {%     set resolve = nic.resolve %}
         <Interface wcm:action="add">
-          <Identifier>{{ hwaddr | upper }}</Identifier>
+          <Identifier>{{ hwaddr }}</Identifier>
           <DNSDomain>{{ provision_domain }}</DNSDomain>
           <DNSServerSearchOrder>
 {%     for server in resolve %}
@@ -147,7 +147,7 @@
       and nic.type == 'ethernet' %}
 {%     set network = nic.ipaddr | Network %}
 {%     set address = network.address_cidr %}
-{%     set hwaddr = nic.hwaddr %}
+{%     set hwaddr = nic.hwaddr | upper | replace(':', '-') %}
 {%     set gateway = nic.gateway %}
         <Interface wcm:action="add">
           <Ipv4Settings>
@@ -161,9 +161,9 @@
             <RouterDiscoveryEnabled>false</RouterDiscoveryEnabled>
           </Ipv6Settings>
 {%     if hwaddr is not none %}
-          <Identifier>{{ hwaddr | upper }}</Identifier>
+          <Identifier>{{ hwaddr }}</Identifier>
 {%     endif %}
-{%     if ipaddr is not none %}
+{%     if address is not none %}
           <UnicastIpAddresses>
             <IpAddress wcm:action="add" wcm:keyValue="1">{{ address }}</IpAddress>
           </UnicastIpAddresses>
@@ -204,26 +204,38 @@
       xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 {% if provision_users | default %}
+{%   set roots =
+       provision_users
+       | selectattr('state', 'equalto', 'present')
+       | selectattr('name', 'in', ['root', 'administrator'])
+       | list %}
+{%   set users =
+       provision_users
+       | selectattr('state', 'equalto', 'present')
+       | rejectattr('name', 'in', ['root', 'administrator'])
+       | selectattr('initial', 'equalto', true)
+       | list %}
       <UserAccounts>
-{%   for user in provision_users
-      if user.state == 'present' %}
-{%     set name = user.name %}
-{%     set password = user.password %}
-{%     set gid = user.gid %}
-{%     set display = user.display %}
-{%     set initial = user.initial %}
-{%     if name in ['root', 'administrator'] %}
+{%   if roots | length %}
         <AdministratorPassword>
-          <Value>{{ password }}</Value>
+          <Value>{{ roots[0].password }}</Value>
           <PlainText>true</PlainText>
         </AdministratorPassword>
-{%     elif initial is true %}
+{%   endif %}
+{%   if users | length %}
         <LocalAccounts>
+{%     for user in users %}
+{%       set name = user.name %}
+{%       set password = user.password %}
+{%       set gid = user.gid %}
+{%       set display = user.display %}
+{%       set initial = user.initial %}
+{%       if initial is true %}
           <LocalAccount wcm:action="add">
             <Name>{{ name }}</Name>
-{%       if display is not none %}
+{%         if display is not none %}
             <DisplayName>{{ display }}</DisplayName>
-{%       endif %}
+{%         endif %}
             <Group>{{ gid or 'Users' }}</Group>
             <Password>
               <Value>{{ password }}</Value>
@@ -231,9 +243,26 @@
             </Password>
           </LocalAccount>
         </LocalAccounts>
+{%       endif %}
+{%     endfor %}
+{%   endif %}
       </UserAccounts>
-{%     endif %}
-{%   endfor %}
+      <AutoLogon>
+        <Username>{{ roots[0].name }}</Username>
+        <Domain>.</Domain>
+        <Password>
+          <Value>{{ roots[0].password }}</Value>
+          <PlainText>true</PlainText>
+        </Password>
+        <Enabled>true</Enabled>
+        <LogonCount>2</LogonCount>
+      </AutoLogon>
+      <FirstLogonCommands>
+        <SynchronousCommand wcm:action="add">
+          <Order>1</Order>
+          <CommandLine>cmd /c > c:\windows\temp\orchestro-shell.log 2>$1 (FOR %i IN (A B C D E F G H I J K L N M O P Q R S T U V W X Y Z) DO IF EXIST %i:\orchestro.ps1 (powershell -executionpolicy bypass -noprofile -File %i:\orchestro.ps1))</CommandLine>
+        </SynchronousCommand>
+      </FirstLogonCommands>
 {% endif %}
       <OOBE>
         <HideEULAPage>true</HideEULAPage>

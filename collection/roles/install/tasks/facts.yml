@@ -34,6 +34,15 @@
     _prvinstall_unscript: >-
       {{ stage }}/{{ hostname }}-unscript
 
+    _prvinstall_certpkcs12: >-
+      {{ provision_install
+         | enasisnetwork.utility.getate(
+           "certificate/windows/certificate") }}
+    _prvinstall_certthbpnt: >-
+      {{ provision_install
+         | enasisnetwork.utility.getate(
+           "certificate/windows/thumbprint") }}
+
     _prvinstall_output: >-
       {{ stage }}/{{ hostname }}-install.iso
 
@@ -43,6 +52,6 @@
     stage: '{{ provision_stage }}'
     install: '{{ provision_install }}'
 
-  when: provision_install | default
+  when: provision_install | enasisnetwork.utility.present
 
   tags: always

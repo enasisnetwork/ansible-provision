@@ -20,6 +20,6 @@
   delegate_to: localhost
   throttle: 1
 
-  when: _prvinstall_download
+  when: _prvinstall_download | enasisnetwork.utility.present
 
   tags: always

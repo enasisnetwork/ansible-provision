@@ -16,7 +16,7 @@
     state: absent
 
   when:
-    - provision_install
+    - provision_install | enasisnetwork.utility.present
     - provision_libvirt.enable
 
   delegate_to: '{{ provision_libvirt.host }}'

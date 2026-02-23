@@ -72,16 +72,10 @@
 
   vars:
     guests: >-
-      {%- set guests = {} -%}
-      {%- set items = (
-            _prvproxmox_guests
-            .proxmox_vms) -%}
-      {%- for item in items -%}
-      {%-   set name = item.name -%}
-      {%-   set update = {name: item} -%}
-      {%-   do guests.update(update) -%}
-      {%- endfor -%}
-      {{- guests -}}
+      {{ dict(
+           (_prvproxmox_guests.proxmox_vms
+            | map(attribute='name'))
+           | zip(_prvproxmox_guests.proxmox_vms)) }}
 
   when: provision_proxmox.enable
 
@@ -120,16 +114,10 @@
   ansible.builtin.set_fact:
 
     _prvproxmox_stores: >-
-      {%- set stores = {} -%}
-      {%- set items = (
-            _prvproxmox_stores
-            .proxmox_storages) -%}
-      {%- for item in items -%}
-      {%-   set name = item.storage -%}
-      {%-   set update = {name: item} -%}
-      {%-   do stores.update(update) -%}
-      {%- endfor -%}
-      {{- stores -}}
+      {{ dict(
+           (_prvproxmox_stores.proxmox_storages
+            | map(attribute='storage'))
+           | zip(_prvproxmox_stores.proxmox_storages)) }}
 
   when: provision_proxmox.enable
 
@@ -153,7 +141,7 @@
       {{- _prvproxmox_name }}.iso
 
   when:
-    - provision_install
+    - provision_install | enasisnetwork.utility.present
     - provision_proxmox.enable
 
   tags: always
@@ -210,25 +198,8 @@
         {%- endif -%}
       virtio: >-
         {%- if provision_storage | default -%}
-        {%-   set stores = _prvproxmox_stores -%}
-        {%-   set storage = {} -%}
-        {%-   set items = provision_storage -%}
-        {%-   for item in items
-               if item.state == 'present' -%}
-        {%-     set virtual = item.virtual -%}
-        {%-     set store = virtual.store -%}
-        {%-     set size = virtual.size -%}
-        {%-     set index = loop.index0 -%}
-        {%-     set name = (
-                  'virtio%s'
-                  | format(index)) -%}
-        {%-     set value = (
-                  '%s:%s'
-                  | format(store, size)) -%}
-        {%-     set update = {name: value} -%}
-        {%-     do storage.update(update) -%}
-        {%-   endfor -%}
-        {{-   storage -}}
+        {{-   provision_storage
+              | enasisnetwork.provision.proxmox_facts_virtio -}}
         {%- endif -%}
       sata: >-
         {%- set name = 'none' -%}
@@ -245,25 +216,8 @@
                | format(name))} -}}
       net: >-
         {%- if provision_network | default -%}
-        {%-   set networks = {} -%}
-        {%-   set items = provision_network -%}
-        {%-   for item in items
-               if item.state == 'present'
-               and item.type == 'ethernet' -%}
-        {%-     set hwaddr = item.hwaddr -%}
-        {%-     set virtual = item.virtual -%}
-        {%-     set bridge = virtual.bridge -%}
-        {%-     set index = loop.index0 -%}
-        {%-     set name = (
-                  'net%s'
-                  | format(index)) -%}
-        {%-     set value = (
-                  'virtio=%s,bridge=%s'
-                  | format(hwaddr, bridge)) -%}
-        {%-     set update = {name: value} -%}
-        {%-     do networks.update(update) -%}
-        {%-   endfor -%}
-        {{-   networks -}}
+        {{-   provision_network
+              | enasisnetwork.provision.proxmox_facts_net -}}
         {%- endif -%}
       ostype: '{{ provision_proxmox.ostype }}'
       onboot: '{{ provision_proxmox.autostart }}'

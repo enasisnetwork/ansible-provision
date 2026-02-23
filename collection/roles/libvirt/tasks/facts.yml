@@ -69,16 +69,10 @@
 
   vars:
     guests: >-
-      {%- set guests = {} -%}
-      {%- set items = (
-            _prvlibvirt_guests
-            .items()) -%}
-      {%- for name, item in items
-           if item is not boolean -%}
-      {%-   set update = {name: item} -%}
-      {%-   do guests.update(update) -%}
-      {%- endfor -%}
-      {{- guests -}}
+      {{ _prvlibvirt_guests
+         | ansible.builtin.dict2items
+         | rejectattr('value', 'boolean')
+         | ansible.builtin.items2dict }}
 
   when: provision_libvirt.enable
 
@@ -160,6 +154,26 @@
 
 
 
+- name: Assert conditions for downstream tasks
+
+  ansible.builtin.assert:
+    that:
+
+      - >-  # isos store present
+        store in stores
+
+  vars:
+    store: '{{ provision_libvirt.isos }}'
+    stores: '{{ _prvlibvirt_stores }}'
+
+  when:
+    - provision_install | enasisnetwork.utility.present
+    - provision_libvirt.enable
+
+  tags: always
+
+
+
 - name: Define the filesystem path to the ISO
 
   ansible.builtin.set_fact:
@@ -170,7 +184,7 @@
       {{ path }}/{{ _prvlibvirt_name }}.iso
 
   when:
-    - provision_install
+    - provision_install | enasisnetwork.utility.present
     - provision_libvirt.enable
 
   tags: always

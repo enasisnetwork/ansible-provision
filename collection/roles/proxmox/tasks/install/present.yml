@@ -17,7 +17,7 @@
   register: _prvproxmox_install_present
 
   when:
-    - provision_install
+    - provision_install | enasisnetwork.utility.present
     - provision_proxmox.enable
 
   delegate_to: '{{ provision_proxmox.host }}'
@@ -35,7 +35,7 @@
       {{- _prvproxmox_install_present.stat.exists -}}
 
   when:
-    - provision_install
+    - provision_install | enasisnetwork.utility.present
     - provision_proxmox.enable
 
   tags: always

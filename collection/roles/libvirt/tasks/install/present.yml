@@ -17,7 +17,7 @@
   register: _prvlibvirt_install_present
 
   when:
-    - provision_install
+    - provision_install | enasisnetwork.utility.present
     - provision_libvirt.enable
 
   delegate_to: '{{ provision_libvirt.host }}'
@@ -35,7 +35,7 @@
       {{- _prvlibvirt_install_present.stat.exists -}}
 
   when:
-    - provision_install
+    - provision_install | enasisnetwork.utility.present
     - provision_libvirt.enable
 
   tags: always

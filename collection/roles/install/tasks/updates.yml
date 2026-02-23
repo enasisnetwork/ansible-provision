@@ -44,7 +44,7 @@
   delegate_to: localhost
 
   when:
-    - provision_install | default
+    - provision_install | enasisnetwork.utility.present
     - provision_family == 'proxmox'
 
   tags: always
@@ -121,7 +121,7 @@
   delegate_to: localhost
 
   when:
-    - provision_install | default
+    - provision_install | enasisnetwork.utility.present
     - provision_family in item.family
 
   tags: always

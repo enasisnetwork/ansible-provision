@@ -50,7 +50,7 @@
     facts.yml
 
   when:
-    - provision_libvirt | default
+    - provision_libvirt | enasisnetwork.utility.present
     - provision_libvirt.enable
 
   tags: always
@@ -73,7 +73,7 @@
     create.yml
 
   when:
-    - provision_libvirt | default
+    - provision_libvirt | enasisnetwork.utility.present
     - provision_libvirt.enable
 
   tags: libvirt-create
@@ -86,7 +86,7 @@
     update.yml
 
   when:
-    - provision_libvirt | default
+    - provision_libvirt | enasisnetwork.utility.present
     - provision_libvirt.enable
 
   tags: libvirt-update
@@ -99,7 +99,7 @@
     install/upload.yml
 
   when:
-    - provision_libvirt | default
+    - provision_libvirt | enasisnetwork.utility.present
     - provision_libvirt.enable
 
   tags: libvirt-install-upload
@@ -112,7 +112,7 @@
     install/delete.yml
 
   when:
-    - provision_libvirt | default
+    - provision_libvirt | enasisnetwork.utility.present
     - provision_libvirt.enable
 
   tags: libvirt-install-delete
@@ -125,7 +125,7 @@
     state/poweron.yml
 
   when:
-    - provision_libvirt | default
+    - provision_libvirt | enasisnetwork.utility.present
     - provision_libvirt.enable
 
   tags: libvirt-state-poweron
@@ -138,7 +138,7 @@
     state/nopower.yml
 
   when:
-    - provision_libvirt | default
+    - provision_libvirt | enasisnetwork.utility.present
     - provision_libvirt.enable
 
   tags: libvirt-state-nopower
@@ -151,7 +151,7 @@
     delete.yml
 
   when:
-    - provision_libvirt | default
+    - provision_libvirt | enasisnetwork.utility.present
     - provision_libvirt.enable
 
   tags: libvirt-delete
@@ -167,7 +167,7 @@
     overview.yml
 
   when:
-    - provision_libvirt | default
+    - provision_libvirt | enasisnetwork.utility.present
     - provision_libvirt.enable
 
   tags: libvirt-overview

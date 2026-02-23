@@ -32,7 +32,7 @@
 
   delegate_to: localhost
 
-  when: _prvinstall_output | default
+  when: _prvinstall_output | enasisnetwork.utility.present
 
   tags: always
 
@@ -44,7 +44,7 @@
 - name: Insert kickstart into prepare directory
 
   ansible.builtin.copy:
-    src: '{{ item.path | default(_prvinstall_unattend) }}'
+    src: '{{ item.src | default(_prvinstall_unattend) }}'
     dest: '{{ _prvinstall_prepare }}/{{ item.dest }}'
     mode: '0644'
 
@@ -61,9 +61,24 @@
 
     - family: windows
       dest: autounattend.xml
+
     - family: windows
-      dest: autounattend.ps1
-      path: '{{ _prvinstall_unscript }}'
+      src: '{{ _prvinstall_unscript }}'
+      dest: orchestro.ps1
+
+    - family: windows
+      src: '{{ _prvinstall_certpkcs12 }}'
+      dest: certificate.p12
+      when: >-
+        {{ _prvinstall_certpkcs12
+           | enasisnetwork.utility.present }}
+
+    - family: windows
+      src: '{{ _prvinstall_certthbpnt }}'
+      dest: certificate.txt
+      when: >-
+        {{ _prvinstall_certthbpnt
+           | enasisnetwork.utility.present }}
 
     - family: proxmox
       dest: answer.toml
@@ -74,8 +89,9 @@
   delegate_to: localhost
 
   when:
-    - provision_install | default
+    - provision_install | enasisnetwork.utility.present
     - provision_family == item.family
+    - item.when | default(true) | bool
 
   tags: always
 
@@ -179,7 +195,7 @@
   changed_when: true
 
   when:
-    - provision_install | default
+    - provision_install | enasisnetwork.utility.present
     - provision_family == item.family
 
   tags: always
@@ -208,8 +224,15 @@
 
     - family: windows
       path: autounattend.xml
+
     - family: windows
-      path: autounattend.ps1
+      path: orchestro.ps1
+
+    - family: windows
+      path: certificate.p12
+
+    - family: windows
+      path: certificate.txt
 
     - family: proxmox
       path: answer.toml
@@ -220,7 +243,7 @@
   delegate_to: localhost
 
   when:
-    - provision_install | default
+    - provision_install | enasisnetwork.utility.present
     - provision_family == item.family
 
   tags: always
