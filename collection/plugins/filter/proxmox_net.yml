@@ -1,0 +1,23 @@
+---
+# Functions and routines associated with Enasis Network Orchestrations.
+
+# This file is part of Enasis Network software eco-system. Distribution
+# is permitted, for more information consult the project license file.
+
+
+
+DOCUMENTATION:
+  name: proxmox_facts_net
+  short_description: Construct the values for Proxmox.
+  version_added: '0.2.5'
+  description:
+    - Returns the dictionary for the downstream tasks.
+  author:
+    - Robert Harris
+    - Enasis Network
+  options:
+    _input:
+      description:
+        - Input that will be processed with model.
+      type: any
+      required: true

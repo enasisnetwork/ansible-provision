@@ -8,6 +8,16 @@ Check out this collection on
 [Ansible Galaxy](https://galaxy.ansible.com/ui/repo/published/enasisnetwork/provision)
 for more information.
 
+<a href="https://galaxy.ansible.com/ui/repo/published/enasisnetwork/provision"><img src="https://enasisnetwork.github.io/ansible-provision/badges/galaxy.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-provision/validate/flake8.txt"><img src="https://enasisnetwork.github.io/ansible-provision/badges/flake8.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-provision/validate/pylint.txt"><img src="https://enasisnetwork.github.io/ansible-provision/badges/pylint.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-provision/validate/ruff.txt"><img src="https://enasisnetwork.github.io/ansible-provision/badges/ruff.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-provision/validate/mypy.txt"><img src="https://enasisnetwork.github.io/ansible-provision/badges/mypy.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-provision/validate/yamllint.txt"><img src="https://enasisnetwork.github.io/ansible-provision/badges/yamllint.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-provision/validate/ansblint.txt"><img src="https://enasisnetwork.github.io/ansible-provision/badges/ansblint.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-provision/validate/pytest.txt"><img src="https://enasisnetwork.github.io/ansible-provision/badges/pytest.png"></a><br>
+<a href="https://enasisnetwork.github.io/ansible-provision/validate/coverage.txt"><img src="https://enasisnetwork.github.io/ansible-provision/badges/coverage.png"></a><br>
+
 ## Quick start for local development
 Start by cloning the repository to your local machine.
 ```
