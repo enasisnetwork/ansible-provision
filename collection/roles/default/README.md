@@ -31,7 +31,7 @@ ansible-playbook \
 - `provision_domain` Hostname in the operating system
 - `provision_stage` Where the files will be staged
 - `provision_users` Account configuration parameters
-    - Expects `list[dict]` or `dict[str, list[dict]]`
+    - Expects `list[dict]` or `dict[str, dict]`
     - `name` Name for the account on system
     - `uid` Unique identifier for the account
     - `gid` Primary group for the account
@@ -47,13 +47,13 @@ ansible-playbook \
     - `state` Determine whether account present
     - `initial` Define the account in unattended
 - `provision_groups` Group configuration parameters
-    - Expects `list[dict]` or `dict[str, list[dict]]`
+    - Expects `list[dict]` or `dict[str, dict]`
     - `name` Name for the group on system
     - `gid` Unique identifier for the group
     - `system` Determine if is a system group
     - `state` Determine whether group present
 - `provision_storage` Storage configuration parameters
-    - Expects `list[dict]` or `dict[str, list[dict]]`
+    - Expects `list[dict]` or `dict[str, dict]`
     - `name` Device name in operating system
     - `boot` Indicate that disk is bootable
     - `virtual` Define additional host settings
@@ -61,13 +61,13 @@ ansible-playbook \
         - `size` Size of store of virtual device
     - `state` Determine whether device present
     - `partition` Define schematics for partitions
-        - Expects `list[dict]` or `dict[str, list[dict]]`
+        - Expects `list[dict]` or `dict[str, dict]`
         - `name` Unique name for the partition
         - `mount` Where the partition is mounted
         - `fstype` Filesystem format for partition
         - `size` Optional size otherwise grows
 - `provision_network` Network configuration parameters
-    - Expects `list[dict]` or `dict[str, list[dict]]`
+    - Expects `list[dict]` or `dict[str, dict]`
     - `name` Device name in operating system
     - `type` Type of the device to provision
     - `virtual` Define additional host settings
