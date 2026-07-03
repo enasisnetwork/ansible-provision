@@ -1,3 +1,317 @@
 >>> make ansblint
   ● Executing ansible-lint on project..
-    DONE
+syntax-check[specific]: A playbook must be a list of plays, got a <class 'ansible.module_utils._internal._datatag._AnsibleTaggedDict'> instead: /home/runner/work/ansible-provision/ansible-provision/main/collection/molecule/overview/require.yml
+molecule/overview/require.yml:5:1
+
+syntax-check[specific]: The role 'enasisnetwork.provision.default' was not found in: /home/runner/work/ansible-provision/ansible-provision/main/collection/playbooks/roles:/home/runner/work/ansible-provision/ansible-provision/main/collection/roles:/home/runner/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:/home/runner/work/ansible-provision/ansible-provision/main/collection/playbooks
+playbooks/default.yml:23:7
+
+syntax-check[specific]: The role 'enasisnetwork.provision.install' was not found in: /home/runner/work/ansible-provision/ansible-provision/main/collection/playbooks/roles:/home/runner/work/ansible-provision/ansible-provision/main/collection/roles:/home/runner/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:/home/runner/work/ansible-provision/ansible-provision/main/collection/playbooks
+playbooks/install.yml:23:7
+
+syntax-check[specific]: The role 'enasisnetwork.provision.libvirt' was not found in: /home/runner/work/ansible-provision/ansible-provision/main/collection/playbooks/roles:/home/runner/work/ansible-provision/ansible-provision/main/collection/roles:/home/runner/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:/home/runner/work/ansible-provision/ansible-provision/main/collection/playbooks
+playbooks/libvirt.yml:23:7
+
+syntax-check[specific]: The role 'enasisnetwork.provision.proxmox' was not found in: /home/runner/work/ansible-provision/ansible-provision/main/collection/playbooks/roles:/home/runner/work/ansible-provision/ansible-provision/main/collection/roles:/home/runner/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:/home/runner/work/ansible-provision/ansible-provision/main/collection/playbooks
+playbooks/proxmox.yml:23:7
+
+syntax-check[specific]: The role 'enasisnetwork.provision.libvirt' was not found in: /home/runner/work/ansible-provision/ansible-provision/main/collection/playbooks/roles:/home/runner/work/ansible-provision/ansible-provision/main/collection/roles:/home/runner/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles:/home/runner/work/ansible-provision/ansible-provision/main/collection/playbooks
+playbooks/virtual.yml:23:7
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (vars: provision_name)
+roles/default/defaults/main.yml:9:1
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (vars: provision_domain)
+roles/default/defaults/main.yml:10:1
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: _provision_bootable)
+roles/default/tasks/facts.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_domain)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_drivers)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_family)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_groups)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_install)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_install_cached)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_install_certificate)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_install_checksum)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_install_source)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_kind)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_libvirt)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_libvirt_autostart)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_libvirt_enable)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_libvirt_host)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_libvirt_install)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_libvirt_isos)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_libvirt_memory)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_libvirt_osid)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_libvirt_prefix)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_libvirt_uefi)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_libvirt_vcpus)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_name)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_network)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_autostart)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_cores)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_cpu)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_enable)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_endpoint)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_host)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_install)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_memory)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_ostype)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_password)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_port)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_secret)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_token)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_uefi)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox_username)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_stage)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_storage)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_users)
+roles/default/tasks/params.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (register: pbvalidate)
+roles/default/tasks/params.yml:114:13 Task/Handler: Validate role variables using Pydantic
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_domain)
+roles/default/tasks/params.yml:128:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_drivers)
+roles/default/tasks/params.yml:128:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_family)
+roles/default/tasks/params.yml:128:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_groups)
+roles/default/tasks/params.yml:128:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_install)
+roles/default/tasks/params.yml:128:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_kind)
+roles/default/tasks/params.yml:128:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_libvirt)
+roles/default/tasks/params.yml:128:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_name)
+roles/default/tasks/params.yml:128:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_network)
+roles/default/tasks/params.yml:128:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_proxmox)
+roles/default/tasks/params.yml:128:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_stage)
+roles/default/tasks/params.yml:128:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_storage)
+roles/default/tasks/params.yml:128:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use default_ as a prefix. (set_fact: provision_users)
+roles/default/tasks/params.yml:128:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use install_ as a prefix. (set_fact: _prvinstall_certpkcs12)
+roles/install/tasks/facts.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use install_ as a prefix. (set_fact: _prvinstall_certthbpnt)
+roles/install/tasks/facts.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use install_ as a prefix. (set_fact: _prvinstall_distrib)
+roles/install/tasks/facts.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use install_ as a prefix. (set_fact: _prvinstall_download)
+roles/install/tasks/facts.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use install_ as a prefix. (set_fact: _prvinstall_output)
+roles/install/tasks/facts.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use install_ as a prefix. (set_fact: _prvinstall_prepare)
+roles/install/tasks/facts.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use install_ as a prefix. (set_fact: _prvinstall_source)
+roles/install/tasks/facts.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use install_ as a prefix. (set_fact: _prvinstall_srchash)
+roles/install/tasks/facts.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use install_ as a prefix. (set_fact: _prvinstall_unattend)
+roles/install/tasks/facts.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use install_ as a prefix. (set_fact: _prvinstall_unscript)
+roles/install/tasks/facts.yml:12:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use install_ as a prefix. (register: _rsync)
+roles/install/tasks/rsync.yml:27:13 Task/Handler: Construct prepare from the distribute
+
+var-naming[no-role-prefix]: Variables names from within roles should use install_ as a prefix. (register: _rsync)
+roles/install/tasks/rsync.yml:61:13 Task/Handler: Inject the VirtIO drivers into prepare
+
+var-naming[no-role-prefix]: Variables names from within roles should use install_ as a prefix. (register: _rsync)
+roles/install/tasks/rsync.yml:98:13 Task/Handler: Inject the related drivers into prepare
+
+var-naming[no-role-prefix]: Variables names from within roles should use libvirt_ as a prefix. (set_fact: _prvinstall_output)
+roles/libvirt/tasks/facts.yml:12:5 Task/Handler: Declare the initial values for guest
+
+var-naming[no-role-prefix]: Variables names from within roles should use libvirt_ as a prefix. (set_fact: _prvlibvirt_name)
+roles/libvirt/tasks/facts.yml:12:5 Task/Handler: Declare the initial values for guest
+
+var-naming[no-role-prefix]: Variables names from within roles should use libvirt_ as a prefix. (set_fact: _prvlibvirt_uuid)
+roles/libvirt/tasks/facts.yml:12:5 Task/Handler: Declare the initial values for guest
+
+var-naming[no-role-prefix]: Variables names from within roles should use libvirt_ as a prefix. (register: _prvlibvirt_guests)
+roles/libvirt/tasks/facts.yml:41:13 Task/Handler: Retrieve the current list of guests
+
+var-naming[no-role-prefix]: Variables names from within roles should use libvirt_ as a prefix. (set_fact: _prvlibvirt_guest)
+roles/libvirt/tasks/facts.yml:59:5 Task/Handler: Structure the current list of guests
+
+var-naming[no-role-prefix]: Variables names from within roles should use libvirt_ as a prefix. (set_fact: _prvlibvirt_guests)
+roles/libvirt/tasks/facts.yml:59:5 Task/Handler: Structure the current list of guests
+
+jinja[invalid]: Error rendering template: 'in <string>' requires string as left operand, not UndefinedMarker
+roles/libvirt/tasks/facts.yml:64:24 Task/Handler: Structure the current list of guests
+
+var-naming[no-role-prefix]: Variables names from within roles should use libvirt_ as a prefix. (register: _prvlibvirt_stores)
+roles/libvirt/tasks/facts.yml:86:13 Task/Handler: Retrieve the storage pool information
+
+var-naming[no-role-prefix]: Variables names from within roles should use libvirt_ as a prefix. (register: _prvlibvirt_stores)
+roles/libvirt/tasks/facts.yml:123:13 Task/Handler: Retrieve the storage pool information
+
+var-naming[no-role-prefix]: Variables names from within roles should use libvirt_ as a prefix. (set_fact: _prvlibvirt_stores)
+roles/libvirt/tasks/facts.yml:141:5 Task/Handler: Structure the storage pool information
+
+var-naming[no-role-prefix]: Variables names from within roles should use libvirt_ as a prefix. (set_fact: _prvlibvirt_install)
+roles/libvirt/tasks/facts.yml:177:5 Task/Handler: Define the filesystem path to the ISO
+
+var-naming[no-role-prefix]: Variables names from within roles should use libvirt_ as a prefix. (set_fact: _prvlibvirt_params)
+roles/libvirt/tasks/facts.yml:222:5 Task/Handler: Define the parameters for the guest
+
+var-naming[no-role-prefix]: Variables names from within roles should use libvirt_ as a prefix. (register: _prvlibvirt_install_present)
+roles/libvirt/tasks/install/present.yml:12:13 Task/Handler: Check the installation on hypervisor
+
+var-naming[no-role-prefix]: Variables names from within roles should use libvirt_ as a prefix. (set_fact: _prvlibvirt_install_present)
+roles/libvirt/tasks/install/present.yml:30:5 Task/Handler: Declare relevant playbook variables
+
+var-naming[no-role-prefix]: Variables names from within roles should use proxmox_ as a prefix. (set_fact: _prvinstall_output)
+roles/proxmox/tasks/facts.yml:12:5 Task/Handler: Declare the initial values for guest
+
+var-naming[no-role-prefix]: Variables names from within roles should use proxmox_ as a prefix. (set_fact: _prvproxmox_name)
+roles/proxmox/tasks/facts.yml:12:5 Task/Handler: Declare the initial values for guest
+
+var-naming[no-role-prefix]: Variables names from within roles should use proxmox_ as a prefix. (register: _prvproxmox_guests)
+roles/proxmox/tasks/facts.yml:39:13 Task/Handler: Retrieve the current list of guests
+
+var-naming[no-role-prefix]: Variables names from within roles should use proxmox_ as a prefix. (set_fact: _prvproxmox_guest)
+roles/proxmox/tasks/facts.yml:62:5 Task/Handler: Structure the current list of guests
+
+var-naming[no-role-prefix]: Variables names from within roles should use proxmox_ as a prefix. (set_fact: _prvproxmox_guests)
+roles/proxmox/tasks/facts.yml:62:5 Task/Handler: Structure the current list of guests
+
+jinja[invalid]: Error rendering template: 'in <string>' requires string as left operand, not UndefinedMarker
+roles/proxmox/tasks/facts.yml:67:24 Task/Handler: Structure the current list of guests
+
+var-naming[no-role-prefix]: Variables names from within roles should use proxmox_ as a prefix. (register: _prvproxmox_stores)
+roles/proxmox/tasks/facts.yml:89:13 Task/Handler: Retrieve the storage pool information
+
+var-naming[no-role-prefix]: Variables names from within roles should use proxmox_ as a prefix. (set_fact: _prvproxmox_stores)
+roles/proxmox/tasks/facts.yml:112:5 Task/Handler: Structure the storage pool information
+
+var-naming[no-role-prefix]: Variables names from within roles should use proxmox_ as a prefix. (set_fact: _prvproxmox_install)
+roles/proxmox/tasks/facts.yml:131:5 Task/Handler: Define the filesystem path to the ISO
+
+var-naming[no-role-prefix]: Variables names from within roles should use proxmox_ as a prefix. (set_fact: _prvproxmox_params)
+roles/proxmox/tasks/facts.yml:166:5 Task/Handler: Define the parameters for the guest
+
+var-naming[no-role-prefix]: Variables names from within roles should use proxmox_ as a prefix. (register: _prvproxmox_install_present)
+roles/proxmox/tasks/install/present.yml:12:13 Task/Handler: Check the installation on hypervisor
+
+var-naming[no-role-prefix]: Variables names from within roles should use proxmox_ as a prefix. (set_fact: _prvproxmox_install_present)
+roles/proxmox/tasks/install/present.yml:30:5 Task/Handler: Declare relevant playbook variables
+
+yaml[comments]: Missing starting space in comment
+roles/proxmox/tasks/update.yml:29
+
