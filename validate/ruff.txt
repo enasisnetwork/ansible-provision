@@ -1,3 +1,1617 @@
 >>> make ruff
   ● Executing ruff in collection..
-    DONE
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/action/account.py:15:1
+   |
+15 | / from typing import Annotated
+16 | | from typing import Any
+17 | | from typing import Literal
+18 | | from typing import Optional
+19 | |
+20 | | from encommon.types import BaseModel
+21 | |
+22 | | from pydantic import Field
+23 | | from pydantic import field_validator
+   | |____________________________________^
+   |
+help: Organize imports
+   |
+14 |
+   - from typing import Annotated
+   - from typing import Any
+   - from typing import Literal
+   - from typing import Optional
+15 + from typing import Annotated, Any, Literal, Optional
+16 |
+17 | from encommon.types import BaseModel
+   -
+   - from pydantic import Field
+   - from pydantic import field_validator
+   -
+18 + from pydantic import Field, field_validator
+19 |
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/account.py:33:9
+   |
+32 |     linux: Annotated[
+33 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+34 |         Field(None,
+35 |               description='Password hash value for account',
+   |
+help: Convert to `X | None`
+   |
+32 |     linux: Annotated[
+   -         Optional[str],
+33 +         str | None,
+34 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/account.py:39:9
+   |
+38 |     openbsd: Annotated[
+39 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+40 |         Field(None,
+41 |               description='Password hash value for account',
+   |
+help: Convert to `X | None`
+   |
+38 |     openbsd: Annotated[
+   -         Optional[str],
+39 +         str | None,
+40 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/account.py:58:9
+   |
+57 |     uid: Annotated[
+58 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+59 |         Field(None,
+60 |               description='Unique identifier for the account',
+   |
+help: Convert to `X | None`
+   |
+57 |     uid: Annotated[
+   -         Optional[str],
+58 +         str | None,
+59 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/account.py:64:9
+   |
+63 |     gid: Annotated[
+64 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+65 |         Field(None,
+66 |               description='Primary group for the account',
+   |
+help: Convert to `X | None`
+   |
+63 |     gid: Annotated[
+   -         Optional[str],
+64 +         str | None,
+65 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/account.py:70:9
+   |
+69 |     password: Annotated[
+70 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+71 |         Field(None,
+72 |               description='Password when creating account',
+   |
+help: Convert to `X | None`
+   |
+69 |     password: Annotated[
+   -         Optional[str],
+70 +         str | None,
+71 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/account.py:76:9
+   |
+75 |     passhash: Annotated[
+76 |         Optional[AccountPasshashParams],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+77 |         Field(None,
+78 |               description='Password hash value for account')]
+   |
+help: Convert to `X | None`
+   |
+75 |     passhash: Annotated[
+   -         Optional[AccountPasshashParams],
+76 +         AccountPasshashParams | None,
+77 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/account.py:81:9
+   |
+80 |     display: Annotated[
+81 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+82 |         Field(None,
+83 |               description='Friendly display name for account',
+   |
+help: Convert to `X | None`
+   |
+80 |     display: Annotated[
+   -         Optional[str],
+81 +         str | None,
+82 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/account.py:87:9
+   |
+86 |     groups: Annotated[
+87 |         Optional[list[str]],
+   |         ^^^^^^^^^^^^^^^^^^^
+88 |         Field(None,
+89 |               description='Additional groups for the account',
+   |
+help: Convert to `X | None`
+   |
+86 |     groups: Annotated[
+   -         Optional[list[str]],
+87 +         list[str] | None,
+88 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/account.py:93:9
+   |
+92 |     home: Annotated[
+93 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+94 |         Field(None,
+95 |               description='Optional path of the home directory',
+   |
+help: Convert to `X | None`
+   |
+92 |     home: Annotated[
+   -         Optional[str],
+93 +         str | None,
+94 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/account.py:99:9
+    |
+ 98 |     shell: Annotated[
+ 99 |         Optional[str],
+    |         ^^^^^^^^^^^^^
+100 |         Field(None,
+101 |               description='Optional path of shell executable',
+    |
+help: Convert to `X | None`
+    |
+98  |     shell: Annotated[
+    -         Optional[str],
+99  +         str | None,
+100 |         Field(None,
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/account.py:127:22
+    |
+125 |         # NOCVR
+126 |         cls,
+127 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+128 |     ) -> Any:  # noqa: ANN401
+129 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+126 |         cls,
+    -         value: Any,  # noqa: ANN401
+127 +         value: Any,
+128 |     ) -> Any:  # noqa: ANN401
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/account.py:128:16
+    |
+126 |         cls,
+127 |         value: Any,  # noqa: ANN401
+128 |     ) -> Any:  # noqa: ANN401
+    |                ^^^^^^^^^^^^^^
+129 |         """
+130 |         Perform advanced validation on the parameters provided.
+    |
+help: Remove unused `noqa` directive
+    |
+127 |         value: Any,  # noqa: ANN401
+    -     ) -> Any:  # noqa: ANN401
+128 +     ) -> Any:
+129 |         """
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/action/group.py:15:1
+   |
+15 | / from typing import Annotated
+16 | | from typing import Literal
+17 | | from typing import Optional
+18 | |
+19 | | from encommon.types import BaseModel
+20 | |
+21 | | from pydantic import Field
+   | |__________________________^
+   |
+help: Organize imports
+   |
+14 |
+   - from typing import Annotated
+   - from typing import Literal
+   - from typing import Optional
+15 + from typing import Annotated, Literal, Optional
+16 |
+17 | from encommon.types import BaseModel
+   -
+18 | from pydantic import Field
+   -
+19 |
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/group.py:37:9
+   |
+36 |     gid: Annotated[
+37 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+38 |         Field(None,
+39 |               description='Unique identifier for the group',
+   |
+help: Convert to `X | None`
+   |
+36 |     gid: Annotated[
+   -         Optional[str],
+37 +         str | None,
+38 |         Field(None,
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/action/install.py:15:1
+   |
+15 | / from pathlib import Path
+16 | | from re import match as re_match
+17 | | from typing import Annotated
+18 | | from typing import Any
+19 | | from typing import Optional
+20 | |
+21 | | from encommon.types import BaseModel
+22 | |
+23 | | from pydantic import Field
+24 | | from pydantic import field_validator
+25 | | from pydantic import model_validator
+   | |____________________________________^
+   |
+help: Organize imports
+   |
+16 | from re import match as re_match
+   - from typing import Annotated
+   - from typing import Any
+   - from typing import Optional
+17 + from typing import Annotated, Any, Optional
+18 |
+19 | from encommon.types import BaseModel
+   -
+   - from pydantic import Field
+   - from pydantic import field_validator
+   - from pydantic import model_validator
+   -
+20 + from pydantic import Field, field_validator, model_validator
+21 |
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/install.py:35:9
+   |
+34 |     certificate: Annotated[
+35 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+36 |         Field(None,
+37 |               description='Path to the P12 certificate file',
+   |
+help: Convert to `X | None`
+   |
+34 |     certificate: Annotated[
+   -         Optional[str],
+35 +         str | None,
+36 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/install.py:41:9
+   |
+40 |     thumbprint: Annotated[
+41 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+42 |         Field(None,
+43 |               description='Path to the certificate thumbprint',
+   |
+help: Convert to `X | None`
+   |
+40 |     thumbprint: Annotated[
+   -         Optional[str],
+41 +         str | None,
+42 |         Field(None,
+   |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+  --> collection/plugins/action/install.py:55:22
+   |
+53 |         # NOCVR
+54 |         cls,
+55 |         value: Any,  # noqa: ANN401
+   |                      ^^^^^^^^^^^^^^
+56 |     ) -> Optional[str]:
+57 |         """
+   |
+help: Remove unused `noqa` directive
+   |
+54 |         cls,
+   -         value: Any,  # noqa: ANN401
+55 +         value: Any,
+56 |     ) -> Optional[str]:
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/install.py:56:10
+   |
+54 |         cls,
+55 |         value: Any,  # noqa: ANN401
+56 |     ) -> Optional[str]:
+   |          ^^^^^^^^^^^^^
+57 |         """
+58 |         Perform advanced validation on the parameters provided.
+   |
+help: Convert to `X | None`
+   |
+55 |         value: Any,  # noqa: ANN401
+   -     ) -> Optional[str]:
+56 +     ) -> str | None:
+57 |         """
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/install.py:83:9
+   |
+82 |     windows: Annotated[
+83 |         Optional[InstallWindowsCertificateParams],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+84 |         Field(None,
+85 |               description='Paths to various certificate files')]
+   |
+help: Convert to `X | None`
+   |
+82 |     windows: Annotated[
+   -         Optional[InstallWindowsCertificateParams],
+83 +         InstallWindowsCertificateParams | None,
+84 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/install.py:101:9
+    |
+100 |     checksum: Annotated[
+101 |         Optional[str],
+    |         ^^^^^^^^^^^^^
+102 |         Field(None,
+103 |               description='Expected hash value of the ISO',
+    |
+help: Convert to `X | None`
+    |
+100 |     checksum: Annotated[
+    -         Optional[str],
+101 +         str | None,
+102 |         Field(None,
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/install.py:107:9
+    |
+106 |     cached: Annotated[
+107 |         Optional[str],
+    |         ^^^^^^^^^^^^^
+108 |         Field(None,
+109 |               description='File name when downloading file',
+    |
+help: Convert to `X | None`
+    |
+106 |     cached: Annotated[
+    -         Optional[str],
+107 +         str | None,
+108 |         Field(None,
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/install.py:113:9
+    |
+112 |     certificate: Annotated[
+113 |         Optional[InstallCertificateParams],
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+114 |         Field(None,
+115 |               description='Optional certificate for install')]
+    |
+help: Convert to `X | None`
+    |
+112 |     certificate: Annotated[
+    -         Optional[InstallCertificateParams],
+113 +         InstallCertificateParams | None,
+114 |         Field(None,
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/action/libvirt.py:15:1
+   |
+15 | / from typing import Annotated
+16 | | from typing import Optional
+17 | |
+18 | | from encommon.types import BaseModel
+19 | |
+20 | | from pydantic import Field
+   | |__________________________^
+   |
+help: Organize imports
+   |
+14 |
+   - from typing import Annotated
+   - from typing import Optional
+15 + from typing import Annotated, Optional
+16 |
+17 | from encommon.types import BaseModel
+   -
+18 | from pydantic import Field
+   -
+19 |
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/libvirt.py:40:9
+   |
+39 |     host: Annotated[
+40 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+41 |         Field(None,
+42 |               description='Inventory host where Libvirt runs',
+   |
+help: Convert to `X | None`
+   |
+39 |     host: Annotated[
+   -         Optional[str],
+40 +         str | None,
+41 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/libvirt.py:69:9
+   |
+68 |     osid: Annotated[
+69 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+70 |         Field(None,
+71 |               description='Identifier for operating system',
+   |
+help: Convert to `X | None`
+   |
+68 |     osid: Annotated[
+   -         Optional[str],
+69 +         str | None,
+70 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/libvirt.py:75:9
+   |
+74 |     isos: Annotated[
+75 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+76 |         Field(None,
+77 |               description='Indicate where to upload the ISO',
+   |
+help: Convert to `X | None`
+   |
+74 |     isos: Annotated[
+   -         Optional[str],
+75 +         str | None,
+76 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/libvirt.py:81:9
+   |
+80 |     install: Annotated[
+81 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+82 |         Field(None,
+83 |               description='Optional path to installation ISO',
+   |
+help: Convert to `X | None`
+   |
+80 |     install: Annotated[
+   -         Optional[str],
+81 +         str | None,
+82 |         Field(None,
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/action/network.py:15:1
+   |
+15 | / from typing import Annotated
+16 | | from typing import Any
+17 | | from typing import Literal
+18 | | from typing import Optional
+19 | |
+20 | | from encommon.types import BaseModel
+21 | |
+22 | | from pydantic import Field
+23 | | from pydantic import field_validator
+   | |____________________________________^
+   |
+help: Organize imports
+   |
+14 |
+   - from typing import Annotated
+   - from typing import Any
+   - from typing import Literal
+   - from typing import Optional
+15 + from typing import Annotated, Any, Literal, Optional
+16 |
+17 | from encommon.types import BaseModel
+   -
+   - from pydantic import Field
+   - from pydantic import field_validator
+   -
+18 + from pydantic import Field, field_validator
+19 |
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/network.py:58:9
+   |
+57 |     virtual: Annotated[
+58 |         Optional[NetworkHostParams],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+59 |         Field(None,
+60 |               description='Define additional host settings')]
+   |
+help: Convert to `X | None`
+   |
+57 |     virtual: Annotated[
+   -         Optional[NetworkHostParams],
+58 +         NetworkHostParams | None,
+59 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/network.py:68:9
+   |
+67 |     ipaddr: Annotated[
+68 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+69 |         Field(None,
+70 |               description='Address of the network interface',
+   |
+help: Convert to `X | None`
+   |
+67 |     ipaddr: Annotated[
+   -         Optional[str],
+68 +         str | None,
+69 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/network.py:74:9
+   |
+73 |     hwaddr: Annotated[
+74 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+75 |         Field(None,
+76 |               description='Address of the network interface',
+   |
+help: Convert to `X | None`
+   |
+73 |     hwaddr: Annotated[
+   -         Optional[str],
+74 +         str | None,
+75 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/network.py:80:9
+   |
+79 |     resolve: Annotated[
+80 |         Optional[list[str]],
+   |         ^^^^^^^^^^^^^^^^^^^
+81 |         Field(None,
+82 |               description='Servers for recursive DNS queries',
+   |
+help: Convert to `X | None`
+   |
+79 |     resolve: Annotated[
+   -         Optional[list[str]],
+80 +         list[str] | None,
+81 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/network.py:86:9
+   |
+85 |     gateway: Annotated[
+86 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+87 |         Field(None,
+88 |               description='Default gateway for the interface',
+   |
+help: Convert to `X | None`
+   |
+85 |     gateway: Annotated[
+   -         Optional[str],
+86 +         str | None,
+87 |         Field(None,
+   |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/network.py:99:22
+    |
+ 97 |         # NOCVR
+ 98 |         cls,
+ 99 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+100 |     ) -> Any:  # noqa: ANN401
+101 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+98  |         cls,
+    -         value: Any,  # noqa: ANN401
+99  +         value: Any,
+100 |     ) -> Any:  # noqa: ANN401
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/network.py:100:16
+    |
+ 98 |         cls,
+ 99 |         value: Any,  # noqa: ANN401
+100 |     ) -> Any:  # noqa: ANN401
+    |                ^^^^^^^^^^^^^^
+101 |         """
+102 |         Perform advanced validation on the parameters provided.
+    |
+help: Remove unused `noqa` directive
+    |
+99  |         value: Any,  # noqa: ANN401
+    -     ) -> Any:  # noqa: ANN401
+100 +     ) -> Any:
+101 |         """
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/network.py:118:22
+    |
+116 |         # NOCVR
+117 |         cls,
+118 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+119 |     ) -> Any:  # noqa: ANN401
+120 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+117 |         cls,
+    -         value: Any,  # noqa: ANN401
+118 +         value: Any,
+119 |     ) -> Any:  # noqa: ANN401
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/network.py:119:16
+    |
+117 |         cls,
+118 |         value: Any,  # noqa: ANN401
+119 |     ) -> Any:  # noqa: ANN401
+    |                ^^^^^^^^^^^^^^
+120 |         """
+121 |         Perform advanced validation on the parameters provided.
+    |
+help: Remove unused `noqa` directive
+    |
+118 |         value: Any,  # noqa: ANN401
+    -     ) -> Any:  # noqa: ANN401
+119 +     ) -> Any:
+120 |         """
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/action/params.py:15:1
+   |
+15 | / from pathlib import Path
+16 | | from typing import Annotated
+17 | | from typing import Any
+18 | | from typing import Literal
+19 | | from typing import Optional
+20 | |
+21 | | from ansible.plugins.action import ActionBase  # type: ignore
+22 | |
+23 | | from encommon.types import BaseModel
+24 | | from encommon.types import DictStrAny
+25 | | from encommon.types import sort_dict
+26 | |
+27 | | from pydantic import Field
+28 | | from pydantic import field_validator
+29 | |
+30 | | from .account import AccountParams
+31 | | from .group import GroupParams
+32 | | from .install import InstallParams
+33 | | from .libvirt import LibvirtParams
+34 | | from .network import NetworkParams
+35 | | from .proxmox import ProxmoxParams
+36 | | from .storage import StorageParams
+   | |__________________________________^
+   |
+help: Organize imports
+   |
+15 | from pathlib import Path
+   - from typing import Annotated
+   - from typing import Any
+   - from typing import Literal
+   - from typing import Optional
+16 + from typing import Annotated, Any, Literal, Optional
+17 |
+18 | from ansible.plugins.action import ActionBase  # type: ignore
+19 + from encommon.types import BaseModel, DictStrAny, sort_dict
+20 + from pydantic import Field, field_validator
+21 |
+   - from encommon.types import BaseModel
+   - from encommon.types import DictStrAny
+   - from encommon.types import sort_dict
+   -
+   - from pydantic import Field
+   - from pydantic import field_validator
+   -
+22 | from .account import AccountParams
+--------------------------------------------------------------------------------
+28 | from .storage import StorageParams
+   -
+29 |
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/params.py:79:9
+   |
+78 |     install: Annotated[
+79 |         Optional[InstallParams],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^
+80 |         Field(None,
+81 |               description='Parameters for the install ISO')]
+   |
+help: Convert to `X | None`
+   |
+78 |     install: Annotated[
+   -         Optional[InstallParams],
+79 +         InstallParams | None,
+80 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/params.py:84:9
+   |
+83 |     users: Annotated[
+84 |         Optional[list[AccountParams]],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+85 |         Field(None,
+86 |               description='Account configuration parameters')]
+   |
+help: Convert to `X | None`
+   |
+83 |     users: Annotated[
+   -         Optional[list[AccountParams]],
+84 +         list[AccountParams] | None,
+85 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/params.py:89:9
+   |
+88 |     groups: Annotated[
+89 |         Optional[list[GroupParams]],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+90 |         Field(None,
+91 |               description='Group configuration parameters')]
+   |
+help: Convert to `X | None`
+   |
+88 |     groups: Annotated[
+   -         Optional[list[GroupParams]],
+89 +         list[GroupParams] | None,
+90 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/params.py:94:9
+   |
+93 |     storage: Annotated[
+94 |         Optional[list[StorageParams]],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+95 |         Field(None,
+96 |               description='Storage configuration parameters')]
+   |
+help: Convert to `X | None`
+   |
+93 |     storage: Annotated[
+   -         Optional[list[StorageParams]],
+94 +         list[StorageParams] | None,
+95 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/params.py:99:9
+    |
+ 98 |     network: Annotated[
+ 99 |         Optional[list[NetworkParams]],
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+100 |         Field(None,
+101 |               description='Network configuration parameters')]
+    |
+help: Convert to `X | None`
+    |
+98  |     network: Annotated[
+    -         Optional[list[NetworkParams]],
+99  +         list[NetworkParams] | None,
+100 |         Field(None,
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/params.py:104:9
+    |
+103 |     drivers: Annotated[
+104 |         Optional[str],
+    |         ^^^^^^^^^^^^^
+105 |         Field(None,
+106 |               description='Additional drivers to include',
+    |
+help: Convert to `X | None`
+    |
+103 |     drivers: Annotated[
+    -         Optional[str],
+104 +         str | None,
+105 |         Field(None,
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/params.py:110:9
+    |
+109 |     libvirt: Annotated[
+110 |         Optional[LibvirtParams],
+    |         ^^^^^^^^^^^^^^^^^^^^^^^
+111 |         Field(None,
+112 |               description='Parameters for VM provisioning')]
+    |
+help: Convert to `X | None`
+    |
+109 |     libvirt: Annotated[
+    -         Optional[LibvirtParams],
+110 +         LibvirtParams | None,
+111 |         Field(None,
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/params.py:115:9
+    |
+114 |     proxmox: Annotated[
+115 |         Optional[ProxmoxParams],
+    |         ^^^^^^^^^^^^^^^^^^^^^^^
+116 |         Field(None,
+117 |               description='Parameters for VM provisioning')]
+    |
+help: Convert to `X | None`
+    |
+114 |     proxmox: Annotated[
+    -         Optional[ProxmoxParams],
+115 +         ProxmoxParams | None,
+116 |         Field(None,
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/params.py:168:22
+    |
+166 |         # NOCVR
+167 |         cls,
+168 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+169 |     ) -> Any:  # noqa: ANN401
+170 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+167 |         cls,
+    -         value: Any,  # noqa: ANN401
+168 +         value: Any,
+169 |     ) -> Any:  # noqa: ANN401
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/params.py:169:16
+    |
+167 |         cls,
+168 |         value: Any,  # noqa: ANN401
+169 |     ) -> Any:  # noqa: ANN401
+    |                ^^^^^^^^^^^^^^
+170 |         """
+171 |         Perform advanced validation on the parameters provided.
+    |
+help: Remove unused `noqa` directive
+    |
+168 |         value: Any,  # noqa: ANN401
+    -     ) -> Any:  # noqa: ANN401
+169 +     ) -> Any:
+170 |         """
+    |
+
+PLR1704 Redefining argument with the local name `value`
+   --> collection/plugins/action/params.py:187:18
+    |
+185 |         items = value.items()
+186 |
+187 |         for key, value in items:
+    |                  ^^^^^
+188 |
+189 |             value = dict(value)
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/params.py:210:22
+    |
+208 |         # NOCVR
+209 |         cls,
+210 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+211 |     ) -> Any:  # noqa: ANN401
+212 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+209 |         cls,
+    -         value: Any,  # noqa: ANN401
+210 +         value: Any,
+211 |     ) -> Any:  # noqa: ANN401
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/params.py:211:16
+    |
+209 |         cls,
+210 |         value: Any,  # noqa: ANN401
+211 |     ) -> Any:  # noqa: ANN401
+    |                ^^^^^^^^^^^^^^
+212 |         """
+213 |         Perform advanced validation on the parameters provided.
+    |
+help: Remove unused `noqa` directive
+    |
+210 |         value: Any,  # noqa: ANN401
+    -     ) -> Any:  # noqa: ANN401
+211 +     ) -> Any:
+212 |         """
+    |
+
+PLR1704 Redefining argument with the local name `value`
+   --> collection/plugins/action/params.py:229:18
+    |
+227 |         items = value.items()
+228 |
+229 |         for key, value in items:
+    |                  ^^^^^
+230 |
+231 |             value = dict(value)
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/params.py:252:22
+    |
+250 |         # NOCVR
+251 |         cls,
+252 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+253 |     ) -> Any:  # noqa: ANN401
+254 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+251 |         cls,
+    -         value: Any,  # noqa: ANN401
+252 +         value: Any,
+253 |     ) -> Any:  # noqa: ANN401
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/params.py:253:16
+    |
+251 |         cls,
+252 |         value: Any,  # noqa: ANN401
+253 |     ) -> Any:  # noqa: ANN401
+    |                ^^^^^^^^^^^^^^
+254 |         """
+255 |         Perform advanced validation on the parameters provided.
+    |
+help: Remove unused `noqa` directive
+    |
+252 |         value: Any,  # noqa: ANN401
+    -     ) -> Any:  # noqa: ANN401
+253 +     ) -> Any:
+254 |         """
+    |
+
+PLR1704 Redefining argument with the local name `value`
+   --> collection/plugins/action/params.py:271:18
+    |
+269 |         items = value.items()
+270 |
+271 |         for key, value in items:
+    |                  ^^^^^
+272 |
+273 |             value = dict(value)
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/params.py:294:22
+    |
+292 |         # NOCVR
+293 |         cls,
+294 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+295 |     ) -> Any:  # noqa: ANN401
+296 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+293 |         cls,
+    -         value: Any,  # noqa: ANN401
+294 +         value: Any,
+295 |     ) -> Any:  # noqa: ANN401
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/params.py:295:16
+    |
+293 |         cls,
+294 |         value: Any,  # noqa: ANN401
+295 |     ) -> Any:  # noqa: ANN401
+    |                ^^^^^^^^^^^^^^
+296 |         """
+297 |         Perform advanced validation on the parameters provided.
+    |
+help: Remove unused `noqa` directive
+    |
+294 |         value: Any,  # noqa: ANN401
+    -     ) -> Any:  # noqa: ANN401
+295 +     ) -> Any:
+296 |         """
+    |
+
+PLR1704 Redefining argument with the local name `value`
+   --> collection/plugins/action/params.py:313:18
+    |
+311 |         items = value.items()
+312 |
+313 |         for key, value in items:
+    |                  ^^^^^
+314 |
+315 |             value = dict(value)
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/params.py:336:22
+    |
+334 |         # NOCVR
+335 |         cls,
+336 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+337 |     ) -> Optional[str]:
+338 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+335 |         cls,
+    -         value: Any,  # noqa: ANN401
+336 +         value: Any,
+337 |     ) -> Optional[str]:
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/params.py:337:10
+    |
+335 |         cls,
+336 |         value: Any,  # noqa: ANN401
+337 |     ) -> Optional[str]:
+    |          ^^^^^^^^^^^^^
+338 |         """
+339 |         Perform advanced validation on the parameters provided.
+    |
+help: Convert to `X | None`
+    |
+336 |         value: Any,  # noqa: ANN401
+    -     ) -> Optional[str]:
+337 +     ) -> str | None:
+338 |         """
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/params.py:367:14
+    |
+365 |         # NOCVR
+366 |         self,
+367 |         tmp: Optional[str] = None,
+    |              ^^^^^^^^^^^^^
+368 |         task_vars: Optional[DictStrAny] = None,
+369 |     ) -> DictStrAny:
+    |
+help: Convert to `X | None`
+    |
+366 |         self,
+    -         tmp: Optional[str] = None,
+367 +         tmp: str | None = None,
+368 |         task_vars: Optional[DictStrAny] = None,
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/params.py:368:20
+    |
+366 |         self,
+367 |         tmp: Optional[str] = None,
+368 |         task_vars: Optional[DictStrAny] = None,
+    |                    ^^^^^^^^^^^^^^^^^^^^
+369 |     ) -> DictStrAny:
+370 |         """
+    |
+help: Convert to `X | None`
+    |
+367 |         tmp: Optional[str] = None,
+    -         task_vars: Optional[DictStrAny] = None,
+368 +         task_vars: DictStrAny | None = None,
+369 |     ) -> DictStrAny:
+    |
+
+BLE001 Do not catch blind exception: `Exception`
+   --> collection/plugins/action/params.py:407:16
+    |
+407 |         except Exception as reason:
+    |                ^^^^^^^^^
+408 |             result |= {
+409 |                 'failed': True,
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/action/proxmox.py:15:1
+   |
+15 | / from typing import Annotated
+16 | | from typing import Optional
+17 | |
+18 | | from encommon.types import BaseModel
+19 | |
+20 | | from pydantic import Field
+   | |__________________________^
+   |
+help: Organize imports
+   |
+14 |
+   - from typing import Annotated
+   - from typing import Optional
+15 + from typing import Annotated, Optional
+16 |
+17 | from encommon.types import BaseModel
+   -
+18 | from pydantic import Field
+   -
+19 |
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/proxmox.py:40:9
+   |
+39 |     host: Annotated[
+40 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+41 |         Field(None,
+42 |               description='Inventory host where Proxmox runs',
+   |
+help: Convert to `X | None`
+   |
+39 |     host: Annotated[
+   -         Optional[str],
+40 +         str | None,
+41 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/proxmox.py:46:9
+   |
+45 |     endpoint: Annotated[
+46 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+47 |         Field(None,
+48 |               description='API endpoint for the operations',
+   |
+help: Convert to `X | None`
+   |
+45 |     endpoint: Annotated[
+   -         Optional[str],
+46 +         str | None,
+47 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/proxmox.py:58:9
+   |
+57 |     username: Annotated[
+58 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+59 |         Field(None,
+60 |               description='Username for API authentication',
+   |
+help: Convert to `X | None`
+   |
+57 |     username: Annotated[
+   -         Optional[str],
+58 +         str | None,
+59 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/proxmox.py:64:9
+   |
+63 |     password: Annotated[
+64 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+65 |         Field(None,
+66 |               description='Password for API authentication',
+   |
+help: Convert to `X | None`
+   |
+63 |     password: Annotated[
+   -         Optional[str],
+64 +         str | None,
+65 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/proxmox.py:70:9
+   |
+69 |     token: Annotated[
+70 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+71 |         Field(None,
+72 |               description='Credential for API authentication',
+   |
+help: Convert to `X | None`
+   |
+69 |     token: Annotated[
+   -         Optional[str],
+70 +         str | None,
+71 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/proxmox.py:76:9
+   |
+75 |     secret: Annotated[
+76 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+77 |         Field(None,
+78 |               description='Credential for API authentication',
+   |
+help: Convert to `X | None`
+   |
+75 |     secret: Annotated[
+   -         Optional[str],
+76 +         str | None,
+77 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/proxmox.py:82:9
+   |
+81 |     cpu: Annotated[
+82 |         Optional[str],
+   |         ^^^^^^^^^^^^^
+83 |         Field(None,
+84 |               description='What type of CPU for the guest',
+   |
+help: Convert to `X | None`
+   |
+81 |     cpu: Annotated[
+   -         Optional[str],
+82 +         str | None,
+83 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/proxmox.py:105:9
+    |
+104 |     ostype: Annotated[
+105 |         Optional[str],
+    |         ^^^^^^^^^^^^^
+106 |         Field(None,
+107 |               description='Identifier for operating system',
+    |
+help: Convert to `X | None`
+    |
+104 |     ostype: Annotated[
+    -         Optional[str],
+105 +         str | None,
+106 |         Field(None,
+    |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/proxmox.py:111:9
+    |
+110 |     install: Annotated[
+111 |         Optional[str],
+    |         ^^^^^^^^^^^^^
+112 |         Field(None,
+113 |               description='Optional path to installation ISO',
+    |
+help: Convert to `X | None`
+    |
+110 |     install: Annotated[
+    -         Optional[str],
+111 +         str | None,
+112 |         Field(None,
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/action/storage.py:15:1
+   |
+15 | / from typing import Annotated
+16 | | from typing import Any
+17 | | from typing import Literal
+18 | | from typing import Optional
+19 | |
+20 | | from encommon.types import BaseModel
+21 | |
+22 | | from pydantic import Field
+23 | | from pydantic import field_validator
+   | |____________________________________^
+   |
+help: Organize imports
+   |
+14 |
+   - from typing import Annotated
+   - from typing import Any
+   - from typing import Literal
+   - from typing import Optional
+15 + from typing import Annotated, Any, Literal, Optional
+16 |
+17 | from encommon.types import BaseModel
+   -
+   - from pydantic import Field
+   - from pydantic import field_validator
+   -
+18 + from pydantic import Field, field_validator
+19 |
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/storage.py:70:9
+   |
+69 |     size: Annotated[
+70 |         Optional[int],
+   |         ^^^^^^^^^^^^^
+71 |         Field(None,
+72 |               description='Optional size otherwise grows',
+   |
+help: Convert to `X | None`
+   |
+69 |     size: Annotated[
+   -         Optional[int],
+70 +         int | None,
+71 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+  --> collection/plugins/action/storage.py:94:9
+   |
+93 |     virtual: Annotated[
+94 |         Optional[StorageHostParams],
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+95 |         Field(None,
+96 |               description='Define additional host settings')]
+   |
+help: Convert to `X | None`
+   |
+93 |     virtual: Annotated[
+   -         Optional[StorageHostParams],
+94 +         StorageHostParams | None,
+95 |         Field(None,
+   |
+
+UP045 [*] Use `X | None` for type annotations
+   --> collection/plugins/action/storage.py:104:9
+    |
+103 |     partition: Annotated[
+104 |         Optional[list[StoragePartParams]],
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+105 |         Field(None,
+106 |               description='Define schematics for partitions')]
+    |
+help: Convert to `X | None`
+    |
+103 |     partition: Annotated[
+    -         Optional[list[StoragePartParams]],
+104 +         list[StoragePartParams] | None,
+105 |         Field(None,
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/storage.py:116:22
+    |
+114 |         # NOCVR
+115 |         cls,
+116 |         value: Any,  # noqa: ANN401
+    |                      ^^^^^^^^^^^^^^
+117 |     ) -> Any:  # noqa: ANN401
+118 |         """
+    |
+help: Remove unused `noqa` directive
+    |
+115 |         cls,
+    -         value: Any,  # noqa: ANN401
+116 +         value: Any,
+117 |     ) -> Any:  # noqa: ANN401
+    |
+
+RUF100 [*] Unused `noqa` directive (non-enabled: `ANN401`)
+   --> collection/plugins/action/storage.py:117:16
+    |
+115 |         cls,
+116 |         value: Any,  # noqa: ANN401
+117 |     ) -> Any:  # noqa: ANN401
+    |                ^^^^^^^^^^^^^^
+118 |         """
+119 |         Perform advanced validation on the parameters provided.
+    |
+help: Remove unused `noqa` directive
+    |
+116 |         value: Any,  # noqa: ANN401
+    -     ) -> Any:  # noqa: ANN401
+117 +     ) -> Any:
+118 |         """
+    |
+
+PLR1704 Redefining argument with the local name `value`
+   --> collection/plugins/action/storage.py:135:18
+    |
+133 |         items = value.items()
+134 |
+135 |         for key, value in items:
+    |                  ^^^^^
+136 |
+137 |             value = dict(value)
+    |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/filter/proxmox.py:10:1
+   |
+10 | / from typing import Any
+11 | | from typing import TYPE_CHECKING
+   | |________________________________^
+12 |
+13 |   if TYPE_CHECKING:
+   |
+help: Organize imports
+   |
+9  |
+   - from typing import Any
+   - from typing import TYPE_CHECKING
+10 + from typing import TYPE_CHECKING, Any
+11 |
+   |
+
+UP009 [*] UTF-8 encoding declaration is unnecessary
+ --> collection/plugins/modules/mountiso.py:2:1
+  |
+1 | #!/usr/bin/python
+2 | # -*- coding: utf-8 -*-
+  | ^^^^^^^^^^^^^^^^^^^^^^^
+3 | """
+4 | Functions and routines associated with Enasis Network Orchestrations.
+  |
+help: Remove unnecessary coding comment
+  |
+1 | #!/usr/bin/python
+  - # -*- coding: utf-8 -*-
+2 | """
+  |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/plugins/modules/mountiso.py:12:1
+   |
+12 | / from os import getuid
+13 | | from pathlib import Path
+14 | |
+15 | | from ansible.module_utils.basic import AnsibleModule  # type: ignore
+16 | |
+17 | | from encommon.types import DictStrAny
+18 | | from encommon.types import LDictStrAny
+19 | | from encommon.types import sort_dict
+   | |____________________________________^
+   |
+help: Organize imports
+   |
+15 | from ansible.module_utils.basic import AnsibleModule  # type: ignore
+   -
+   - from encommon.types import DictStrAny
+   - from encommon.types import LDictStrAny
+   - from encommon.types import sort_dict
+   -
+   -
+16 + from encommon.types import DictStrAny, LDictStrAny, sort_dict
+17 |
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/tests/integration/__init__.py:10:1
+   |
+10 | from pathlib import Path
+   | ^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+help: Organize imports
+   |
+11 |
+   -
+   -
+12 | SAMPLES = (
+   |
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> collection/tests/integration/test_default.py:10:1
+   |
+10 | / from os import environ
+11 | | from pathlib import Path
+12 | | from sys import executable
+13 | |
+14 | | from _pytest.capture import CaptureFixture
+15 | |
+16 | | from encommon.utils.stdout import strip_ansi
+17 | |
+18 | | from pytest_ansible.molecule import MoleculeScenario
+19 | |
+20 | | from . import SAMPLES
+   | |_____________________^
+   |
+help: Organize imports
+   |
+14 | from _pytest.capture import CaptureFixture
+   -
+15 | from encommon.utils.stdout import strip_ansi
+   -
+16 | from pytest_ansible.molecule import MoleculeScenario
+17 |
+18 | from . import SAMPLES
+   -
+19 |
+   |
+
+RUF059 Unpacked variable `stderr` is never used
+  --> collection/tests/integration/test_default.py:44:13
+   |
+44 |     stdout, stderr = (
+   |             ^^^^^^
+45 |         capfd.readouterr())
+   |
+help: Prefix it with an underscore or any other dummy variable pattern
+
