@@ -3,19 +3,169 @@
 ============================= test session starts ==============================
 platform linux -- Python 3.12.14, pytest-9.1.1, pluggy-1.6.0 -- /home/runner/work/ansible-provision/ansible-provision/main/.venv-package/bin/python3
 cachedir: .pytest_cache
-Using --randomly-seed=1700558737
+Using --randomly-seed=2443976254
 ansible: 2.21.3
 rootdir: /home/runner/work/ansible-provision/ansible-provision/main
 configfile: setup.cfg
-plugins: randomly-4.1.0, ansible-26.8.0, cov-7.1.0, mypy-1.0.1, clarity-1.0.1, sphinx-0.7.1, xdist-3.8.0
+plugins: mypy-1.0.1, clarity-1.0.1, cov-7.1.0, ansible-26.8.0, randomly-5.0.0, sphinx-0.7.1, xdist-3.8.0
 created: 4/4 workers
 4 workers [1 item]
 
 scheduling tests via LoadScheduling
 
 collection/tests/integration/test_default.py::test_default[collection-overview] 
-[gw0] [100%] PASSED collection/tests/integration/test_default.py::test_default[collection-overview] 
+[gw0] [100%] FAILED collection/tests/integration/test_default.py::test_default[collection-overview] 
 
+=================================== FAILURES ===================================
+______________________ test_default[collection-overview] _______________________
+[gw0] linux -- Python 3.12.14 /home/runner/work/ansible-provision/ansible-provision/main/.venv-package/bin/python3
+
+molecule_scenario = <pytest_ansible.molecule.MoleculeScenario object at 0x7f8be0b1bd70>
+capfd = <_pytest.capture.CaptureFixture object at 0x7f8bdb650f20>
+
+    def test_default(
+        molecule_scenario: MoleculeScenario,
+        capfd: CaptureFixture[str],
+    ) -> None:
+        """
+        Perform various tests associated with relevant routines.
+    
+        :param molecule_scenario: Fixture for testing scenarios.
+        :param capfd: pytest object for capturing print message.
+        """
+    
+        environ['PATH'] = (
+            f'{Path(executable).parent}'
+            f":{environ['PATH']}")  # noqa: LIT001
+    
+        proc = molecule_scenario.test()
+    
+>       assert proc.returncode == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/bin/python3', '-m', 'molecule', 'test', '-s', 'overview'], returncode=1).returncode
+
+collection/tests/integration/test_default.py:41: AssertionError
+----------------------------- Captured stdout call -----------------------------
+::group::Molecule overview > dependency
+::endgroup::
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/__main__.py", line 28, in <module>
+    main(standalone_mode=False)  # pylint: disable=no-value-for-parameter
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/click/core.py", line 1631, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/click/core.py", line 1552, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/click/core.py", line 2032, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/click/core.py", line 1415, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/click/core.py", line 910, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/click_cfg.py", line 660, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/click/decorators.py", line 34, in new_func
+    return f(get_current_context(), *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/click_cfg.py", line 479, in wrapper
+    return func(ctx)
+           ^^^^^^^^^
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/command/test.py", line 95, in test
+    base.execute_cmdline_scenarios(scenario_name, args, command_args, ansible_args, exclude)
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/command/base.py", line 243, in execute_cmdline_scenarios
+    _run_scenarios(scenarios, command_args, default_config)
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/command/base.py", line 375, in _run_scenarios
+    execute_scenario(scenario, shared_state=scenarios.shared_state)
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/command/base.py", line 477, in execute_scenario
+    execute_subcommand(scenario.config, action)
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/command/base.py", line 462, in execute_subcommand
+    return command(current_config).execute(args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/logger.py", line 414, in wrapper
+    rt = func(*args, **kwargs)
+         ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/logger.py", line 297, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/command/dependency.py", line 46, in execute
+    self._config.dependency.execute()
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/dependency/ansible_galaxy/__init__.py", line 38, in execute
+    invoker.execute()
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/dependency/ansible_galaxy/base.py", line 161, in execute
+    super().execute()
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/molecule/dependency/base.py", line 123, in execute
+    self._config.runtime.require_collection(name, version)
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/ansible_compat/runtime.py", line 913, in require_collection
+    self.install_collection(f"{name}:>={version}" if version else name)
+  File "/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/ansible_compat/runtime.py", line 622, in install_collection
+    raise InvalidPrerequisiteError(msg)
+ansible_compat.errors.InvalidPrerequisiteError: Command ansible-galaxy collection install -vvv ansible.posix:>=1.4.0, returned 1 code:
+Starting galaxy collection install process
+Process install dependency map
+
+ansible-galaxy [core 2.21.3]
+  config file = None
+  configured module search path = ['/home/runner/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/ansible
+  ansible collection location = /home/runner/work/ansible-provision/ansible-provision/main/collections:/home/runner/.ansible/collections:/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages
+  executable location = /home/runner/work/ansible-provision/ansible-provision/main/.venv-package/bin/ansible-galaxy
+  python version = 3.12.14 (main, Aug 13 2026, 02:47:42) [GCC 13.3.0] (/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/bin/python3)
+  jinja version = 3.1.6
+  pyyaml version = 6.0.3 (with libyaml v0.2.5)
+No config file found; using defaults
+Found installed collection community.docker:5.2.2 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/community/docker'
+Found installed collection enasisnetwork.provision:0.2.7 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/enasisnetwork/provision'
+Found installed collection enasisnetwork.utility:0.3.6 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/enasisnetwork/utility'
+Found installed collection community.libvirt:2.3.0 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/community/libvirt'
+Found installed collection community.library_inventory_filtering_v1:1.1.5 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/community/library_inventory_filtering_v1'
+Found installed collection community.general:13.3.0 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/community/general'
+Found installed collection community.proxmox:2.0.0 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/community/proxmox'
+Opened /home/runner/.ansible/galaxy_token
+[WARNING]: Skipping Galaxy server https://galaxy.ansible.com/api/. Got an unexpected error when getting available versions of collection ansible.posix: Missing expected 'results' in ansible-galaxy cache: {'expires': '2026-09-05T19:17:31Z', 'paginated': False}. This may indicate cache corruption (for example, from concurrent ansible-galaxy runs) or a bug in how the cache was generated. Try running with --clear-response-cache or --no-cache to work around the issue: 'results'
+[ERROR]: Missing expected 'results' in ansible-galaxy cache: {'expires': '2026-09-05T19:17:31Z', 'paginated': False}. This may indicate cache corruption (for example, from concurrent ansible-galaxy runs) or a bug in how the cache was generated. Try running with --clear-response-cache or --no-cache to work around the issue: 'results'
+
+----------------------------- Captured stderr call -----------------------------
+WARNING  Molecule scenarios should migrate to 'extensions/molecule'
+CRITICAL 'molecule/default/molecule.yml' glob failed.  Exiting.
+INFO     default scenario not found, disabling shared state.
+INFO     [overview > discovery] scenario test matrix: dependency, cleanup, destroy, syntax, create, prepare, converge, idempotence, side_effect, verify, cleanup, destroy
+INFO     [overview > prerun] Performing prerun with role_name_check=0...
+INFO     [overview > dependency] Executing
+WARNING  Retrying execution failure 1 of: ansible-galaxy collection install -vvv ansible.posix:>=1.4.0
+ERROR    Command ansible-galaxy collection install -vvv ansible.posix:>=1.4.0, returned 1 code:
+Starting galaxy collection install process
+Process install dependency map
+
+ansible-galaxy 
+  config file = None
+  configured module search path = 
+  ansible python module location = /home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages/ansible
+  ansible collection location = /home/runner/work/ansible-provision/ansible-provision/main/collections:/home/runner/.ansible/collections:/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/lib/python3.12/site-packages
+  executable location = /home/runner/work/ansible-provision/ansible-provision/main/.venv-package/bin/ansible-galaxy
+  python version = 3.12.14 (main, Aug 13 2026, 02:47:42)  (/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/bin/python3)
+  jinja version = 3.1.6
+  pyyaml version = 6.0.3 (with libyaml v0.2.5)
+No config file found; using defaults
+Found installed collection community.docker:5.2.2 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/community/docker'
+Found installed collection enasisnetwork.provision:0.2.7 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/enasisnetwork/provision'
+Found installed collection enasisnetwork.utility:0.3.6 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/enasisnetwork/utility'
+Found installed collection community.libvirt:2.3.0 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/community/libvirt'
+Found installed collection community.library_inventory_filtering_v1:1.1.5 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/community/library_inventory_filtering_v1'
+Found installed collection community.general:13.3.0 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/community/general'
+Found installed collection community.proxmox:2.0.0 at '/home/runner/work/ansible-provision/ansible-provision/main/collections/ansible_collections/community/proxmox'
+Opened /home/runner/.ansible/galaxy_token
+: Skipping Galaxy server https://galaxy.ansible.com/api/. Got an unexpected error when getting available versions of collection ansible.posix: Missing expected 'results' in ansible-galaxy cache: {'expires': '2026-09-05T19:17:31Z', 'paginated': False}. This may indicate cache corruption (for example, from concurrent ansible-galaxy runs) or a bug in how the cache was generated. Try running with --clear-response-cache or --no-cache to work around the issue: 'results'
+: Missing expected 'results' in ansible-galaxy cache: {'expires': '2026-09-05T19:17:31Z', 'paginated': False}. This may indicate cache corruption (for example, from concurrent ansible-galaxy runs) or a bug in how the cache was generated. Try running with --clear-response-cache or --no-cache to work around the issue: 'results'
+
+ERROR    [overview > dependency] Executed: Failed
 =============================== warnings summary ===============================
 .venv-package/lib/python3.12/site-packages/pytest_ansible/plugin.py:432
 .venv-package/lib/python3.12/site-packages/pytest_ansible/plugin.py:432
@@ -47,12 +197,10 @@ collection/plugins/modules/__init__.py             0      0   100%
 collection/plugins/modules/mountiso.py             9      0   100%
 collection/tests/__init__.py                       0      0   100%
 collection/tests/integration/__init__.py           2      0   100%
-collection/tests/integration/test_default.py      15      0   100%
+collection/tests/integration/test_default.py      15      4    73%
 ------------------------------------------------------------------
-TOTAL                                            219     28    87%
-=================== 1 passed, 4 warnings in 61.39s (0:01:01) ===================
-    DONE
-  ● Write coveragepy output to htmlcov..
-    DONE
-  ● Write coveragepy output to coverage.json..
-    DONE
+TOTAL                                            219     32    85%
+=========================== short test summary info ============================
+FAILED collection/tests/integration/test_default.py::test_default[collection-overview] - AssertionError: assert 1 == 0
+ +  where 1 = CompletedProcess(args=['/home/runner/work/ansible-provision/ansible-provision/main/.venv-package/bin/python3', '-m', 'molecule', 'test', '-s', 'overview'], returncode=1).returncode
+================== 1 failed, 4 warnings in 137.23s (0:02:17) ===================
